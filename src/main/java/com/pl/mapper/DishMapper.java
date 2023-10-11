@@ -11,10 +11,10 @@ public class DishMapper {
 
 
 
-    public Dish mapToDish(DishDTO dishDTO){
-        return new Dish(dishDTO.id(),
-                dishDTO.name(),
-                dishDTO.description()
+    public Dish mapToDish(DishDTO dishDto){
+        return new Dish(dishDto.id(),
+                dishDto.name(),
+                dishDto.description()
         );
     }
 
