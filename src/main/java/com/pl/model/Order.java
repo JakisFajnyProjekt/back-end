@@ -19,7 +19,7 @@ public class Order {
 
     @ManyToOne
     private Restaurant restaurant;
-    private boolean isComplited;
+    private boolean isCompleted;
 
     private Date date;
 
@@ -28,11 +28,9 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long id, User user, Restaurant restaurant, boolean isComplited, Date date, BigDecimal price) {
+    public Order(Long id, boolean isCompleted, Date date, BigDecimal price) {
         this.id = id;
-        this.user = user;
-        this.restaurant = restaurant;
-        this.isComplited = isComplited;
+        this.isCompleted = isCompleted;
         this.date = date;
         this.price = price;
     }
@@ -61,12 +59,12 @@ public class Order {
         this.restaurant = restaurant;
     }
 
-    public boolean isComplited() {
-        return isComplited;
+    public boolean getIsCompleted() {
+        return isCompleted;
     }
 
-    public void setComplited(boolean complited) {
-        isComplited = complited;
+    public void setIsCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
     public Date getDate() {
@@ -90,11 +88,11 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return isComplited == order.isComplited && Objects.equals(id, order.id) && Objects.equals(date, order.date) && Objects.equals(price, order.price);
+        return isCompleted == order.isCompleted && Objects.equals(id, order.id) && Objects.equals(date, order.date) && Objects.equals(price, order.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isComplited, date, price);
+        return Objects.hash(id, isCompleted, date, price);
     }
 }
