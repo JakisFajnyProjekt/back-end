@@ -26,12 +26,10 @@ public class Restaurant {
     public Restaurant() {
     }
 
-    public Restaurant(Long id, String name, String address, List<Dish> dishes, List<Order> orders) {
+    public Restaurant(Long id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.dishes = dishes;
-        this.orders = orders;
     }
 
     public Long getId() {

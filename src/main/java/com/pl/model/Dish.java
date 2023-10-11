@@ -29,7 +29,6 @@ public class Dish {
         this.id = id;
         this.name = name;
         this.description = description;
-
     }
 
     public Long getId() {
