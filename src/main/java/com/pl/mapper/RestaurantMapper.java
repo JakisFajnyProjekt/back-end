@@ -8,25 +8,23 @@ import java.util.List;
 
 @Component
 public class RestaurantMapper {
-    public Restaurant mapToRestaurant(RestaurantDTO restaurantDTO) {
+    public Restaurant mapToRestaurant(RestaurantDTO restaurantDto) {
         return new Restaurant(
-                restaurantDTO.id(),
-                restaurantDTO.name(),
-                restaurantDTO.address()
+                restaurantDto.name(),
+                restaurantDto.address()
         );
     }
 
-    public RestaurantDTO mapToRestaurantDTO(Restaurant restaurant) {
+    public RestaurantDTO mapToRestaurantDto(Restaurant restaurant) {
         return new RestaurantDTO(
-                restaurant.getId(),
                 restaurant.getName(),
                 restaurant.getAddress()
         );
     }
 
-    public List<RestaurantDTO> mapToListDTO(final List<Restaurant> restaurants) {
+    public List<RestaurantDTO> mapToListDto(final List<Restaurant> restaurants) {
         return restaurants.stream()
-                .map(this::mapToRestaurantDTO)
+                .map(this::mapToRestaurantDto)
                 .toList();
     }
 

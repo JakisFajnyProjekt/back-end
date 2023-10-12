@@ -8,18 +8,15 @@ import java.util.List;
 
 @Component
 public class DishMapper {
-
-
-
-    public Dish mapToDish(DishDTO dishDTO){
-        return new Dish(dishDTO.id(),
-                dishDTO.name(),
-                dishDTO.description()
+    public Dish mapToDish(DishDTO dishDto){
+        return new Dish(
+                dishDto.name(),
+                dishDto.description()
         );
     }
 
     public DishDTO mapToDishDto(Dish dish){
-        return new DishDTO(dish.getId(),
+        return new DishDTO(
                 dish.getName(),
                 dish.getDescription());
     }

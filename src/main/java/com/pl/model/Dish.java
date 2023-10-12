@@ -31,6 +31,11 @@ public class Dish {
         this.description = description;
     }
 
+    public Dish(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }
