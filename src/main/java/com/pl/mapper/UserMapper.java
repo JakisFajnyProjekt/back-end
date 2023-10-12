@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+
 @Component
 public class UserMapper {
 
@@ -30,5 +31,4 @@ public class UserMapper {
                 .map(this::mapToUserDto)
                 .toList();
     }
-
 }
