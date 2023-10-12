@@ -3,6 +3,8 @@ package com.pl.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -21,21 +23,21 @@ public class Order {
     private Restaurant restaurant;
     private boolean isCompleted;
 
-    private Date date;
+    private LocalDateTime date = LocalDateTime.now();
 
     private BigDecimal price;
 
     public Order() {
     }
 
-    public Order(Long id, boolean isCompleted, Date date, BigDecimal price) {
+    public Order(Long id, boolean isCompleted, LocalDateTime date, BigDecimal price) {
         this.id = id;
         this.isCompleted = isCompleted;
         this.date = date;
         this.price = price;
     }
 
-    public Order(boolean isCompleted, Date date, BigDecimal price) {
+    public Order(boolean isCompleted, LocalDateTime date, BigDecimal price) {
         this.isCompleted = isCompleted;
         this.date = date;
         this.price = price;
@@ -73,11 +75,11 @@ public class Order {
         isCompleted = completed;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

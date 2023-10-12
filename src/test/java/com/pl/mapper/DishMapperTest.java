@@ -3,6 +3,8 @@ package com.pl.mapper;
 import com.pl.model.Dish;
 import com.pl.model.dto.DishDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -52,9 +54,9 @@ public class DishMapperTest {
                 new Dish("Pasta", "Homemade pasta")
         );
         //When
-        List<DishDTO> attemptDishDtoList = dishMapper.mapToListDto(dishes);
+        List<DishDTO> attemptList = dishMapper.mapToListDto(dishes);
         //Then
-        assertEquals(3, attemptDishDtoList.size());
-        assertEquals(DishDTO.class, attemptDishDtoList.get(0).getClass());
+        assertEquals(3, attemptList.size());
+        assertEquals(DishDTO.class, attemptList.get(0).getClass());
     }
 }
