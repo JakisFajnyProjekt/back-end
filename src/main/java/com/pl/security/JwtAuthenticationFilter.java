@@ -54,5 +54,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     }
 
-    //konstruktor z finalami
 }
