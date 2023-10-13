@@ -12,7 +12,8 @@ public class UserMapper {
 
     public User mapToUser(UserDTO userDto) {
         return new User(
-                userDto.name(),
+                userDto.firstName(),
+                userDto.lastName(),
                 userDto.email(),
                 userDto.password(),
                 userDto.role()
@@ -21,7 +22,8 @@ public class UserMapper {
 
     public UserDTO mapToUserDto(User user) {
         return new UserDTO(
-                user.getName(),
+                user.getFirstName(),
+                user.getLastName(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getRole()

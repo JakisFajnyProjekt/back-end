@@ -53,6 +53,7 @@ public class RegisterRequest {
 
     public static class Builder {
         private String firstName;
+        private String lastName;
 
         private String email;
         private String password;
@@ -62,7 +63,10 @@ public class RegisterRequest {
             return this;
         }
 
-
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
 
         public Builder email(String email) {
             this.email = email;
@@ -77,6 +81,7 @@ public class RegisterRequest {
         public RegisterRequest build() {
             RegisterRequest request = new RegisterRequest();
             request.setFirstName(firstName);
+            request.setLastName(lastName);
             request.setEmail(email);
             request.setPassword(password);
             return request;
