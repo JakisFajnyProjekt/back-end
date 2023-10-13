@@ -29,7 +29,11 @@ public class Dish {
         this.id = id;
         this.name = name;
         this.description = description;
+    }
 
+    public Dish(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public Long getId() {
