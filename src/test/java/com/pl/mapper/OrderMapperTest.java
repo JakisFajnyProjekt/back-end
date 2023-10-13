@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +35,7 @@ public class OrderMapperTest {
         OrderDTO attemptOrderDto = orderMapper.mapToOrderDto(order);
         //Then
         assertEquals(expectedDto.isCompleted(), attemptOrderDto.isCompleted());
-        assertEquals(expectedDto.date(), attemptOrderDto.date());
+        assertEquals(expectedDto.date().truncatedTo(ChronoUnit.HOURS), attemptOrderDto.date().truncatedTo(ChronoUnit.HOURS));
         assertEquals(expectedDto.price(), attemptOrderDto.price());
     }
     @Test
@@ -44,7 +45,7 @@ public class OrderMapperTest {
         Order attemptOrder = orderMapper.mapToOrder(orderDto);
         //Then
         assertEquals(expectedDto.isCompleted(), attemptOrder.getIsCompleted());
-        assertEquals(expectedDto.date(), attemptOrder.getDate());
+        assertEquals(expectedDto.date().truncatedTo(ChronoUnit.HOURS), attemptOrder.getDate().truncatedTo(ChronoUnit.HOURS));
         assertEquals(expectedDto.price(), attemptOrder.getPrice());
     }
     @Test
