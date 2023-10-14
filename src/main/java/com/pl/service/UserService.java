@@ -52,11 +52,12 @@ public class UserService {
     }
 
     @Transactional
-    public void editUser(long userId, UserDTO userDTO) {
-        userRepository.findById(userId)
+    public UserDTO editUser(long userId, UserDTO userDTO) {
+        return userRepository.findById(userId)
                 .map(user1 -> {
                     User user2 = userMapper.mapToUser(userDTO);
-                    return userRepository.save(user2);
+                    userRepository.save(user2);
+                     return userMapper.mapToUserDto(user2);
                 })
                 .orElseThrow(() -> new UserNotFoudException("user not found"));
     }
