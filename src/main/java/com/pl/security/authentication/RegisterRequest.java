@@ -1,11 +1,17 @@
 package com.pl.security.authentication;
 
+import jakarta.annotation.Nonnull;
+
 import java.util.Objects;
 
 public class RegisterRequest {
+    @Nonnull
     private String firstName;
+    @Nonnull
     private String lastName;
+    @Nonnull
     private String email;
+    @Nonnull
     private String password;
 
     public RegisterRequest() {
