@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuthenticationController {
+public class UserAuthenticationController {
     private final UserAuthenticationService userAuthenticationService;
 
-    public AuthenticationController(UserAuthenticationService userAuthenticationService) {
+    public UserAuthenticationController(UserAuthenticationService userAuthenticationService) {
         this.userAuthenticationService = userAuthenticationService;
     }
 
