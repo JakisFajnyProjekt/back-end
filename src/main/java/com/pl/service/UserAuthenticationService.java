@@ -49,9 +49,9 @@ public class UserAuthenticationService {
                     .token(jwtToken)
                     .build();
         } catch (UserEmailTakenException e) {
-            LOGGER.error("Email is already taken");
+            LOGGER.error("Email already exists");
             return AuthenticationResponse.builder()
-                    .token("Email is already taken")
+                    .token("Email already exists")
                     .build();
         }
     }
