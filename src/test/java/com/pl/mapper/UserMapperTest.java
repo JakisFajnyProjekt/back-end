@@ -24,9 +24,9 @@ public class UserMapperTest {
 
     @BeforeEach
     void testData(){
-        user = new User("Bartosz", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
-        userDto = new UserDTO("Bartosz", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
-        expectedDto = new UserDTO("Bartosz", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
+        user = new User("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
+        userDto = new UserDTO("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
+        expectedDto = new UserDTO("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
     }
     @Test
     void shouldMapToDto() {
@@ -34,7 +34,8 @@ public class UserMapperTest {
         //When
         UserDTO attemptUserDto = userMapper.mapToUserDto(user);
         //Then
-        assertEquals(expectedDto.name(), attemptUserDto.name());
+        assertEquals(expectedDto.firstName(), attemptUserDto.firstName());
+        assertEquals(expectedDto.lastName(), attemptUserDto.lastName());
         assertEquals(expectedDto.password(), attemptUserDto.password());
         assertEquals(expectedDto.email(), attemptUserDto.email());
         assertEquals(expectedDto.role(), attemptUserDto.role());
@@ -45,7 +46,8 @@ public class UserMapperTest {
         //When
         User attemptUser = userMapper.mapToUser(userDto);
         //Then
-        assertEquals(expectedDto.name(), attemptUser.getName());
+        assertEquals(expectedDto.firstName(), attemptUser.getFirstName());
+        assertEquals(expectedDto.lastName(), attemptUser.getLastName());
         assertEquals(expectedDto.password(), attemptUser.getPassword());
         assertEquals(expectedDto.email(), attemptUser.getEmail());
         assertEquals(expectedDto.role(), attemptUser.getRole());
@@ -54,9 +56,9 @@ public class UserMapperTest {
     void shouldMapToListDto() {
         //Given
         List<User> users = List.of(
-                new User("Bartosz", "bartosz@gmail.com", "zaq1@WSX", Role.USER),
-                new User("Bartosz", "bartosz@gmail.com", "zaq1@WSX", Role.USER),
-                new User("Bartosz", "bartosz@gmail.com", "zaq1@WSX", Role.USER)
+                new User("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER),
+                new User("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER),
+                new User("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER)
         );
         //When
         List<UserDTO> attemptList = userMapper.mapToListDto(users);
