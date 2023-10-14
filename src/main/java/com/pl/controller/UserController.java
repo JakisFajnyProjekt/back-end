@@ -5,7 +5,7 @@ import com.pl.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -14,7 +14,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/get/{userId}")
+    @GetMapping("/{userId}")
     public UserDTO findUserById(@PathVariable long userId){
         return userService.getUserById(userId);
     }
