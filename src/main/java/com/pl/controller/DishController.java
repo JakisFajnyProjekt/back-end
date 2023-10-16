@@ -2,10 +2,11 @@ package com.pl.controller;
 
 import com.pl.model.dto.DishDTO;
 import com.pl.service.DishService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/dishes")
@@ -22,18 +23,19 @@ public class DishController {
         }
 
         @GetMapping("")
-        public List<DishDTO> getListOfAllDishes() {
+        public List<DishDTO> listDishes() {
             return dishService.listDishes();
         }
 
         @DeleteMapping("/{dishId}")
-        public void removeDishById(@PathVariable long dishId) {
-            dishService.removeDishById(dishId);
+        public void removeDish(@PathVariable long dishId) {
+            dishService.removeDish(dishId);
         }
 
         @PutMapping("/{dishId}")
-        public void updateDishById(@PathVariable long dishId, @RequestBody Map<String, Object> updates) {
-            dishService.updateDishById(dishId, updates);
+        public ResponseEntity<DishDTO> editDish(@PathVariable long dishId, @RequestBody DishDTO updates) {
+            dishService.editDish(dishId, updates);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
 }
 

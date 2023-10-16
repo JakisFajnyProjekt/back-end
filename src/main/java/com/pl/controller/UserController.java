@@ -2,7 +2,11 @@ package com.pl.controller;
 
 import com.pl.model.dto.UserDTO;
 import com.pl.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -18,5 +22,23 @@ public class UserController {
     public UserDTO findUserById(@PathVariable long userId){
         return userService.getUserById(userId);
     }
+
+    @GetMapping("")
+    public List<UserDTO> listUsers(){
+        return userService.listUsers();
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void>removeUser(@PathVariable long userId){
+        userService.removeUser(userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserDTO>editUser(@PathVariable long userId,@RequestBody UserDTO user){
+        userService.editUser(userId, user);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
 
 }

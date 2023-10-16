@@ -1,16 +1,15 @@
 package com.pl.service;
 
+import com.pl.exception.NotFoudException;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.DishMapper;
 import com.pl.model.Dish;
-import com.pl.model.Restaurant;
+import com.pl.model.User;
 import com.pl.model.dto.DishDTO;
 import com.pl.repository.DishRepository;
-import jakarta.persistence.ManyToMany;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -39,21 +38,21 @@ public class DishService {
         return dishMapper.mapToListDto(dishRepository.findAll());
     }
 
-    public void removeDishById(Long dishId) {
-        dishRepository.deleteById(dishId);
+    public void removeDish(Long dishId) {
+        Dish userById = dishRepository.findById(dishId)
+                .orElseThrow(() -> new NotFoudException("Dish not found with given id " + dishId));
+        dishRepository.delete(userById);
+        LOGGER.info("User with id " + dishId + " deleted");
     }
 
-    public void updateDishById(long dishId, @RequestBody Map<String, Object> updates) {
-        Dish dish = dishMapper.mapToDish(getDishById(dishId));
+    public void editDish(long dishId, DishDTO updatedDish) {
+        Dish dish = dishRepository.findById(dishId)
+                .orElseThrow(() -> new NotFoudException("Dish not found with given id " + dishId));
 
-        if(updates.containsKey("name")) {
-            dish.setName(dish.getName());
+        if(dish != null) {
+            dish.setName(updatedDish.name());
+            dish.setDescription(updatedDish.description());
+            dishRepository.save(dish);
         }
-
-        if(updates.containsKey("description")) {
-            dish.setDescription(dish.getDescription());
-        }
-
-        dishRepository.save(dish);
     }
 }
