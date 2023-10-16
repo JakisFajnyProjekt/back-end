@@ -1,6 +1,6 @@
 package com.pl.service;
 
-import com.pl.exception.UserNotFoudException;
+import com.pl.exception.NotFoundException;
 import com.pl.mapper.UserMapper;
 import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
@@ -21,19 +21,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-
     public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
-
     public UserDTO getUserById(long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoudException("User not found with given id " + userId));
+                .orElseThrow(() -> new NotFoundException("User not found with given id " + userId));
         LOGGER.info("User founded with id" + userId);
         return userMapper.mapToUserDto(user);
     }
-
     public List<UserDTO> getListOfAllUSers() {
         List<User> allUsers = userRepository.findAll();
         if (allUsers.isEmpty()) {
@@ -46,7 +43,7 @@ public class UserService {
     @Transactional
     public void deleteUserFromDb(long userId) {
         User userById = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoudException("User not found with given id " + userId));
+                .orElseThrow(() -> new NotFoundException("User not found with given id " + userId));
         userRepository.delete(userById);
         LOGGER.info("User with id " + userId + " deleted");
     }
@@ -58,7 +55,7 @@ public class UserService {
                     User user2 = userMapper.mapToUser(userDTO);
                     return userRepository.save(user2);
                 })
-                .orElseThrow(() -> new UserNotFoudException("user not found"));
+                .orElseThrow(() -> new NotFoundException("user not found"));
     }
 
 }

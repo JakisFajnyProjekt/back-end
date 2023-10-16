@@ -11,13 +11,12 @@ import java.time.LocalDate;
 @ControllerAdvice
 public class ExceptionsHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(UserNotFoudException.class)
-    public ResponseEntity<ApiErrorResponse> handleUserNotFoundException(UserNotFoudException userNotFoudException){
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(userNotFoudException.getMessage(),
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleUserNotFoundException(NotFoundException notFoundException){
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                notFoundException.getMessage(),
                 HttpStatus.NOT_FOUND.toString(),
                 LocalDate.now());
         return new ResponseEntity<>(apiErrorResponse,HttpStatus.NOT_FOUND);
     }
-
-
 }
