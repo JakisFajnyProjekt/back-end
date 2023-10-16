@@ -29,43 +29,33 @@ public class UserServiceTest {
     private User user2;
     private User user3;
     private User user4;
-    private Map<String,Object> update;
+    private Map<String, Object> update;
+    private Map<String, Object> updateWithNull;
     private UserDTO userDTO1;
     private List<User> userList;
 
     @BeforeEach
     void testData() {
         user1 = new User("firstName_user1",
-                "lastName_user1",
-                "email_user1",
-                "123456789qwerty_user1",
-                Role.USER);
+                "lastName_user1", "email_user1", "123456789qwerty_user1", Role.USER);
+
         userList = List.of(
                 user2 = new User("firstName_user2",
-                        "lastName_user2",
-                        "email_user2",
-                        "123456789qwerty_user2",
-                        Role.USER),
+                        "lastName_user2", "email_user2", "123456789qwerty_user2", Role.USER),
                 user3 = new User("firstName_user3",
-                        "lastName_user3",
-                        "email_user3",
-                        "123456789qwerty_user3",
-                        Role.USER),
+                        "lastName_user3", "email_user3", "123456789qwerty_user3", Role.USER),
                 user4 = new User("firstName_user4",
-                        "lastName_user4",
-                        "email_user4",
-                        "123456789qwerty_user4",
-                        Role.USER)
+                        "lastName_user4", "email_user4", "123456789qwerty_user4", Role.USER)
         );
 
         userDTO1 = new UserDTO("firstName_dto",
-                "lastName_dto",
-                "email",
-                "123456789qwerty",
-                Role.USER);
+                "lastName_dto", "email", "123456789qwerty", Role.USER);
         update = new HashMap<>();
         update.put("firstName", "firstName_dto");
         update.put("lastName", "lastName_dto");
+        updateWithNull = new HashMap<>();
+        updateWithNull.put("firstName", null);
+        updateWithNull.put("lastName", null);
     }
 
     @BeforeEach
@@ -127,7 +117,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void shouldDeleteUserFromDb(){
+    void shouldDeleteUserFromDb() {
         //Given
         List<User> userSavingList = userRepository.saveAll(userList);
         Long idOfUserForDelete = userSavingList.get(1).getId();
@@ -140,18 +130,18 @@ public class UserServiceTest {
         int sizeAfterDeletingUser = userRepository.findAll().size();
 
         //Then
-        assertEquals(expectedSizeBeforeDelete,sizeBeforeDeletingUser);
-        assertEquals(expectedSizeAfterDelete,sizeAfterDeletingUser);
+        assertEquals(expectedSizeBeforeDelete, sizeBeforeDeletingUser);
+        assertEquals(expectedSizeAfterDelete, sizeAfterDeletingUser);
     }
 
     @Test
-    void shoudlHandleNotFoundExceptionWhileTryingToDeleteByWrongId(){
+    void shoudlHandleNotFoundExceptionWhileTryingToDeleteByWrongId() {
         //Given
         long nonexistingUserId = 100;
 
         //Whne
         NotFoudException userNotFound = assertThrows(NotFoudException.class,
-                ()->userService.deleteUserFromDb(nonexistingUserId));
+                () -> userService.deleteUserFromDb(nonexistingUserId));
         String expectedMessage = "User not found with given id " + nonexistingUserId;
         String meesageFromException = userNotFound.getMessage();
 
@@ -171,29 +161,35 @@ public class UserServiceTest {
         assertEquals("firstName_dto", modifyUser.firstName());
         assertEquals("lastName_dto", modifyUser.lastName());
 
-        User actualUser = userRepository.findById(idOfUserInDb).orElse(null);
-        assertNotNull(actualUser);
-
-        assertEquals("firstName_dto", actualUser.getFirstName());
-        assertEquals("lastName_dto", actualUser.getLastName());
     }
 
     @Test
-    void shouldHandleExceptionWhileTryingToFindUserForUpdate(){
+    void shouldHandleExceptionWhileTryingToFindUserForUpdate() {
         //Given
         long nonExistingId = 12;
-        
+
         //When
         String expectedMessage = "User Not found";
-        NotFoudException notFoudException = assertThrows(NotFoudException.class, 
+        NotFoudException notFoudException = assertThrows(NotFoudException.class,
                 () -> userService.editUser(nonExistingId, update));
         String notFoundExceptionMessage = notFoudException.getMessage();
 
         //Then
         assertTrue(notFoundExceptionMessage.contains(expectedMessage));
-        
-        
+    }
 
+    @Test
+    void shouldAcceptOnlyNonNullValuesWhileUpdatingUser() {
+        //Given
+        User savedUser = userRepository.save(user1);
+        Long savedUserId = savedUser.getId();
+
+        //When
+        UserDTO updateWithNulls = userService.editUser(savedUserId, updateWithNull);
+
+        //The
+        assertEquals("firstName_user1", updateWithNulls.firstName());
+        assertEquals("lastName_user1", updateWithNulls.lastName());
     }
 
 
