@@ -10,7 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,6 +29,7 @@ public class UserServiceTest {
     private User user2;
     private User user3;
     private User user4;
+    private Map<String,Object> update;
     private UserDTO userDTO1;
     private List<User> userList;
 
@@ -60,6 +63,9 @@ public class UserServiceTest {
                 "email",
                 "123456789qwerty",
                 Role.USER);
+        update = new HashMap<>();
+        update.put("firstName", "firstName_dto");
+        update.put("lastName", "lastName_dto");
     }
 
     @BeforeEach
@@ -109,7 +115,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void shoudlReturnEmptyListIfNoUsersInDb() {
+    void shouldReturnEmptyListIfNoUsersInDb() {
         //Given
         int expectedSize = 0;
 
@@ -153,22 +159,25 @@ public class UserServiceTest {
     }
 
     @Test
-    void shouldModifyExistingUser(){
-        //Given
+    void shouldModifyExistingUser() {
+        // Given
         User savedUser = userRepository.save(user1);
         Long idOfUserInDb = savedUser.getId();
 
-        //When
-        String expectedFirstName = "firstName_dto";
-        String expectedLastName = "lastName_dto";
-        UserDTO modifyUser = userService.editUser(idOfUserInDb, userDTO1);
-        String userFirstNameAfterUpdate = modifyUser.firstName();
-        String userLastNameAfterUpdate = modifyUser.lastName();
+        // When
+        UserDTO modifyUser = userService.editUser(idOfUserInDb, update);
 
-        //Then
-        assertEquals(expectedFirstName, userFirstNameAfterUpdate);
-        assertEquals(expectedLastName,userLastNameAfterUpdate);
+        // Then
+        assertEquals("firstName_dto", modifyUser.firstName());
+        assertEquals("lastName_dto", modifyUser.lastName());
+
+        User actualUser = userRepository.findById(idOfUserInDb).orElse(null);
+        assertNotNull(actualUser);
+
+        assertEquals("firstName_dto", actualUser.getFirstName());
+        assertEquals("lastName_dto", actualUser.getLastName());
     }
+
     @Test
     void shouldHandleExceptionWhileTryingToFindUserForUpdate(){
         //Given
@@ -177,7 +186,7 @@ public class UserServiceTest {
         //When
         String expectedMessage = "User Not found";
         NotFoudException notFoudException = assertThrows(NotFoudException.class, 
-                () -> userService.editUser(nonExistingId, userDTO1));
+                () -> userService.editUser(nonExistingId, update));
         String notFoundExceptionMessage = notFoudException.getMessage();
 
         //Then

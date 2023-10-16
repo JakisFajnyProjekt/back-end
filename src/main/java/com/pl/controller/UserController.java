@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -18,8 +19,9 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @GetMapping("/{userId}")
-    public UserDTO findUserById(@PathVariable long userId){
+    public UserDTO findUserById(@PathVariable long userId) {
         return userService.getUserById(userId);
     }
 
@@ -37,8 +39,7 @@ public class UserController {
     @PutMapping("/{userId}")
     public ResponseEntity<UserDTO>editUser(@PathVariable long userId,@RequestBody UserDTO user){
         userService.editUser(userId, user);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-    }
+
 
 
 }
