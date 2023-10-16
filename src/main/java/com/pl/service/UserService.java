@@ -55,9 +55,6 @@ public class UserService {
                     throw new NotFoudException("User not found with given id " + userId);
                 });
     }
-
-
-
     @Transactional
     public UserDTO editUser(long userId, final Map<String, Object> update) {
         return userRepository.findById(userId)
