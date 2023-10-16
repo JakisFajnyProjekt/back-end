@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoudException.class)
-    public ResponseEntity<ApiErrorResponse> handleUserNotFoundException(NotFoudException notFoudException){
+    public ResponseEntity<ApiErrorResponse> handleFoundException(NotFoudException notFoudException){
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(notFoudException.getMessage(),
                 HttpStatus.FORBIDDEN.toString(),
                 LocalDate.now());

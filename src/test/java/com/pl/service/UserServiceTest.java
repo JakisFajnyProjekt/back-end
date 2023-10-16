@@ -107,7 +107,7 @@ public class UserServiceTest {
         userRepository.saveAll(userList);
 
         //When
-        List<UserDTO> listOfAllUsers = userService.getListOfAllUsers();
+        List<UserDTO> listOfAllUsers = userService.listUsers();
 
         //Then
         int expectedSizeOfList = 3;
@@ -120,7 +120,7 @@ public class UserServiceTest {
         int expectedSize = 0;
 
         //When
-        List<UserDTO> listOfAllUsers = userService.getListOfAllUsers();
+        List<UserDTO> listOfAllUsers = userService.listUsers();
 
         //Then
         assertEquals(expectedSize, listOfAllUsers.size());
@@ -136,7 +136,7 @@ public class UserServiceTest {
         int expectedSizeBeforeDelete = 3;
         int expectedSizeAfterDelete = 2;
         int sizeBeforeDeletingUser = userRepository.findAll().size();
-        userService.deleteUserFromDb(idOfUserForDelete);
+        userService.removeUser(idOfUserForDelete);
         int sizeAfterDeletingUser = userRepository.findAll().size();
 
         //Then
@@ -151,7 +151,7 @@ public class UserServiceTest {
 
         //Whne
         NotFoudException userNotFound = assertThrows(NotFoudException.class,
-                ()->userService.deleteUserFromDb(nonexistingUserId));
+                ()->userService.removeUser(nonexistingUserId));
         String expectedMessage = "User not found with given id " + nonexistingUserId;
         String meesageFromException = userNotFound.getMessage();
 

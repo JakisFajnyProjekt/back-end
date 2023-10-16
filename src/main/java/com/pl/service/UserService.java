@@ -35,7 +35,7 @@ public class UserService {
         return userMapper.mapToUserDto(user);
     }
 
-    public List<UserDTO> getListOfAllUsers() {
+    public List<UserDTO> listUsers() {
         List<User> allUsers = userRepository.findAll();
         if (allUsers.isEmpty()) {
             LOGGER.info("the users list are empty");
@@ -45,7 +45,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserFromDb(long userId) {
+    public void removeUser(long userId) {
         User userById = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoudException("User not found with given id " + userId));
         userRepository.delete(userById);
@@ -73,6 +73,5 @@ public class UserService {
                     throw new NotFoudException("User Not found");
                 });
     }
-
 
 }
