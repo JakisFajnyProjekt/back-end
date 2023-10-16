@@ -1,6 +1,6 @@
 package com.pl.service;
 
-import com.pl.exception.NotFoudException;
+import com.pl.exception.NotFoundException;
 import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
 import com.pl.repository.UserRepository;
@@ -82,12 +82,12 @@ public class UserServiceTest {
         long nonExistingUserId = 1;
 
         //When
-        NotFoudException notFoudException = assertThrows(NotFoudException.class,
+        NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> userService.getUserById(nonExistingUserId));
 
         //Then
         String expectedMessage = "User not found with given id " + nonExistingUserId;
-        String actualMessage = notFoudException.getMessage();
+        String actualMessage = notFoundException.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
@@ -97,7 +97,7 @@ public class UserServiceTest {
         userRepository.saveAll(userList);
 
         //When
-        List<UserDTO> listOfAllUsers = userService.getListOfAllUsers();
+        List<UserDTO> listOfAllUsers = userService.listUsers();
 
         //Then
         int expectedSizeOfList = 3;
@@ -110,7 +110,7 @@ public class UserServiceTest {
         int expectedSize = 0;
 
         //When
-        List<UserDTO> listOfAllUsers = userService.getListOfAllUsers();
+        List<UserDTO> listOfAllUsers = userService.listUsers();
 
         //Then
         assertEquals(expectedSize, listOfAllUsers.size());
@@ -126,7 +126,7 @@ public class UserServiceTest {
         int expectedSizeBeforeDelete = 3;
         int expectedSizeAfterDelete = 2;
         int sizeBeforeDeletingUser = userRepository.findAll().size();
-        userService.deleteUserFromDb(idOfUserForDelete);
+        userService.removeUser(idOfUserForDelete);
         int sizeAfterDeletingUser = userRepository.findAll().size();
 
         //Then
@@ -140,8 +140,8 @@ public class UserServiceTest {
         long nonexistingUserId = 100;
 
         //Whne
-        NotFoudException userNotFound = assertThrows(NotFoudException.class,
-                () -> userService.deleteUserFromDb(nonexistingUserId));
+        NotFoundException userNotFound = assertThrows(NotFoundException.class,
+                ()->userService.removeUser(nonexistingUserId));
         String expectedMessage = "User not found with given id " + nonexistingUserId;
         String meesageFromException = userNotFound.getMessage();
 
@@ -170,9 +170,9 @@ public class UserServiceTest {
 
         //When
         String expectedMessage = "User Not found";
-        NotFoudException notFoudException = assertThrows(NotFoudException.class,
+        NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> userService.editUser(nonExistingId, update));
-        String notFoundExceptionMessage = notFoudException.getMessage();
+        String notFoundExceptionMessage = notFoundException.getMessage();
 
         //Then
         assertTrue(notFoundExceptionMessage.contains(expectedMessage));

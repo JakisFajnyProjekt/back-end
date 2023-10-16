@@ -1,6 +1,6 @@
 package com.pl.service;
 
-import com.pl.exception.NotFoudException;
+import com.pl.exception.NotFoundException;
 import com.pl.mapper.UserMapper;
 import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
@@ -27,12 +27,12 @@ public class UserService {
     }
 
     public UserDTO getUserById(long userId) {
-        User user = findUser(userId, "Id not found");
+        User user = findUser(userId);
         LOGGER.info("User founded with id" + userId);
         return userMapper.mapToUserDto(user);
     }
 
-    public List<UserDTO> getListOfAllUsers() {
+    public List<UserDTO> listUsers() {
         List<User> allUsers = userRepository.findAll();
         if (allUsers.isEmpty()) {
             LOGGER.info("the users list are empty");
@@ -42,17 +42,19 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserFromDb(long userId) {
-        User userById = findUser(userId, "Cant delete user with given id");
+
+    public void removeUser(long userId) {
+        User userById = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found with given id " + userId));
         userRepository.delete(userById);
         LOGGER.info("User with id " + userId + " deleted");
     }
 
-    private User findUser(long userId, String s) {
+    private User findUser(long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> {
-                    LOGGER.error(s);
-                    throw new NotFoudException("User not found with given id " + userId);
+                    LOGGER.error("Id not found");
+                    throw new NotFoundException("User not found with given id " + userId);
                 });
     }
     @Transactional
@@ -70,9 +72,8 @@ public class UserService {
                     return userMapper.mapToUserDto(savedUser);
                 }).orElseThrow(() -> {
                     LOGGER.error("Wrong user id");
-                    throw new NotFoudException("User Not found");
+                    throw new NotFoundException("User Not found");
                 });
     }
-
 
 }

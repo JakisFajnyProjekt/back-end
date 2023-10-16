@@ -23,14 +23,12 @@ public class UserAuthenticationController {
     public UserAuthenticationController(UserAuthenticationService userAuthenticationService) {
         this.userAuthenticationService = userAuthenticationService;
     }
-
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody  RegisterRequest request){
         userAuthenticationService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
-
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok(userAuthenticationService.authenticate(request));
