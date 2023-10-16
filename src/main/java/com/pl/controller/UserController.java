@@ -37,8 +37,8 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO>editUser(@PathVariable long userId,@RequestBody Map<String, Object> update){
-        userService.editUser(userId, update);
+    public ResponseEntity<UserDTO>editUser(@PathVariable long userId,@RequestBody Map<String,Object> user){
+        userService.editUser(userId, user);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 

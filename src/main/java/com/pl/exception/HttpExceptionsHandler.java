@@ -11,9 +11,9 @@ import java.time.LocalDate;
 @ControllerAdvice
 public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NotFoudException.class)
-    public ResponseEntity<ApiErrorResponse> handleFoundException(NotFoudException notFoudException){
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(notFoudException.getMessage(),
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleFoundException(NotFoundException notFoundException){
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(notFoundException.getMessage(),
                 HttpStatus.FORBIDDEN.toString(),
                 LocalDate.now());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiErrorResponse);
