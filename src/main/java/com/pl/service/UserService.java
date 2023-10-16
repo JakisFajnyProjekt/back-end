@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -51,20 +52,22 @@ public class UserService {
         LOGGER.info("User with id " + userId + " deleted");
     }
 
-    @Transactional
-    public UserDTO editUser(long userId, final UserDTO userDTO) {
+
+    public UserDTO editUser(long userId, final Map<String, Object> update) {
         return userRepository.findById(userId)
                 .map(existingUser -> {
-                    User user = userMapper.mapToUser(userDTO);
-                    user.setId(userId);
-                    user.setLastName(userDTO.lastName());
-                    user.setFirstName(userDTO.firstName());
-                    user.setPassword(existingUser.getPassword());
-                    user.setEmail(existingUser.getEmail());
-                    user.setRole(existingUser.getRole());
-                    User saveUser = userRepository.save(user);
+                    if (update.containsKey("firstName")) {
+                        existingUser.setFirstName(update.get("firstName").toString());
+                    }
+                    if (update.containsKey("lastName")) {
+                        existingUser.setLastName(update.get("lastName").toString());
+                    }
+                    if (update.containsKey("email")) {
+                        existingUser.setEmail(update.get("email").toString());
+                    }
+                    User savedUser = userRepository.save(existingUser);
                     LOGGER.info("Changes are accepted");
-                    return userMapper.mapToUserDto(saveUser);
+                    return userMapper.mapToUserDto(savedUser);
                 }).orElseThrow(() -> {
                     LOGGER.error("Wrong user id");
                     throw new NotFoudException("User Not found");
