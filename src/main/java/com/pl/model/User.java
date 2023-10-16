@@ -1,7 +1,9 @@
 package com.pl.model;
 
 import com.pl.security.Role;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,10 +21,10 @@ public class User implements UserDetails {
     private Long id;
 
     private String firstName;
+
     private String lastName;
-
     private String password;
-
+    @Column(unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -34,7 +36,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password,  Role role) {
+    public User(String firstName, String lastName, String email, String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
