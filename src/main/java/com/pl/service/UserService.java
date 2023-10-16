@@ -27,11 +27,7 @@ public class UserService {
     }
 
     public UserDTO getUserById(long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> {
-                    LOGGER.error("Id not found");
-                    throw new NotFoudException("User not found with given id " + userId);
-                });
+        User user = findUser(userId, "Id not found");
         LOGGER.info("User founded with id" + userId);
         return userMapper.mapToUserDto(user);
     }
@@ -47,38 +43,20 @@ public class UserService {
 
     @Transactional
     public void deleteUserFromDb(long userId) {
-        User userById = userRepository.findById(userId)
-                .orElseThrow(() -> {
-                    LOGGER.error("Cant delete user with given id");
-                    throw new NotFoudException("User not found with given id " + userId);
-                });
+        User userById = findUser(userId, "Cant delete user with given id");
         userRepository.delete(userById);
         LOGGER.info("User with id " + userId + " deleted");
     }
 
-//    @Transactional
-//    public UserDTO editUser(long userId, final Map<String, Object> update) {
-//        return userRepository.findById(userId)
-//                .map(existingUser -> {
-//                    if (!update.isEmpty()) {
-//                        if (update.containsKey("firstName") && update.get("firstName") != null) {
-//                            existingUser.setFirstName(update.get("firstName").toString());
-//                        }
-//                        if (update.containsKey("lastName") && update.get("lastName") != null) {
-//                            existingUser.setLastName(update.get("lastName").toString());
-//                        }
-//                        if (update.containsKey("email") && update.get("email") != null) {
-//                            existingUser.setEmail(update.get("email").toString());
-//                        }
-//                    }
-//                    User savedUser = userRepository.save(existingUser);
-//                    LOGGER.info("Changes are accepted");
-//                    return userMapper.mapToUserDto(savedUser);
-//                }).orElseThrow(() -> {
-//                    LOGGER.error("Wrong user id");
-//                    throw new NotFoudException("User Not found");
-//                });
-//    }
+    private User findUser(long userId, String s) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    LOGGER.error(s);
+                    throw new NotFoudException("User not found with given id " + userId);
+                });
+    }
+
+
 
     @Transactional
     public UserDTO editUser(long userId, final Map<String, Object> update) {
