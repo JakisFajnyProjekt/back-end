@@ -10,8 +10,8 @@ jobs:
           name: Build
           command: mvn -B -DskipTests clean package
       - run:
-          name: Test
-          command: java -cp target/helloworld-1.1.jar com.coveros.demo.helloworld.HelloWorld
+          name: Run Spring Boot Application
+          command: java -jar target/backend-1.0.jar
 
 workflows:
   sample:
