@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -33,6 +34,7 @@ public class UserAuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
+    @Transactional
     public AuthenticationResponse register(RegisterRequest request) {
         emailCheck(request.getEmail());
         User user = new User();
@@ -48,6 +50,7 @@ public class UserAuthenticationService {
                 .token(jwtToken)
                 .build();
     }
+
     public void emailCheck(String email) {
         Optional<User> byEmail = userRepository.findByEmail(email);
         if (byEmail.isPresent()) {
@@ -55,13 +58,14 @@ public class UserAuthenticationService {
         }
     }
 
+    @Transactional
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
                 request.getPassword())
         );
         var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(()->new NotFoundException("User Not Found"));
+                .orElseThrow(() -> new NotFoundException("User Not Found"));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
