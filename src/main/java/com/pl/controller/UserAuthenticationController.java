@@ -24,9 +24,9 @@ public class UserAuthenticationController {
         this.userAuthenticationService = userAuthenticationService;
     }
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody  RegisterRequest request){
-        userAuthenticationService.register(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public AuthenticationResponse register(@RequestBody  RegisterRequest request){
+        return userAuthenticationService.register(request);
+
 
     }
     @PostMapping("/login")

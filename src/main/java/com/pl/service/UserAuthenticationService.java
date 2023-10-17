@@ -1,5 +1,6 @@
 package com.pl.service;
 
+import com.pl.exception.NotFoundException;
 import com.pl.exception.UserEmailTakenException;
 import com.pl.model.User;
 import com.pl.repository.UserRepository;
@@ -46,7 +47,6 @@ public class UserAuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
-
     }
     public void emailCheck(String email) {
         Optional<User> byEmail = userRepository.findByEmail(email);
@@ -60,7 +60,8 @@ public class UserAuthenticationService {
                 request.getEmail(),
                 request.getPassword())
         );
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(()->new NotFoundException("User Not Found"));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
