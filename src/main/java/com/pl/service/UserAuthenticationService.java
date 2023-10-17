@@ -51,25 +51,28 @@ public class UserAuthenticationService {
                 .build();
     }
 
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new NotFoundException("Wrong email or password"));
+        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    request.getEmail(),
+                    request.getPassword())
+            );
+            var jwtToken = jwtService.generateToken(user);
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build();
+        } else {
+            throw new NotFoundException("Wrong email or password");
+        }
+    }
+
     public void emailCheck(String email) {
         Optional<User> byEmail = userRepository.findByEmail(email);
         if (byEmail.isPresent()) {
             throw new UserEmailTakenException("Email already taken");
         }
-    }
-
-    @Transactional
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getPassword())
-        );
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new NotFoundException("User Not Found"));
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
     }
 
 }

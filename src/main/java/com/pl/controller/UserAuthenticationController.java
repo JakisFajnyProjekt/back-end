@@ -5,6 +5,7 @@ import com.pl.security.authentication.AuthenticationResponse;
 import com.pl.security.authentication.RegisterRequest;
 import com.pl.service.UserAuthenticationService;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,7 @@ public class UserAuthenticationController {
     public UserAuthenticationController(UserAuthenticationService userAuthenticationService) {
         this.userAuthenticationService = userAuthenticationService;
     }
-    @PostMapping("/register")
+    @PostMapping(value = "/register",consumes = MediaType.APPLICATION_JSON_VALUE)
     public AuthenticationResponse register(@Valid @RequestBody RegisterRequest request){
         return userAuthenticationService.register(request);
 
