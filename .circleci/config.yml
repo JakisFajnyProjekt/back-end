@@ -1,10 +1,17 @@
+version: 2.1
+
 jobs:
   build-and-test:
+    docker:
+      - image: cimg/openjdk:17.0
     steps:
       - checkout
       - run:
-          name: Build
-          command: mvn -B -DskipTests clean package
-      - run:
-          name: Test
-          command: java -jar target/backend-1.0.jar
+          name: Build and Test
+          command: mvn test
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build-and-test
