@@ -34,25 +34,21 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
 
     public OrderDTO createOrder(Map<String, Object> update) {
         if (update.containsKey("price") && update.containsKey("isCompleted") && update.containsKey("restaurantId") && update.containsKey("userId")) {
-            try {
                 Order newOrder = new Order();
                 newOrder.setPrice(new BigDecimal(update.get("price").toString()));
                 newOrder.setIsCompleted(Boolean.parseBoolean(update.get("isCompleted").toString()));
                 newOrder.setRestaurant(
                             restaurantRepository
-                                .findById( (Long) update.get("restaurantId") )
+                                .findById( Long.parseLong(update.get("restaurantId").toString() ))
                                 .orElseThrow(() -> new NotFoundException("Restaurant not found"))
                 );
                 newOrder.setUser(
                         userRepository
-                                .findById( (Long) update.get("userId") )
-                                .orElseThrow(() -> new NotFoundException("user not found")));
+                                .findById( Long.parseLong(update.get("userId").toString() ))
+                                .orElseThrow(() -> new NotFoundException("User not found")));
                 return orderMapper.mapToOrderDto(orderRepository.save(newOrder));
-            } catch (Exception e) {
-                throw new InvalidValuesException("Provided values does not contain name and description properties");
-            }
         } else {
-            throw new InvalidValuesException("Missing keys in provided object");
+            throw new InvalidValuesException("Provided keys are incorrect");
         }
     }
 

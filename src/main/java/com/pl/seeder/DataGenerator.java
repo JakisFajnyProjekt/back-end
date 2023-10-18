@@ -3,6 +3,7 @@ package com.pl.seeder;
 import com.github.javafaker.Faker;
 import com.pl.model.*;
 import com.pl.repository.*;
+import com.pl.security.Role;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,8 @@ public class DataGenerator {
             user.setFirstName(faker.name().firstName());
             user.setLastName(faker.name().lastName());
             user.setEmail(faker.internet().emailAddress());
+            user.setPassword(faker.internet().password());
+            user.setRole(Role.USER);
             // Set other user properties
             userRepository.save(user);
         }
