@@ -5,18 +5,19 @@ import com.pl.exception.NotFoundException;
 import com.pl.mapper.OrderMapper;
 import com.pl.model.Order;
 import com.pl.model.User;
-import com.pl.model.dto.UserDTO;
 import org.slf4j.Logger;
 import com.pl.model.dto.OrderDTO;
 import com.pl.repository.OrderRepository;
 import com.pl.repository.RestaurantRepository;
 import com.pl.repository.UserRepository;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class OrderService {
 
@@ -81,6 +82,7 @@ public class OrderService {
                 });
     }
 
+    @Transactional
     public OrderDTO remove(long orderId) {
         Order order = findOrder(orderId);
         orderRepository.delete(order);
@@ -88,4 +90,5 @@ public class OrderService {
 
         return orderMapper.mapToOrderDto(order);
     }
+
 }

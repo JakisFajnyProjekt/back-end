@@ -19,27 +19,27 @@ public class DishController {
         }
 
         @GetMapping("/{dishId}")
-        public DishDTO findUserById(@PathVariable long dishId){
+        public DishDTO findById(@PathVariable long dishId){
             return dishService.getDishById(dishId);
         }
 
         @GetMapping("")
-        public List<DishDTO> listDishes() {
+        public List<DishDTO> list() {
             return dishService.listDishes();
         }
 
         @PostMapping("")
-        public DishDTO createDish(@RequestBody Map<String,Object> dish) {
+        public DishDTO create(@RequestBody Map<String,Object> dish) {
             return dishService.createDish(dish);
         }
 
         @DeleteMapping("/{dishId}")
-        public void removeDish(@PathVariable long dishId) {
+        public void remove(@PathVariable long dishId) {
             dishService.removeDish(dishId);
         }
 
         @PutMapping("/{dishId}")
-        public ResponseEntity<DishDTO> editDish(@PathVariable long dishId, @RequestBody Map<String,Object> dish) {
+        public ResponseEntity<DishDTO> edit(@PathVariable long dishId, @RequestBody Map<String,Object> dish) {
             dishService.editDish(dishId, dish);
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }

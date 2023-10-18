@@ -42,24 +42,21 @@ public class UserService {
     }
 
     @Transactional
-
-    public UserDTO remove(long userId) {
+    public void remove(long userId) {
         User user = findUser(userId);
         userRepository.delete(user);
         LOGGER.info("User with id " + userId + " deleted");
-
-        return userMapper.mapToUserDto(user);
     }
 
     private User findUser(long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> {
                     LOGGER.error("Id not found");
-                    throw new NotFoundException("User not found with given id " + userId);
+                    return new NotFoundException("User not found with given id " + userId);
                 });
     }
     @Transactional
-    public UserDTO editUser(long userId, final Map<String, Object> update) {
+    public UserDTO edit(long userId, final Map<String, Object> update) {
         return userRepository.findById(userId)
                 .map(existingUser -> {
                     Optional.ofNullable(update.get("firstName"))
@@ -73,7 +70,7 @@ public class UserService {
                     return userMapper.mapToUserDto(savedUser);
                 }).orElseThrow(() -> {
                     LOGGER.error("Wrong user id");
-                    throw new NotFoundException("User Not found");
+                    return new NotFoundException("User Not found");
                 });
     }
 

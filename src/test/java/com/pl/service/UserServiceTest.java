@@ -155,7 +155,7 @@ public class UserServiceTest {
         Long idOfUserInDb = savedUser.getId();
 
         // When
-        UserDTO modifyUser = userService.editUser(idOfUserInDb, update);
+        UserDTO modifyUser = userService.edit(idOfUserInDb, update);
 
         // Then
         assertEquals("firstName_dto", modifyUser.firstName());
@@ -171,7 +171,7 @@ public class UserServiceTest {
         //When
         String expectedMessage = "User Not found";
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
-                () -> userService.editUser(nonExistingId, update));
+                () -> userService.edit(nonExistingId, update));
         String notFoundExceptionMessage = notFoundException.getMessage();
 
         //Then
@@ -185,7 +185,7 @@ public class UserServiceTest {
         Long savedUserId = savedUser.getId();
 
         //When
-        UserDTO updateWithNulls = userService.editUser(savedUserId, updateWithNull);
+        UserDTO updateWithNulls = userService.edit(savedUserId, updateWithNull);
 
         //The
         assertEquals("firstName_user1", updateWithNulls.firstName());

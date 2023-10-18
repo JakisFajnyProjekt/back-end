@@ -21,27 +21,24 @@ public class UserController {
 
 
     @GetMapping("/{userId}")
-    public UserDTO findUserById(@PathVariable long userId) {
+    public UserDTO findById(@PathVariable long userId) {
         return userService.getUserById(userId);
     }
 
     @GetMapping("")
-    public List<UserDTO> listUsers(){
+    public List<UserDTO> list(){
         return userService.listUsers();
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void>removeUser(@PathVariable long userId){
+    public ResponseEntity<Void> remove(@PathVariable long userId){
         userService.remove(userId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO>editUser(@PathVariable long userId,@RequestBody Map<String,Object> user){
-        userService.editUser(userId, user);
+    public ResponseEntity<UserDTO> edit(@PathVariable long userId, @RequestBody Map<String,Object> user){
+        userService.edit(userId, user);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
-
-
-
 }

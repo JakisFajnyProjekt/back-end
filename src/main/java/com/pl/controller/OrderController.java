@@ -1,8 +1,6 @@
 package com.pl.controller;
 
-import com.pl.model.Order;
 import com.pl.model.dto.OrderDTO;
-import com.pl.model.dto.UserDTO;
 import com.pl.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,22 +18,22 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public OrderDTO findOrderById(@PathVariable long orderId) {
+    public OrderDTO findById(@PathVariable long orderId) {
         return orderService.getOrderById(orderId);
     }
 
     @GetMapping("")
-    public List<OrderDTO> listOrders() {
+    public List<OrderDTO> list() {
         return orderService.listOrders();
     }
 
     @PostMapping("")
-    public OrderDTO createOrder(@RequestBody Map<String,Object> order) {
+    public OrderDTO create(@RequestBody Map<String,Object> order) {
         return orderService.createOrder(order);
     }
 
     @DeleteMapping("/{orderId}")
-    public OrderDTO removeOrder(@PathVariable long orderId) {
+    public OrderDTO remove(@PathVariable long orderId) {
         return orderService.remove(orderId);
     }
 }
