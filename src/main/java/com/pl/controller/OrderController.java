@@ -2,6 +2,7 @@ package com.pl.controller;
 
 import com.pl.model.Order;
 import com.pl.model.dto.OrderDTO;
+import com.pl.model.dto.UserDTO;
 import com.pl.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,11 @@ public class OrderController {
 
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
+    }
+
+    @GetMapping("/{orderId}")
+    public OrderDTO findUserById(@PathVariable long orderId) {
+        return orderService.getOrderById(orderId);
     }
 
     @GetMapping("")

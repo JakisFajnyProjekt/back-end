@@ -4,6 +4,8 @@ import com.pl.exception.InvalidValuesException;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.OrderMapper;
 import com.pl.model.Order;
+import com.pl.model.User;
+import com.pl.model.dto.UserDTO;
 import org.slf4j.Logger;
 import com.pl.model.dto.OrderDTO;
 import com.pl.repository.OrderRepository;
@@ -63,5 +65,19 @@ public class OrderService {
             return new ArrayList<>();
         }
         return orderMapper.mapToListDto(orders);
+    }
+
+    public OrderDTO getOrderById(long orderId) {
+        Order order = findOrder(orderId);
+        LOGGER.info("User founded with id" + orderId);
+        return orderMapper.mapToOrderDto(order);
+    }
+
+    private Order findOrder(long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> {
+                    LOGGER.error("Id not found");
+                    return new NotFoundException("User not found with given id " + orderId);
+                });
     }
 }
