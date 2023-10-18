@@ -13,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
-public class UserService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
-
+public class UserService extends AbstractService<UserRepository, User> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -27,36 +24,27 @@ public class UserService {
     }
 
     public UserDTO getUserById(long userId) {
-        User user = findUser(userId);
-        LOGGER.info("User founded with id" + userId);
-        return userMapper.mapToUserDto(user);
+        LOGGER.info("User found with id" + userId);
+        return userMapper.mapToUserDto(findEntity(userRepository, userId));
     }
 
-    public List<UserDTO> listUsers() {
-        List<User> allUsers = userRepository.findAll();
-        if (allUsers.isEmpty()) {
-            LOGGER.info("the users list are empty");
+    public List<UserDTO> list() {
+        List<User> users = userRepository.findAll();
+        if (users.isEmpty()) {
+            LOGGER.info("the list of users are empty");
             return new ArrayList<>();
         }
-        return userMapper.mapToListDto(allUsers);
+        return userMapper.mapToListDto(users);
     }
 
     @Transactional
-    public void removeUser(long userId) {
-        User user = findUser(userId);
-        userRepository.delete(user);
+    public void remove(long userId) {
+        userRepository.delete(findEntity(userRepository, userId));
         LOGGER.info("User with id " + userId + " deleted");
     }
 
-    private User findUser(long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> {
-                    LOGGER.error("Id not found");
-                    throw new NotFoundException("User not found with given id " + userId);
-                });
-    }
     @Transactional
-    public UserDTO editUser(long userId, final Map<String, Object> update) {
+    public UserDTO edit(long userId, final Map<String, Object> update) {
         return userRepository.findById(userId)
                 .map(existingUser -> {
                     Optional.ofNullable(update.get("firstName"))
@@ -70,7 +58,7 @@ public class UserService {
                     return userMapper.mapToUserDto(savedUser);
                 }).orElseThrow(() -> {
                     LOGGER.error("Wrong user id");
-                    throw new NotFoundException("User Not found");
+                    return new NotFoundException("User Not found");
                 });
     }
 

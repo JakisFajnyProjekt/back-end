@@ -22,27 +22,24 @@ public class UserController {
 
 
     @GetMapping("/{userId}")
-    public UserDTO findUserById(@PathVariable long userId) {
+    public UserDTO findById(@PathVariable long userId) {
         return userService.getUserById(userId);
     }
 
-    @GetMapping()
-    public List<UserDTO> listUsers(){
-        return userService.listUsers();
+    @GetMapping("")
+    public List<UserDTO> list(){
+        return userService.list();
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void>removeUser(@PathVariable long userId){
-        userService.removeUser(userId);
+    public ResponseEntity<Void> remove(@PathVariable long userId){
+        userService.remove(userId);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "/{userId}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO>editUser(@PathVariable long userId,@RequestBody Map<String,Object> user){
-        userService.editUser(userId, user);
+        userService.edit(userId, user);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
-
-
-
 }
