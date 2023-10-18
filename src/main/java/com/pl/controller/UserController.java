@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -25,21 +26,24 @@ public class UserController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping(value = "/{userId}")
-    public UserDTO findUserById(@PathVariable long userId, @RequestHeader("Authorization") String auth) {
+    public UserDTO findUserById(@PathVariable long userId) {
         return userService.getUserById(userId);
     }
 
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping()
     public List<UserDTO> listUsers() {
         return userService.listUsers();
     }
 
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> removeUser(@PathVariable long userId) {
         userService.removeUser(userId);
         return ResponseEntity.ok().build();
     }
 
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> editUser(@PathVariable long userId, @RequestBody Map<String, Object> user) {
         userService.editUser(userId, user);

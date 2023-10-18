@@ -21,6 +21,7 @@ public class SecurityConfig  {
         this.authenticationProvider = authenticationProvider;
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -31,6 +32,8 @@ public class SecurityConfig  {
                 .permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
                 .permitAll()
+                .requestMatchers("api/users/**")
+                .hasRole("USER")
                 .anyRequest()
                 .authenticated()
                 .and()

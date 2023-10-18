@@ -46,25 +46,6 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-//    @Bean
-//    public OpenAPI customOpenAPI() {
-//        return new OpenAPI()
-//                .components(new Components()
-//                        .addSecuritySchemes("bearer-key", new SecurityScheme()
-//                                .type(SecurityScheme.Type.HTTP)
-//                                .scheme("bearer")
-//                                .bearerFormat("JWT")
-//                        )
-//                );
-//    }
-//    @Bean
-//    public Docket api() {
-//        return new Docket(DocumentationType.OAS_30)
-//                .select()
-//                .apis(RequestHandlerSelectors.basePackage("com.example.controllers"))
-//                .paths(PathSelectors.any())
-//                .build();
-//    }
 
     @Bean
     public OpenAPI openAPI() {
@@ -73,7 +54,7 @@ public class ApplicationConfig {
                         new SecurityScheme()
                                 .name("bearerAuth")
                                 .scheme("bearer")
-                                .type(SecurityScheme.Type.HTTP)
+                                .type(SecurityScheme.Type.APIKEY)
                                 .in(SecurityScheme.In.HEADER));
     }
 
