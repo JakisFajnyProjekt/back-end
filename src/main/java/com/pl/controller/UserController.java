@@ -3,6 +3,7 @@ package com.pl.controller;
 import com.pl.model.dto.UserDTO;
 import com.pl.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class UserController {
 
     @GetMapping("")
     public List<UserDTO> list(){
-        return userService.listUsers();
+        return userService.list();
     }
 
     @DeleteMapping("/{userId}")
@@ -36,8 +37,8 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> edit(@PathVariable long userId, @RequestBody Map<String,Object> user){
+    @PutMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO>editUser(@PathVariable long userId,@RequestBody Map<String,Object> user){
         userService.edit(userId, user);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }

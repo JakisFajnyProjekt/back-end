@@ -1,17 +1,19 @@
 package com.pl.security.authentication;
 
-import jakarta.annotation.Nonnull;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
 public class RegisterRequest {
-    @Nonnull
+    @NotNull(message = "firstName shouldn't be null or empty ")
     private String firstName;
-    @Nonnull
+    @NotNull(message = "lastNAme shouldn't be null or empty")
     private String lastName;
-    @Nonnull
+    @Email(message = "email is required")
     private String email;
-    @Nonnull
+    @NotNull(message = "password cannot be null")
     private String password;
 
     public RegisterRequest() {

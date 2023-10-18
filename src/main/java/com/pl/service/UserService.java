@@ -32,7 +32,7 @@ public class UserService {
         return userMapper.mapToUserDto(user);
     }
 
-    public List<UserDTO> listUsers() {
+    public List<UserDTO> list() {
         List<User> allUsers = userRepository.findAll();
         if (allUsers.isEmpty()) {
             LOGGER.info("the users list are empty");

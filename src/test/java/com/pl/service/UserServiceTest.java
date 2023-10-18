@@ -97,7 +97,7 @@ public class UserServiceTest {
         userRepository.saveAll(userList);
 
         //When
-        List<UserDTO> listOfAllUsers = userService.listUsers();
+        List<UserDTO> listOfAllUsers = userService.list();
 
         //Then
         int expectedSizeOfList = 3;
@@ -110,7 +110,7 @@ public class UserServiceTest {
         int expectedSize = 0;
 
         //When
-        List<UserDTO> listOfAllUsers = userService.listUsers();
+        List<UserDTO> listOfAllUsers = userService.list();
 
         //Then
         assertEquals(expectedSize, listOfAllUsers.size());
