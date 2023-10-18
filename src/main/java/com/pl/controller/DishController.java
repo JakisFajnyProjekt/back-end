@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/dishes")
@@ -33,8 +34,8 @@ public class DishController {
         }
 
         @PutMapping("/{dishId}")
-        public ResponseEntity<DishDTO> editDish(@PathVariable long dishId, @RequestBody DishDTO updates) {
-            dishService.editDish(dishId, updates);
+        public ResponseEntity<DishDTO> editDish(@PathVariable long dishId, @RequestBody Map<String,Object> dish) {
+            dishService.editDish(dishId, dish);
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
 }

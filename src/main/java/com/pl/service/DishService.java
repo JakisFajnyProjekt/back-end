@@ -3,13 +3,17 @@ package com.pl.service;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.DishMapper;
 import com.pl.model.Dish;
+import com.pl.model.User;
 import com.pl.model.dto.DishDTO;
+import com.pl.model.dto.UserDTO;
 import com.pl.repository.DishRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class DishService {
@@ -41,13 +45,19 @@ public class DishService {
         LOGGER.info("User with id " + dishId + " deleted");
     }
 
-    public void editDish(long dishId, DishDTO updatedDish) {
-        Dish dish = dishRepository.findById(dishId)
-                .orElseThrow(() -> new NotFoundException("Dish not found with given id " + dishId));
-        if(dish != null) {
-            dish.setName(updatedDish.name());
-            dish.setDescription(updatedDish.description());
-            dishRepository.save(dish);
-        }
+    public DishDTO editDish(long dishId, Map<String,Object> update) {
+        return dishRepository.findById(dishId)
+                .map(existingUser -> {
+                        Optional.ofNullable(update.get("name"))
+                                .ifPresent(value -> existingUser.setName(value.toString()));
+                        Optional.ofNullable(update.get("description"))
+                                .ifPresent(value -> existingUser.setDescription(value.toString()));
+                        LOGGER.info("Changes are accepted");
+                        Dish savedUser = dishRepository.save(existingUser);
+                        return dishMapper.mapToDishDto(savedUser);
+                }).orElseThrow(() -> {
+                        LOGGER.error("Wrong user id");
+                        throw new NotFoundException("Dish Not found");
+                });
     }
 }
