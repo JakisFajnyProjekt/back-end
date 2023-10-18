@@ -28,6 +28,11 @@ public class DishController {
             return dishService.listDishes();
         }
 
+        @PostMapping("")
+        public DishDTO createDish(@RequestBody Map<String,Object> dish) {
+            return dishService.createDish(dish);
+        }
+
         @DeleteMapping("/{dishId}")
         public void removeDish(@PathVariable long dishId) {
             dishService.removeDish(dishId);

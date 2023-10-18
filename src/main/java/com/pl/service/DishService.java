@@ -1,5 +1,6 @@
 package com.pl.service;
 
+import com.pl.exception.InvalidValuesException;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.DishMapper;
 import com.pl.model.Dish;
@@ -59,5 +60,31 @@ public class DishService {
                         LOGGER.error("Wrong user id");
                         throw new NotFoundException("Dish Not found");
                 });
+    }
+
+//    public DishDTO createDish(Map<String, Object> update) {
+//        if(update.containsKey("name") && update.containsKey("description")) {
+//            Dish newDish = new Dish();
+//            newDish.setName(update.get("name").toString());
+//            newDish.setDescription(update.get("description").toString());
+//            dishRepository.save(newDish);
+//            return dishMapper.mapToDishDto(newDish);
+//        }
+//    }
+
+    public DishDTO createDish(Map<String, Object> update) {
+        if (update.containsKey("name") && update.containsKey("description")) {
+            Dish newDish = createDishFromUpdate(update);
+            Dish savedDish = dishRepository.save(newDish);
+            return dishMapper.mapToDishDto(savedDish);
+        }
+        throw new InvalidValuesException("Provided values does not contain name and description properties");
+    }
+
+    private Dish createDishFromUpdate(Map<String, Object> update) {
+        Dish newDish = new Dish();
+        newDish.setName(update.get("name").toString());
+        newDish.setDescription(update.get("description").toString());
+        return newDish;
     }
 }
