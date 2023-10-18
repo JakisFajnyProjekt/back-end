@@ -3,11 +3,9 @@ package com.pl.controller;
 import com.pl.model.Order;
 import com.pl.model.dto.OrderDTO;
 import com.pl.service.OrderService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -18,6 +16,11 @@ public class OrderController {
 
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
+    }
+
+    @GetMapping("")
+    public List<OrderDTO> listOrders() {
+        return orderService.listOrders();
     }
 
     @PostMapping("")
