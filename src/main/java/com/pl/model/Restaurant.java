@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "restaurants")
 @Entity
@@ -16,12 +17,8 @@ public class Restaurant {
     private String name;
 
     private String address;
-
-    @ManyToMany
-    private List<Dish> dishes;
-
     @OneToMany(mappedBy = "restaurant")
-    private List<Order> orders;
+    private Set<Order> orders;
 
     public Restaurant() {
     }
@@ -61,19 +58,11 @@ public class Restaurant {
         this.address = address;
     }
 
-    public List<Dish> getDishes() {
-        return dishes;
-    }
-
-    public void setDishes(List<Dish> dishes) {
-        this.dishes = dishes;
-    }
-
-    public List<Order> getOrders() {
+    public Set<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
 

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "dishes")
 @Entity
@@ -18,9 +19,6 @@ public class Dish {
 
     private String name;
     private String description;
-
-    @ManyToMany(mappedBy = "dishes")
-    private List<Restaurant> restaurants;
 
     public Dish() {
     }
@@ -60,14 +58,6 @@ public class Dish {
         this.description = description;
     }
 
-    public List<Restaurant> getRestaurants() {
-        return restaurants;
-    }
-
-    public void setRestaurants(List<Restaurant> restaurants) {
-        this.restaurants = restaurants;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,8 +76,7 @@ public class Dish {
         return "Dish{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", restaurants=" + restaurants +
+                ", description='" + description +
                 '}';
     }
 }
