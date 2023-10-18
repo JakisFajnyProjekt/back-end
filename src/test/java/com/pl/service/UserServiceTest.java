@@ -126,7 +126,7 @@ public class UserServiceTest {
         int expectedSizeBeforeDelete = 3;
         int expectedSizeAfterDelete = 2;
         int sizeBeforeDeletingUser = userRepository.findAll().size();
-        userService.removeUser(idOfUserForDelete);
+        userService.remove(idOfUserForDelete);
         int sizeAfterDeletingUser = userRepository.findAll().size();
 
         //Then
@@ -141,7 +141,7 @@ public class UserServiceTest {
 
         //Whne
         NotFoundException userNotFound = assertThrows(NotFoundException.class,
-                ()->userService.removeUser(nonexistingUserId));
+                ()->userService.remove(nonexistingUserId));
         String expectedMessage = "User not found with given id " + nonexistingUserId;
         String meesageFromException = userNotFound.getMessage();
 

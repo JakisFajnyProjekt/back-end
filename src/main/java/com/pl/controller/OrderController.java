@@ -20,7 +20,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public OrderDTO findUserById(@PathVariable long orderId) {
+    public OrderDTO findOrderById(@PathVariable long orderId) {
         return orderService.getOrderById(orderId);
     }
 
@@ -32,5 +32,10 @@ public class OrderController {
     @PostMapping("")
     public OrderDTO createOrder(@RequestBody Map<String,Object> order) {
         return orderService.createOrder(order);
+    }
+
+    @DeleteMapping("/{orderId}")
+    public OrderDTO removeOrder(@PathVariable long orderId) {
+        return orderService.remove(orderId);
     }
 }

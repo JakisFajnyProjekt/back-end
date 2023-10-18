@@ -80,4 +80,12 @@ public class OrderService {
                     return new NotFoundException("User not found with given id " + orderId);
                 });
     }
+
+    public OrderDTO remove(long orderId) {
+        Order order = findOrder(orderId);
+        orderRepository.delete(order);
+        LOGGER.info("User with id " + order + " deleted");
+
+        return orderMapper.mapToOrderDto(order);
+    }
 }

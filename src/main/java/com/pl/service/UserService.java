@@ -43,11 +43,12 @@ public class UserService {
 
     @Transactional
 
-    public void removeUser(long userId) {
-        User userById = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found with given id " + userId));
-        userRepository.delete(userById);
+    public UserDTO remove(long userId) {
+        User user = findUser(userId);
+        userRepository.delete(user);
         LOGGER.info("User with id " + userId + " deleted");
+
+        return userMapper.mapToUserDto(user);
     }
 
     private User findUser(long userId) {
