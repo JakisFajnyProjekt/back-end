@@ -62,15 +62,6 @@ public class DishService {
                 });
     }
 
-//    public DishDTO createDish(Map<String, Object> update) {
-//        if(update.containsKey("name") && update.containsKey("description")) {
-//            Dish newDish = new Dish();
-//            newDish.setName(update.get("name").toString());
-//            newDish.setDescription(update.get("description").toString());
-//            dishRepository.save(newDish);
-//            return dishMapper.mapToDishDto(newDish);
-//        }
-//    }
 
     public DishDTO createDish(Map<String, Object> update) {
         if (update.containsKey("name") && update.containsKey("description")) {
