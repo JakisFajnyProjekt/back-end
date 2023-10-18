@@ -13,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
-public class UserService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
-
+public class UserService extends AbstractService<UserRepository, User> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -27,34 +24,25 @@ public class UserService {
     }
 
     public UserDTO getUserById(long userId) {
-        User user = findUser(userId);
-        LOGGER.info("User founded with id" + userId);
-        return userMapper.mapToUserDto(user);
+        LOGGER.info("User found with id" + userId);
+        return userMapper.mapToUserDto(findEntity(userRepository, userId));
     }
 
     public List<UserDTO> list() {
-        List<User> allUsers = userRepository.findAll();
-        if (allUsers.isEmpty()) {
-            LOGGER.info("the users list are empty");
+        List<User> users = userRepository.findAll();
+        if (users.isEmpty()) {
+            LOGGER.info("the list of users are empty");
             return new ArrayList<>();
         }
-        return userMapper.mapToListDto(allUsers);
+        return userMapper.mapToListDto(users);
     }
 
     @Transactional
     public void remove(long userId) {
-        User user = findUser(userId);
-        userRepository.delete(user);
+        userRepository.delete(findEntity(userRepository, userId));
         LOGGER.info("User with id " + userId + " deleted");
     }
 
-    private User findUser(long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> {
-                    LOGGER.error("Id not found");
-                    return new NotFoundException("User not found with given id " + userId);
-                });
-    }
     @Transactional
     public UserDTO edit(long userId, final Map<String, Object> update) {
         return userRepository.findById(userId)

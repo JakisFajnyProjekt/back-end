@@ -17,8 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class DishService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+public class DishService extends AbstractService<DishRepository, Dish> {
     DishRepository dishRepository;
     DishMapper dishMapper;
 
@@ -43,7 +42,7 @@ public class DishService {
         Dish userById = dishRepository.findById(dishId)
                 .orElseThrow(() -> new NotFoundException("Dish not found with given id " + dishId));
         dishRepository.delete(userById);
-        LOGGER.info("User with id " + dishId + " deleted");
+        LOGGER.info("Dish with id " + dishId + " deleted");
     }
 
     public DishDTO editDish(long dishId, Map<String,Object> update) {
@@ -57,7 +56,7 @@ public class DishService {
                         Dish savedUser = dishRepository.save(existingUser);
                         return dishMapper.mapToDishDto(savedUser);
                 }).orElseThrow(() -> {
-                        LOGGER.error("Wrong user id");
+                        LOGGER.error("Wrong dish id");
                         throw new NotFoundException("Dish Not found");
                 });
     }

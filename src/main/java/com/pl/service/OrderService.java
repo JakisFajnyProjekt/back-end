@@ -19,13 +19,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class OrderService {
+public class OrderService extends AbstractService<OrderRepository, Order> {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, RestaurantRepository restaurantRepository, UserRepository userRepository, Logger logger) {
         this.orderRepository = orderRepository;
@@ -62,31 +61,24 @@ public class OrderService {
     public List<OrderDTO> listOrders() {
         List<Order> orders = orderRepository.findAll();
         if (orders.isEmpty()) {
-            LOGGER.info("the users list are empty");
+            LOGGER.info("the list of orders are empty");
             return new ArrayList<>();
         }
         return orderMapper.mapToListDto(orders);
     }
 
     public OrderDTO getOrderById(long orderId) {
-        Order order = findOrder(orderId);
-        LOGGER.info("User founded with id" + orderId);
+        Order order = findEntity(orderRepository, orderId);
+        LOGGER.info("Order found with id" + orderId);
         return orderMapper.mapToOrderDto(order);
     }
 
-    private Order findOrder(long orderId) {
-        return orderRepository.findById(orderId)
-                .orElseThrow(() -> {
-                    LOGGER.error("Id not found");
-                    return new NotFoundException("User not found with given id " + orderId);
-                });
-    }
 
     @Transactional
     public OrderDTO remove(long orderId) {
-        Order order = findOrder(orderId);
+        Order order = findEntity(orderRepository, orderId);
         orderRepository.delete(order);
-        LOGGER.info("User with id " + order + " deleted");
+        LOGGER.info("Order with id " + order + " deleted");
 
         return orderMapper.mapToOrderDto(order);
     }
