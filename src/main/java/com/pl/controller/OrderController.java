@@ -2,10 +2,7 @@ package com.pl.controller;
 
 import com.pl.model.dto.OrderDTO;
 import com.pl.service.OrderService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +10,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
-@PreAuthorize("hasAnyRole('ADMIN')")
-
 public class OrderController {
 
     private final OrderService orderService;
