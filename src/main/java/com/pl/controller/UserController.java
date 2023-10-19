@@ -7,14 +7,15 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
-
 @RestController
 @RequestMapping("/api/users")
+@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 public class UserController {
 
     private final UserService userService;
@@ -23,31 +24,26 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
-    @GetMapping(value = "/{userId}")
-    public UserDTO findUserById(@PathVariable long userId) {
+
+    @GetMapping("/{userId}")
+    public UserDTO findById(@PathVariable long userId) {
         return userService.getUserById(userId);
     }
 
-    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
-    @GetMapping()
-    public List<UserDTO> listUsers() {
-        return userService.listUsers();
+    @GetMapping("")
+    public List<UserDTO> list() {
+        return userService.list();
     }
 
-    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> removeUser(@PathVariable long userId) {
-        userService.removeUser(userId);
+    public ResponseEntity<Void> remove(@PathVariable long userId) {
+        userService.remove(userId);
         return ResponseEntity.ok().build();
     }
 
-    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> editUser(@PathVariable long userId, @RequestBody Map<String, Object> user) {
-        userService.editUser(userId, user);
+        userService.edit(userId, user);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
-
-
 }

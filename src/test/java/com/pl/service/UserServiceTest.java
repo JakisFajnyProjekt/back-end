@@ -86,7 +86,7 @@ public class UserServiceTest {
                 () -> userService.getUserById(nonExistingUserId));
 
         //Then
-        String expectedMessage = "User not found with given id " + nonExistingUserId;
+        String expectedMessage = "Order not found with given id "+ nonExistingUserId;
         String actualMessage = notFoundException.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -97,7 +97,7 @@ public class UserServiceTest {
         userRepository.saveAll(userList);
 
         //When
-        List<UserDTO> listOfAllUsers = userService.listUsers();
+        List<UserDTO> listOfAllUsers = userService.list();
 
         //Then
         int expectedSizeOfList = 3;
@@ -110,7 +110,7 @@ public class UserServiceTest {
         int expectedSize = 0;
 
         //When
-        List<UserDTO> listOfAllUsers = userService.listUsers();
+        List<UserDTO> listOfAllUsers = userService.list();
 
         //Then
         assertEquals(expectedSize, listOfAllUsers.size());
@@ -126,7 +126,7 @@ public class UserServiceTest {
         int expectedSizeBeforeDelete = 3;
         int expectedSizeAfterDelete = 2;
         int sizeBeforeDeletingUser = userRepository.findAll().size();
-        userService.removeUser(idOfUserForDelete);
+        userService.remove(idOfUserForDelete);
         int sizeAfterDeletingUser = userRepository.findAll().size();
 
         //Then
@@ -141,8 +141,8 @@ public class UserServiceTest {
 
         //Whne
         NotFoundException userNotFound = assertThrows(NotFoundException.class,
-                ()->userService.removeUser(nonexistingUserId));
-        String expectedMessage = "User not found with given id " + nonexistingUserId;
+                ()->userService.remove(nonexistingUserId));
+        String expectedMessage = "Order not found with given id " + nonexistingUserId;
         String meesageFromException = userNotFound.getMessage();
 
         assertTrue(meesageFromException.contains(expectedMessage));
@@ -155,7 +155,7 @@ public class UserServiceTest {
         Long idOfUserInDb = savedUser.getId();
 
         // When
-        UserDTO modifyUser = userService.editUser(idOfUserInDb, update);
+        UserDTO modifyUser = userService.edit(idOfUserInDb, update);
 
         // Then
         assertEquals("firstName_dto", modifyUser.firstName());
@@ -171,7 +171,7 @@ public class UserServiceTest {
         //When
         String expectedMessage = "User Not found";
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
-                () -> userService.editUser(nonExistingId, update));
+                () -> userService.edit(nonExistingId, update));
         String notFoundExceptionMessage = notFoundException.getMessage();
 
         //Then
@@ -185,7 +185,7 @@ public class UserServiceTest {
         Long savedUserId = savedUser.getId();
 
         //When
-        UserDTO updateWithNulls = userService.editUser(savedUserId, updateWithNull);
+        UserDTO updateWithNulls = userService.edit(savedUserId, updateWithNull);
 
         //The
         assertEquals("firstName_user1", updateWithNulls.firstName());

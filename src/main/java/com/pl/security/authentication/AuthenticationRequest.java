@@ -1,9 +1,14 @@
 package com.pl.security.authentication;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Objects;
 
 public class AuthenticationRequest {
+    @Email(message = "you need to ener your email")
     private String email;
+    @NotNull(message = "need a password")
     private String password;
 
     public AuthenticationRequest() {
