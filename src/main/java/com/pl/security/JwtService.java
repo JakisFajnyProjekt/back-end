@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -34,11 +35,15 @@ public class JwtService {
 
     public String generateToken(Map<String, Objects> extraClaims,
                                 UserDetails userDetails){
+        String ROLE_PREFIX = "ROLE_";
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 1000))
+                .claim("roles", userDetails.getAuthorities().stream()
+                        .map(grantedAuthority -> ROLE_PREFIX + grantedAuthority.getAuthority())
+                        .collect(Collectors.toList()))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
