@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "orders")
 @Entity
@@ -21,24 +23,23 @@ public class Order {
     private Restaurant restaurant;
     private boolean isCompleted;
 
-    private LocalDateTime date = LocalDateTime.now();
+    private LocalDateTime date;
 
-    private BigDecimal price;
+    @Column(name = "total_price", precision = 10, scale = 2)
+    private BigDecimal totalPrice;
+
+    @OneToMany(mappedBy = "order")
+    private Set<RestaurantDish> restaurantDish;
+
 
     public Order() {
     }
 
-    public Order(Long id, boolean isCompleted, LocalDateTime date, BigDecimal price) {
-        this.id = id;
-        this.isCompleted = isCompleted;
-        this.date = date;
-        this.price = price;
-    }
 
-    public Order(boolean isCompleted, LocalDateTime date, BigDecimal price) {
+    public Order(boolean isCompleted, BigDecimal totalPrice) {
         this.isCompleted = isCompleted;
-        this.date = date;
-        this.price = price;
+        this.date = LocalDateTime.now();
+        this.totalPrice = totalPrice;
     }
 
     public Long getId() {
@@ -81,12 +82,12 @@ public class Order {
         this.date = date;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
@@ -94,11 +95,11 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return isCompleted == order.isCompleted && Objects.equals(id, order.id) && Objects.equals(date, order.date) && Objects.equals(price, order.price);
+        return isCompleted == order.isCompleted && Objects.equals(id, order.id) && Objects.equals(date, order.date) && Objects.equals(totalPrice, order.totalPrice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isCompleted, date, price);
+        return Objects.hash(id, isCompleted, date, totalPrice);
     }
 }

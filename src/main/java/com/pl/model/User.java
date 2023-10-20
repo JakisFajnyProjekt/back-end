@@ -1,9 +1,7 @@
 package com.pl.model;
 
 import com.pl.security.Role;
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
