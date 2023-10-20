@@ -2,8 +2,6 @@ package com.pl.controller;
 
 import com.pl.model.dto.OrderDTO;
 import com.pl.service.OrderService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
