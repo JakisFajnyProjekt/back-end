@@ -89,7 +89,7 @@ public class DataGenerator {
             order.setUser(randomUser);
             order.setRestaurant(randomRestaurant);
             order.setIsCompleted(faker.bool().bool());
-            order.setPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 5, 50)));
+            order.setTotalPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 5, 50)));
             // Set other order properties
             orderRepository.save(order);
         }

@@ -23,11 +23,12 @@ public class OrderMapperTest {
     OrderDTO expectedDto;
 
     @BeforeEach
-    void testData(){
-        order = new Order(true, LocalDateTime.now(), new BigDecimal("10.00"));
+    void testData() {
+        order = new Order(true, new BigDecimal("10.00"));
         orderDto = new OrderDTO(true, LocalDateTime.now(), new BigDecimal("10.00"));
         expectedDto = new OrderDTO(true, LocalDateTime.now(), new BigDecimal("10.00"));
     }
+
     @Test
     void shouldMapToDto() {
         //Given
@@ -38,6 +39,7 @@ public class OrderMapperTest {
         assertEquals(expectedDto.date().truncatedTo(ChronoUnit.HOURS), attemptOrderDto.date().truncatedTo(ChronoUnit.HOURS));
         assertEquals(expectedDto.price(), attemptOrderDto.price());
     }
+
     @Test
     void shouldMapFromDto() {
         //Given
@@ -46,15 +48,16 @@ public class OrderMapperTest {
         //Then
         assertEquals(expectedDto.isCompleted(), attemptOrder.getIsCompleted());
         assertEquals(expectedDto.date().truncatedTo(ChronoUnit.HOURS), attemptOrder.getDate().truncatedTo(ChronoUnit.HOURS));
-        assertEquals(expectedDto.price(), attemptOrder.getPrice());
+        assertEquals(expectedDto.price(), attemptOrder.getTotalPrice());
     }
+
     @Test
     void shouldMapToListDto() {
         //Given
         List<Order> orders = List.of(
-                new Order(true, LocalDateTime.now(), new BigDecimal("10.00")),
-                new Order(true, LocalDateTime.now(), new BigDecimal("10.00")),
-                new Order(true, LocalDateTime.now(), new BigDecimal("10.00"))
+                new Order(true, new BigDecimal("10.00")),
+                new Order(true, new BigDecimal("10.00")),
+                new Order(true, new BigDecimal("10.00"))
         );
         //When
         List<OrderDTO> attemptList = orderMapper.mapToListDto(orders);
