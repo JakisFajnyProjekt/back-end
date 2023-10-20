@@ -12,7 +12,6 @@ public class OrderMapper {
     public Order mapToOrder(OrderDTO orderDto) {
         return new Order(
                 orderDto.isCompleted(),
-                orderDto.date(),
                 orderDto.price()
         );
     }
@@ -20,8 +19,8 @@ public class OrderMapper {
     public OrderDTO mapToOrderDto(Order order) {
         return new OrderDTO(
                 order.getIsCompleted(),
-                order.getDate(),
-                order.getPrice()
+                order.getCreatedAt(),
+                order.getTotalCost()
         );
     }
 

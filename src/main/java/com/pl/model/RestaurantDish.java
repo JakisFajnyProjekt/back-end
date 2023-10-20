@@ -9,12 +9,14 @@ import java.math.BigDecimal;
 public class RestaurantDish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+    private BigDecimal price;
     @ManyToOne
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
     @ManyToOne
+    @JoinColumn(name = "dish_id")
     private Dish dish;
-    private BigDecimal price;
 
     public long getId() {
         return id;

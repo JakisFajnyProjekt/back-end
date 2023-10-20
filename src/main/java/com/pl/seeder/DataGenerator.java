@@ -52,7 +52,7 @@ public class DataGenerator {
         for (int i = 0; i < 5; i++) {
             Restaurant restaurant = new Restaurant();
             restaurant.setName(faker.company().name());
-            restaurant.setAddress(faker.address().fullAddress());
+            restaurant.setAddress(new Address());
             // Set other restaurant properties
             restaurantRepository.save(restaurant);
         }
@@ -89,7 +89,7 @@ public class DataGenerator {
             order.setUser(randomUser);
             order.setRestaurant(randomRestaurant);
             order.setIsCompleted(faker.bool().bool());
-            order.setPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 5, 50)));
+            order.setTotalCost(BigDecimal.valueOf(faker.number().randomDouble(2, 5, 50)));
             // Set other order properties
             orderRepository.save(order);
         }

@@ -45,8 +45,8 @@ public class OrderMapperTest {
         Order attemptOrder = orderMapper.mapToOrder(orderDto);
         //Then
         assertEquals(expectedDto.isCompleted(), attemptOrder.getIsCompleted());
-        assertEquals(expectedDto.date().truncatedTo(ChronoUnit.HOURS), attemptOrder.getDate().truncatedTo(ChronoUnit.HOURS));
-        assertEquals(expectedDto.price(), attemptOrder.getPrice());
+        assertEquals(expectedDto.date().truncatedTo(ChronoUnit.HOURS), attemptOrder.getCreatedAt().truncatedTo(ChronoUnit.HOURS));
+        assertEquals(expectedDto.price(), attemptOrder.getTotalCost());
     }
     @Test
     void shouldMapToListDto() {

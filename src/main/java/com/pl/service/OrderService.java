@@ -35,7 +35,7 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
     public OrderDTO createOrder(Map<String, Object> update) {
         if (update.containsKey("price") && update.containsKey("isCompleted") && update.containsKey("restaurantId") && update.containsKey("userId")) {
                 Order newOrder = new Order();
-                newOrder.setPrice(new BigDecimal(update.get("price").toString()));
+                newOrder.setTotalCost(new BigDecimal(update.get("price").toString()));
                 newOrder.setIsCompleted(Boolean.parseBoolean(update.get("isCompleted").toString()));
                 newOrder.setRestaurant(
                             restaurantRepository

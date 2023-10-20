@@ -4,33 +4,45 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Table(name = "restaurants")
 @Entity
 public class Restaurant {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
-    private String address;
     @OneToMany(mappedBy = "restaurant")
-    private Set<Order> orders;
+    private List<RestaurantDish> restaurantDishes;
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     public Restaurant() {
     }
 
-    public Restaurant(Long id, String name, String address) {
-        this.id = id;
+    public Restaurant(String name, Address address) {
         this.name = name;
         this.address = address;
     }
 
-    public Restaurant(String name, String address) {
+    public Restaurant(String name) {
         this.name = name;
+    }
+
+    public List<RestaurantDish> getRestaurantDishes() {
+        return restaurantDishes;
+    }
+
+    public void setRestaurantDishes(List<RestaurantDish> restaurantDishes) {
+        this.restaurantDishes = restaurantDishes;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -48,22 +60,6 @@ public class Restaurant {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Set<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
     }
 
     @Override

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Table(name = "orders")
@@ -13,32 +14,27 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    private User user;
-
-    @ManyToOne
-    private Restaurant restaurant;
     private boolean isCompleted;
-
-    private LocalDateTime date = LocalDateTime.now();
-
-    private BigDecimal price;
+    private LocalDateTime createdAt;
+    private BigDecimal totalCost;
+    @OneToOne
+    private Restaurant restaurant;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     public Order() {
     }
 
-    public Order(Long id, boolean isCompleted, LocalDateTime date, BigDecimal price) {
-        this.id = id;
+    public Order(boolean isCompleted, BigDecimal totalCost) {
         this.isCompleted = isCompleted;
-        this.date = date;
-        this.price = price;
-    }
-
-    public Order(boolean isCompleted, LocalDateTime date, BigDecimal price) {
-        this.isCompleted = isCompleted;
-        this.date = date;
-        this.price = price;
+        this.createdAt = LocalDateTime.now();
+        this.totalCost = totalCost;
     }
 
     public Long getId() {
@@ -73,20 +69,20 @@ public class Order {
         isCompleted = completed;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getTotalCost() {
+        return totalCost;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setTotalCost(BigDecimal totalCost) {
+        this.totalCost = totalCost;
     }
 
     @Override
@@ -94,11 +90,11 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return isCompleted == order.isCompleted && Objects.equals(id, order.id) && Objects.equals(date, order.date) && Objects.equals(price, order.price);
+        return isCompleted == order.isCompleted && Objects.equals(id, order.id) && Objects.equals(createdAt, order.createdAt) && Objects.equals(totalCost, order.totalCost);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isCompleted, date, price);
+        return Objects.hash(id, isCompleted, createdAt, totalCost);
     }
 }
