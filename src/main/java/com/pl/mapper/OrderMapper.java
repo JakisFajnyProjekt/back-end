@@ -2,6 +2,7 @@ package com.pl.mapper;
 
 import com.pl.model.Dish;
 import com.pl.model.Order;
+import com.pl.model.dto.OrderCreateDTO;
 import com.pl.model.dto.OrderDTO;
 import com.pl.repository.AddressRepository;
 import com.pl.repository.DishRepository;
@@ -29,17 +30,16 @@ public class OrderMapper {
     }
 
 
-    public Order mapToOrder(OrderDTO orderDTO) {
+    public Order mapToOrder(OrderCreateDTO rderCreateDTO) {
         Order order = new Order();
-        order.setOrderTime(orderDTO.orderTime());
-        order.setTotalPrice(orderDTO.totalPrice());
-        order.setStatus(orderDTO.status());
-        order.setUser(userRepository.findById(orderDTO.userId()).orElse(null));
-        order.setDishSet(orderDTO.dishIds().stream()
+        order.setOrderTime(rderCreateDTO.orderTime());
+        order.setStatus(rderCreateDTO.status());
+        order.setUser(userRepository.findById(rderCreateDTO.userId()).orElse(null));
+        order.setDishSet(rderCreateDTO.dishIds().stream()
                 .map(dishId -> dishRepository.findById(dishId).orElse(null))
                 .collect(Collectors.toSet()));
-        order.setDeliveryAddress(addressRepository.findById(orderDTO.deliveryAddressId()).orElse(null));
-        order.setRestaurant(restaurantRepository.findById(orderDTO.restaurantId()).orElse(null));
+        order.setDeliveryAddress(addressRepository.findById(rderCreateDTO.deliveryAddressId()).orElse(null));
+        order.setRestaurant(restaurantRepository.findById(rderCreateDTO.restaurantId()).orElse(null));
 
         return order;
     }

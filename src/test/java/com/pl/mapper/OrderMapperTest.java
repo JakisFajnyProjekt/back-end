@@ -1,6 +1,7 @@
 package com.pl.mapper;
 
 import com.pl.model.*;
+import com.pl.model.dto.OrderCreateDTO;
 import com.pl.model.dto.OrderDTO;
 import com.pl.repository.AddressRepository;
 import com.pl.repository.DishRepository;
@@ -70,10 +71,10 @@ public class OrderMapperTest {
             orderMapper = new OrderMapper(userRepository, dishRepository, addressRepository, restaurantRepository);
         }
     @Test
-    void testMapToOrder() {
+    void testMapToOrderWhileCreatingOrder() {
         //Given
-        OrderDTO orderDTOtest = new OrderDTO(LocalDate.now(),
-                BigDecimal.valueOf(100),"CREATED",
+        OrderCreateDTO orderDTOtest = new OrderCreateDTO(LocalDate.now(),
+               "CREATED",
                 1L,Set.of(1L, 2L),1L,1L);
 
         User mockUser = new User();
@@ -92,7 +93,6 @@ public class OrderMapperTest {
 
         //Then
         assertEquals(orderDTOtest.orderTime(), mappedOrder.getOrderTime());
-        assertEquals(orderDTOtest.totalPrice(), mappedOrder.getTotalPrice());
         assertEquals(orderDTOtest.status(), mappedOrder.getStatus());
         assertEquals(mockUser, mappedOrder.getUser());
         assertEquals(2, mappedOrder.getDishSet().size());
