@@ -1,22 +1,24 @@
 package com.pl.service;
 
-import com.pl.exception.InvalidValuesException;
-import com.pl.exception.NotFoundException;
 import com.pl.mapper.OrderMapper;
 import com.pl.model.Dish;
 import com.pl.model.Order;
+import com.pl.model.dto.OrderCreateDTO;
 import com.pl.model.dto.OrderDTO;
+import com.pl.repository.DishRepository;
 import com.pl.repository.OrderRepository;
-import com.pl.repository.RestaurantDishRepository;
 import com.pl.repository.RestaurantRepository;
 import com.pl.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class OrderService extends AbstractService<OrderRepository, Order> {
@@ -24,39 +26,34 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final RestaurantRepository restaurantRepository;
-    private final RestaurantDishRepository restaurantDishRepository;
     private final UserRepository userRepository;
+    private final DishRepository dishRepository;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, RestaurantRepository restaurantRepository, RestaurantDishRepository restaurantDishRepository, UserRepository userRepository) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, RestaurantRepository restaurantRepository, UserRepository userRepository, DishRepository dishRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.restaurantRepository = restaurantRepository;
-        this.restaurantDishRepository = restaurantDishRepository;
         this.userRepository = userRepository;
+        this.dishRepository = dishRepository;
     }
 
-
-    public OrderDTO createOrder(Map<String, Object> update) {
-        if (update.containsKey("price") && update.containsKey("isCompleted") && update.containsKey("restaurantId") && update.containsKey("userId")) {
-                Order newOrder = new Order();
-                newOrder.setTotalPrice(new BigDecimal(update.get("price").toString()));
-                newOrder.setIsCompleted(Boolean.parseBoolean(update.get("isCompleted").toString()));
-                newOrder.setRestaurant(
-                            restaurantRepository
-                                .findById( Long.parseLong(update.get("restaurantId").toString() ))
-                                .orElseThrow(() -> new NotFoundException("Restaurant not found"))
-                );
-                newOrder.setUser(
-                        userRepository
-                                .findById( Long.parseLong(update.get("userId").toString() ))
-                                .orElseThrow(() -> new NotFoundException("User not found")));
-
-                return orderMapper.mapToOrderDto(orderRepository.save(newOrder));
-        } else {
-            throw new InvalidValuesException("Provided keys are incorrect");
-        }
+    @Transactional
+    public OrderDTO createOrder(OrderCreateDTO createOrder) {
+        Order order = orderMapper.mapToOrder(createOrder);
+        order.setOrderTime(LocalDateTime.now());
+        order.setTotalPrice(calculateTotalPrice(createOrder.dishIds()));
+        Order savedOrder = orderRepository.save(order);
+        return orderMapper.mapToOrderDto(savedOrder);
     }
 
+    private BigDecimal calculateTotalPrice(List<Long> dishes) {
+        return dishes.stream()
+                .map(dishRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(Dish::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
 
     public List<OrderDTO> listOrders() {

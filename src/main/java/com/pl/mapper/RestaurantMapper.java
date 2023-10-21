@@ -9,17 +9,11 @@ import java.util.List;
 @Component
 public class RestaurantMapper {
     public Restaurant mapToRestaurant(RestaurantDTO restaurantDto) {
-        return new Restaurant(
-                restaurantDto.name(),
-                restaurantDto.address()
-        );
+        return new Restaurant(restaurantDto.name());
     }
 
     public RestaurantDTO mapToRestaurantDto(Restaurant restaurant) {
-        return new RestaurantDTO(
-                restaurant.getName(),
-                restaurant.getAddress()
-        );
+        return new RestaurantDTO(restaurant.getName());
     }
 
     public List<RestaurantDTO> mapToListDto(final List<Restaurant> restaurants) {

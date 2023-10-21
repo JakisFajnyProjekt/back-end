@@ -3,6 +3,7 @@ package com.pl.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -14,72 +15,59 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    @ManyToOne
-    private User user;
-
-    @ManyToOne
-    private Restaurant restaurant;
-    private boolean isCompleted;
-
-    private LocalDateTime date;
-
-    @Column(name = "total_price", precision = 10, scale = 2)
+    private LocalDateTime orderTime;
     private BigDecimal totalPrice;
+    private String status;
 
-    @OneToMany(mappedBy = "order")
-    private Set<RestaurantDish> restaurantDish;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToMany
+    @JoinTable(name = "order_food_items",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id")
+    )
+    private List<Dish> dishSet;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address deliveryAddress;
+    @ManyToOne()
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
 
     public Order() {
     }
 
 
-    public Order(boolean isCompleted, BigDecimal totalPrice) {
-        this.isCompleted = isCompleted;
-        this.date = LocalDateTime.now();
+    public Order(LocalDateTime orderTime, BigDecimal totalPrice,
+                 String status, User user, List<Dish> dishSet,
+                 Address deliveryAddress, Restaurant restaurant) {
+        this.orderTime = orderTime;
         this.totalPrice = totalPrice;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
+        this.status = status;
         this.user = user;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
+        this.dishSet = dishSet;
+        this.deliveryAddress = deliveryAddress;
         this.restaurant = restaurant;
     }
 
-    public boolean getIsCompleted() {
-        return isCompleted;
+    public long getId() {
+        return id;
     }
 
-    public void setIsCompleted(boolean completed) {
-        isCompleted = completed;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getOrderTime() {
+        return orderTime;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setOrderTime(LocalDateTime orderTime) {
+        this.orderTime = orderTime;
     }
 
     public BigDecimal getTotalPrice() {
@@ -90,16 +78,43 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return isCompleted == order.isCompleted && Objects.equals(id, order.id) && Objects.equals(date, order.date) && Objects.equals(totalPrice, order.totalPrice);
+    public String getStatus() {
+        return status;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, isCompleted, date, totalPrice);
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Dish> getDishSet() {
+        return dishSet;
+    }
+
+    public void setDishSet(List<Dish> dishSet) {
+        this.dishSet = dishSet;
+    }
+
+    public Address getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(Address deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 }
