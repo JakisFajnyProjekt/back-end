@@ -16,12 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -54,14 +54,14 @@ public class OrderMapperTest {
         user = new User("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
         order1 = new Order();
         address = new Address("12","street","city","64-100",Set.of(user),List.of(order1));
-        order1 = new Order(LocalDate.now(),
-                BigDecimal.valueOf(100), "CREATED", user, Set.of(dish1,dish2), address, restaurant
+        order1 = new Order(LocalDateTime.now(),
+                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1,dish2), address, restaurant
         );
-        order2 = new Order(LocalDate.now(),
-                BigDecimal.valueOf(100), "CREATED", user, Set.of(dish1,dish2), address, restaurant
+        order2 = new Order(LocalDateTime.now(),
+                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1,dish2), address, restaurant
         );
-        order3 = new Order(LocalDate.now(),
-                BigDecimal.valueOf(100), "CREATED", user, Set.of(dish1,dish2), address, restaurant
+        order3 = new Order(LocalDateTime.now(),
+                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1,dish2), address, restaurant
         );
     }
 
@@ -73,9 +73,8 @@ public class OrderMapperTest {
     @Test
     void testMapToOrderWhileCreatingOrder() {
         //Given
-        OrderCreateDTO orderDTOtest = new OrderCreateDTO(LocalDate.now(),
-               "CREATED",
-                1L,Set.of(1L, 2L),1L,1L);
+        OrderCreateDTO orderDTOtest = new OrderCreateDTO(
+               1L,List.of(1L, 2L),1L,1L);
 
         User mockUser = new User();
         Dish mockDish1 = new Dish("name1","description1");
@@ -92,8 +91,6 @@ public class OrderMapperTest {
         Order mappedOrder = orderMapper.mapToOrder(orderDTOtest);
 
         //Then
-        assertEquals(orderDTOtest.orderTime(), mappedOrder.getOrderTime());
-        assertEquals(orderDTOtest.status(), mappedOrder.getStatus());
         assertEquals(mockUser, mappedOrder.getUser());
         assertEquals(2, mappedOrder.getDishSet().size());
         assertEquals(mockAddress, mappedOrder.getDeliveryAddress());

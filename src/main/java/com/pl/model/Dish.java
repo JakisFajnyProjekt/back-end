@@ -36,7 +36,7 @@ public class Dish {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
+    public  BigDecimal getPrice() {
         return price;
     }
 

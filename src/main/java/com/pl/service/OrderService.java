@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,12 +40,13 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
     @Transactional
     public OrderDTO createOrder(OrderCreateDTO createOrder) {
         Order order = orderMapper.mapToOrder(createOrder);
+        order.setOrderTime(LocalDateTime.now());
         order.setTotalPrice(calculateTotalPrice(createOrder.dishIds()));
         Order savedOrder = orderRepository.save(order);
         return orderMapper.mapToOrderDto(savedOrder);
     }
 
-    public BigDecimal calculateTotalPrice(Set<Long> dishes) {
+    private BigDecimal calculateTotalPrice(List<Long> dishes) {
         return dishes.stream()
                 .map(dishRepository::findById)
                 .filter(Optional::isPresent)

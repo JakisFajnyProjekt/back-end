@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public record OrderDTO(
-        LocalDate orderTime,
+        LocalDateTime orderTime,
         BigDecimal totalPrice,
         String status,
         Long userId,

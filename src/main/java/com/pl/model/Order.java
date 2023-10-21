@@ -17,7 +17,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private LocalDate orderTime;
+    private LocalDateTime orderTime;
     private BigDecimal totalPrice;
     private String status;
 
@@ -29,7 +29,7 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id")
     )
-    private Set<Dish> dishSet;
+    private List<Dish> dishSet;
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address deliveryAddress;
@@ -42,8 +42,8 @@ public class Order {
     }
 
 
-    public Order(LocalDate orderTime, BigDecimal totalPrice,
-                 String status, User user, Set<Dish> dishSet,
+    public Order(LocalDateTime orderTime, BigDecimal totalPrice,
+                 String status, User user, List<Dish> dishSet,
                  Address deliveryAddress, Restaurant restaurant) {
         this.orderTime = orderTime;
         this.totalPrice = totalPrice;
@@ -62,11 +62,11 @@ public class Order {
         this.id = id;
     }
 
-    public LocalDate getOrderTime() {
+    public LocalDateTime getOrderTime() {
         return orderTime;
     }
 
-    public void setOrderTime(LocalDate orderTime) {
+    public void setOrderTime(LocalDateTime orderTime) {
         this.orderTime = orderTime;
     }
 
@@ -94,11 +94,11 @@ public class Order {
         this.user = user;
     }
 
-    public Set<Dish> getDishSet() {
+    public List<Dish> getDishSet() {
         return dishSet;
     }
 
-    public void setDishSet(Set<Dish> dishSet) {
+    public void setDishSet(List<Dish> dishSet) {
         this.dishSet = dishSet;
     }
 

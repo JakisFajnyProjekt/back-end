@@ -1,12 +1,16 @@
 package com.pl.model.dto;
 
-import java.time.LocalDate;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 import java.util.Set;
 
-public record OrderCreateDTO(LocalDate orderTime,
-                             String status,
+public record OrderCreateDTO(@NotNull(message = "userId require")
                              Long userId,
-                             Set<Long> dishIds,
+                             @NotNull(message = "dish require")
+                             List<Long> dishIds,
+                             @NotNull(message = "delivery addres required")
                              Long deliveryAddressId,
+                             @NotNull(message = "restaurant required")
                              Long restaurantId) {
 }

@@ -32,12 +32,10 @@ public class OrderMapper {
 
     public Order mapToOrder(OrderCreateDTO rderCreateDTO) {
         Order order = new Order();
-        order.setOrderTime(rderCreateDTO.orderTime());
-        order.setStatus(rderCreateDTO.status());
         order.setUser(userRepository.findById(rderCreateDTO.userId()).orElse(null));
         order.setDishSet(rderCreateDTO.dishIds().stream()
                 .map(dishId -> dishRepository.findById(dishId).orElse(null))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
         order.setDeliveryAddress(addressRepository.findById(rderCreateDTO.deliveryAddressId()).orElse(null));
         order.setRestaurant(restaurantRepository.findById(rderCreateDTO.restaurantId()).orElse(null));
 
