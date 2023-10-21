@@ -46,11 +46,10 @@ public class OrderMapper {
         return new OrderDTO(
                 order.getOrderTime(),
                 order.getTotalPrice(),
-                order.getStatus(),
                 order.getUser().getId(),
                 order.getDishSet().stream()
                         .map(Dish::getId)
-                        .collect(Collectors.toSet()),
+                        .collect(Collectors.toList()),
                 order.getDeliveryAddress().getId(),
                 order.getRestaurant().getId()
 
