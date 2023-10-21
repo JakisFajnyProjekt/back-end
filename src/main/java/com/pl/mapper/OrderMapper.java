@@ -21,6 +21,7 @@ public class OrderMapper {
                 order.getIsCompleted(),
                 order.getCreatedAt(),
                 order.getTotalCost()
+
         );
     }
 

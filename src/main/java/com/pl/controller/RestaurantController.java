@@ -1,6 +1,5 @@
 package com.pl.controller;
 
-import com.pl.model.Restaurant;
 import com.pl.model.dto.RestaurantDTO;
 import com.pl.service.RestaurantService;
 import org.springframework.web.bind.annotation.GetMapping;

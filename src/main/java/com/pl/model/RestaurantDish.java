@@ -3,6 +3,7 @@ package com.pl.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "restaurants_dishes")
@@ -17,6 +18,12 @@ public class RestaurantDish {
     @ManyToOne
     @JoinColumn(name = "dish_id")
     private Dish dish;
+
+    @ManyToOne()
+    private Order order;
+
+    private BigDecimal price;
+
 
     public long getId() {
         return id;

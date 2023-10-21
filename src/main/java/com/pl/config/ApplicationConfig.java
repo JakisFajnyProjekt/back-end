@@ -1,6 +1,8 @@
 package com.pl.config;
 
 import com.pl.repository.UserRepository;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,6 +46,18 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .schemaRequirement("bearerAuth",
+                        new SecurityScheme()
+                                .name("bearerAuth")
+                                .scheme("bearer")
+                                .type(SecurityScheme.Type.APIKEY)
+                                .in(SecurityScheme.In.HEADER));
+    }
+
 
 
 }

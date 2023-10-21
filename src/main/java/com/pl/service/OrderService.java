@@ -3,9 +3,11 @@ package com.pl.service;
 import com.pl.exception.InvalidValuesException;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.OrderMapper;
+import com.pl.model.Dish;
 import com.pl.model.Order;
 import com.pl.model.dto.OrderDTO;
 import com.pl.repository.OrderRepository;
+import com.pl.repository.RestaurantDishRepository;
 import com.pl.repository.RestaurantRepository;
 import com.pl.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -22,12 +24,14 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantDishRepository restaurantDishRepository;
     private final UserRepository userRepository;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, RestaurantRepository restaurantRepository, RestaurantDishRepository restaurantDishRepository, UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.restaurantRepository = restaurantRepository;
+        this.restaurantDishRepository = restaurantDishRepository;
         this.userRepository = userRepository;
     }
 
@@ -36,6 +40,7 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
         if (update.containsKey("price") && update.containsKey("isCompleted") && update.containsKey("restaurantId") && update.containsKey("userId")) {
                 Order newOrder = new Order();
                 newOrder.setTotalCost(new BigDecimal(update.get("price").toString()));
+
                 newOrder.setIsCompleted(Boolean.parseBoolean(update.get("isCompleted").toString()));
                 newOrder.setRestaurant(
                             restaurantRepository
@@ -46,11 +51,14 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
                         userRepository
                                 .findById( Long.parseLong(update.get("userId").toString() ))
                                 .orElseThrow(() -> new NotFoundException("User not found")));
+
                 return orderMapper.mapToOrderDto(orderRepository.save(newOrder));
         } else {
             throw new InvalidValuesException("Provided keys are incorrect");
         }
     }
+
+
 
     public List<OrderDTO> listOrders() {
         List<Order> orders = orderRepository.findAll();

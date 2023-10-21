@@ -1,6 +1,6 @@
 package com.pl.service;
 
-import com.pl.exception.NotFoundException;
+
 import com.pl.mapper.RestaurantMapper;
 import com.pl.model.Restaurant;
 import com.pl.model.dto.RestaurantDTO;

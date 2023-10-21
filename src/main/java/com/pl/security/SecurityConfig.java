@@ -21,14 +21,21 @@ public class SecurityConfig  {
         this.authenticationProvider = authenticationProvider;
     }
 
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/auth/**")
+                .requestMatchers("/api/**")
                 .permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
+                .permitAll()
+                .requestMatchers("/api/users/**", "/api/orders/**")
+                .hasAuthority("USER")
+                .requestMatchers("/**")
+                .hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

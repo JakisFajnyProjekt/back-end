@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "orders")
 @Entity
@@ -22,19 +23,22 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
 
+
     public Order() {
     }
+
 
     public Order(boolean isCompleted, BigDecimal totalCost) {
         this.isCompleted = isCompleted;
         this.createdAt = LocalDateTime.now();
-        this.totalCost = totalCost;
+
     }
 
     public Long getId() {
@@ -77,12 +81,14 @@ public class Order {
         this.createdAt = createdAt;
     }
 
+
     public BigDecimal getTotalCost() {
         return totalCost;
     }
 
     public void setTotalCost(BigDecimal totalCost) {
         this.totalCost = totalCost;
+
     }
 
     @Override
@@ -91,10 +97,13 @@ public class Order {
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
         return isCompleted == order.isCompleted && Objects.equals(id, order.id) && Objects.equals(createdAt, order.createdAt) && Objects.equals(totalCost, order.totalCost);
+
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hash(id, isCompleted, createdAt, totalCost);
+
     }
 }
