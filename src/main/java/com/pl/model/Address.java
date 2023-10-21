@@ -17,10 +17,13 @@ public class Address {
     private String city;
 
     private String postalCode;
-    @ManyToMany(mappedBy = "deliveryAdresses")
+    @ManyToMany(mappedBy = "deliveryAddresses")
     private Set<User> user;
     @OneToMany(mappedBy = "deliveryAddress")
     private List<Order> orders;
+
+    @OneToOne
+    private Restaurant restaurant;
 
     public Address() {
 

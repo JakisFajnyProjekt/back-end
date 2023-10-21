@@ -31,7 +31,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
-    private Set<Address> deliveryAdresses;
+    private Set<Address> deliveryAddresses;
     public User() {
     }
 
