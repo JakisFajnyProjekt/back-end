@@ -11,12 +11,9 @@ public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String name;
-
     @OneToMany(mappedBy = "restaurant")
-
-    private List<Dish>dish;
+    private List<Dish> dish;
     @OneToOne()
     @JoinColumn(name = "order_id")
     private Order order;
@@ -27,6 +24,7 @@ public class Restaurant {
     public Restaurant(String name) {
         this.name = name;
     }
+
 
     public long getId() {
         return id;
