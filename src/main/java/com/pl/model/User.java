@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "users")
 @Entity
@@ -25,8 +26,12 @@ public class User implements UserDetails {
     private Role role;
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
-    @OneToMany(mappedBy = "user")
-    private List<Address> addresses;
+    @ManyToMany
+    @JoinTable(name = "user_address",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id")
+    )
+    private Set<Address> deliveryAdresses;
     public User() {
     }
 

@@ -1,26 +1,60 @@
 package com.pl.mapper;
 
+import com.pl.model.Dish;
 import com.pl.model.Order;
 import com.pl.model.dto.OrderDTO;
+import com.pl.repository.AddressRepository;
+import com.pl.repository.DishRepository;
+import com.pl.repository.RestaurantRepository;
+import com.pl.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
+    private final UserRepository userRepository;
+    private final DishRepository dishRepository;
+    private final AddressRepository addressRepository;
+    private final RestaurantRepository restaurantRepository;
 
-    public Order mapToOrder(OrderDTO orderDto) {
-        return new Order(
-                orderDto.isCompleted(),
-                orderDto.price()
-        );
+    public OrderMapper(UserRepository userRepository, DishRepository dishRepository,
+                       AddressRepository addressRepository,
+                       RestaurantRepository restaurantRepository) {
+        this.userRepository = userRepository;
+        this.dishRepository = dishRepository;
+        this.addressRepository = addressRepository;
+        this.restaurantRepository = restaurantRepository;
+    }
+
+
+    public Order mapToOrder(OrderDTO orderDTO) {
+        Order order = new Order();
+        order.setOrderTime(orderDTO.orderTime());
+        order.setTotalPrice(orderDTO.totalPrice());
+        order.setStatus(orderDTO.status());
+        order.setUser(userRepository.findById(orderDTO.userId()).orElse(null));
+        order.setDishSet(orderDTO.dishIds().stream()
+                .map(dishId -> dishRepository.findById(dishId).orElse(null))
+                .collect(Collectors.toSet()));
+        order.setDeliveryAddress(addressRepository.findById(orderDTO.deliveryAddressId()).orElse(null));
+        order.setRestaurant(restaurantRepository.findById(orderDTO.restaurantId()).orElse(null));
+
+        return order;
     }
 
     public OrderDTO mapToOrderDto(Order order) {
         return new OrderDTO(
-                order.getIsCompleted(),
-                order.getCreatedAt(),
-                order.getTotalCost()
+                order.getOrderTime(),
+                order.getTotalPrice(),
+                order.getStatus(),
+                order.getUser().getId(),
+                order.getDishSet().stream()
+                        .map(Dish::getId)
+                        .collect(Collectors.toSet()),
+                order.getDeliveryAddress().getId(),
+                order.getRestaurant().getId()
 
         );
     }

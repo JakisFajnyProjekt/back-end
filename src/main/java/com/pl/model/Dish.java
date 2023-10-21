@@ -3,6 +3,7 @@ package com.pl.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Table(name = "dishes")
@@ -11,10 +12,15 @@ public class Dish {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     private String name;
     private String description;
+    @Column(name = "price")
+    private BigDecimal price;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
     public Dish() {
     }

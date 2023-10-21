@@ -2,42 +2,45 @@ package com.pl.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "addresses")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String city;
+    private long id;
     private String houseNumber;
-    private String postalCode;
     private String street;
 
-    @OneToOne
-    private Restaurant restaurant;
-    @OneToOne
-    private Order order;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String city;
+
+    private String postalCode;
+    @ManyToMany(mappedBy = "deliveryAdresses")
+    private Set<User> user;
+    @OneToMany(mappedBy = "deliveryAddress")
+    private List<Order> orders;
 
     public Address() {
 
     }
-    public Long getId() {
+
+    public Address(String houseNumber, String street, String city, String postalCode, Set<User> user, List<Order> orders) {
+        this.houseNumber = houseNumber;
+        this.street = street;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.user = user;
+        this.orders = orders;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     public String getHouseNumber() {
@@ -48,14 +51,6 @@ public class Address {
         this.houseNumber = houseNumber;
     }
 
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
     public String getStreet() {
         return street;
     }
@@ -64,27 +59,35 @@ public class Address {
         this.street = street;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public String getCity() {
+        return city;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public Order getOrder() {
-        return order;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
-    public User getUser() {
+    public Set<User> getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Set<User> user) {
         this.user = user;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }
