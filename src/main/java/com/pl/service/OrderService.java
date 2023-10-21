@@ -1,24 +1,19 @@
 package com.pl.service;
 
+import com.pl.exception.NotFoundException;
 import com.pl.mapper.OrderMapper;
-import com.pl.model.Dish;
-import com.pl.model.Order;
+import com.pl.model.*;
 import com.pl.model.dto.OrderCreateDTO;
 import com.pl.model.dto.OrderDTO;
-import com.pl.repository.DishRepository;
-import com.pl.repository.OrderRepository;
-import com.pl.repository.RestaurantRepository;
-import com.pl.repository.UserRepository;
+import com.pl.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class OrderService extends AbstractService<OrderRepository, Order> {
@@ -28,25 +23,49 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final DishRepository dishRepository;
+    private final AddressRepository addressRepository;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, RestaurantRepository restaurantRepository, UserRepository userRepository, DishRepository dishRepository) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, RestaurantRepository restaurantRepository, UserRepository userRepository, DishRepository dishRepository, AddressRepository addressRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
         this.dishRepository = dishRepository;
+        this.addressRepository = addressRepository;
     }
 
     @Transactional
     public OrderDTO createOrder(OrderCreateDTO createOrder) {
-        Order order = orderMapper.mapToOrder(createOrder);
-        order.setOrderTime(LocalDateTime.now());
-        order.setTotalPrice(calculateTotalPrice(createOrder.dishIds()));
-        Order savedOrder = orderRepository.save(order);
-        return orderMapper.mapToOrderDto(savedOrder);
+        if (presenceCheck(createOrder)){
+            Order order = orderMapper.mapToOrder(createOrder);
+            order.setOrderTime(LocalDateTime.now());
+            order.setTotalPrice(calculateTotalPrice(createOrder.dishIds()));
+            Order savedOrder = orderRepository.save(order);
+            LOGGER.info("Order are created");
+            return orderMapper.mapToOrderDto(savedOrder);
+        }else{
+            LOGGER.error("Something went wrong");
+            throw new RuntimeException();
+        }
+    }
+
+    private boolean presenceCheck(OrderCreateDTO createOrder) {
+        userRepository.findById(createOrder.userId())
+               .orElseThrow(() -> new NotFoundException("User Not Found"));
+        restaurantRepository.findById(createOrder.restaurantId())
+               .orElseThrow(() -> new NotFoundException("RestaurantNotFound"));
+        addressRepository.findById(createOrder.deliveryAddressId())
+               .orElseThrow(() -> new NotFoundException("Address not found"));
+        LOGGER.info("presence checked");
+        return true ;
     }
 
     private BigDecimal calculateTotalPrice(List<Long> dishes) {
+        if (dishes.isEmpty()){
+            LOGGER.error("list are empty");
+            throw new NotFoundException("List of Dishes are empty");
+        }
+        LOGGER.info("Total price are summed");
         return dishes.stream()
                 .map(dishRepository::findById)
                 .filter(Optional::isPresent)

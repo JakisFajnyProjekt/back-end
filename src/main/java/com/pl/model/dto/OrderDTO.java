@@ -1,18 +1,14 @@
 package com.pl.model.dto;
 
-import com.pl.model.Dish;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 public record OrderDTO(
         LocalDateTime orderTime,
         BigDecimal totalPrice,
-        String status,
         Long userId,
-        Set<Long> dishIds,
+        List<Long> dishIds,
         Long deliveryAddressId,
         Long restaurantId
 ) {
