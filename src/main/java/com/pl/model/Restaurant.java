@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "restaurants")
 @Entity
@@ -17,6 +18,9 @@ public class Restaurant {
     @OneToOne()
     @JoinColumn(name = "order_id")
     private Order order;
+
+    @OneToOne
+    private Address address;
 
     public Restaurant() {
     }
