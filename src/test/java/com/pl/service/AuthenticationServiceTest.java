@@ -7,7 +7,7 @@ import com.pl.repository.UserRepository;
 import com.pl.security.JwtService;
 import com.pl.security.Role;
 import com.pl.security.authentication.AuthenticationRequest;
-import com.pl.security.authentication.AuthenticationResponse;
+import com.pl.security.authentication.LoginResponse;
 import com.pl.security.authentication.RegisterRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,10 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class UserAuthenticationServiceTest {
+public class AuthenticationServiceTest {
 
     @InjectMocks
-    private UserAuthenticationService userAuthenticationService;
+    private AuthenticationService authenticationService;
 
     @Mock
     private UserRepository userRepository;
@@ -74,7 +74,7 @@ public class UserAuthenticationServiceTest {
         when(jwtService.generateToken(user)).thenReturn("jwtToken");
 
         // When
-        var registerUser = userAuthenticationService.register(request);
+        var registerUser = authenticationService.register(request);
 
         // Then
         assertThat(registerUser).isNotNull();
@@ -93,7 +93,7 @@ public class UserAuthenticationServiceTest {
                 .thenReturn(Optional.of(new User()));
 
         //When & Then
-        assertThatThrownBy(() -> userAuthenticationService.register(request))
+        assertThatThrownBy(() -> authenticationService.register(request))
                 .isInstanceOf(UserEmailTakenException.class);
     }
     @Test
@@ -112,10 +112,10 @@ public class UserAuthenticationServiceTest {
         when(jwtService.generateToken(user)).thenReturn("jwtToken");
 
         // When
-        AuthenticationResponse authenticationResponse = userAuthenticationService.authenticate(request);
+        LoginResponse loginResponse = authenticationService.login(request);
 
         // Then
-        assertEquals("jwtToken", authenticationResponse.getToken());
+        assertEquals("jwtToken", loginResponse.getToken());
     }
 
     @Test
@@ -135,7 +135,7 @@ public class UserAuthenticationServiceTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> userAuthenticationService.authenticate(request))
+        assertThatThrownBy(() -> authenticationService.login(request))
                 .isInstanceOf(NotFoundException.class);
     }
 
@@ -156,9 +156,9 @@ public class UserAuthenticationServiceTest {
         //When && Then
         String exceptedMessage = "Wrong email or password";
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
-                () -> userAuthenticationService.authenticate(request));
+                () -> authenticationService.login(request));
         assertEquals(exceptedMessage,notFoundException.getMessage());
-        assertThatThrownBy(()-> userAuthenticationService.authenticate(request))
+        assertThatThrownBy(()-> authenticationService.login(request))
                 .isInstanceOf(NotFoundException.class);
 
 

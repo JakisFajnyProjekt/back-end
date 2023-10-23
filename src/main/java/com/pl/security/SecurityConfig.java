@@ -28,23 +28,26 @@ public class SecurityConfig  {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/**")
-                .permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
-                .permitAll()
-                .requestMatchers("/api/users/**", "/api/orders/**")
-                .hasAuthority("USER")
-                .requestMatchers("/**")
-                .hasAuthority("ADMIN")
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                    .requestMatchers("/api/**")
+                    .permitAll()
 
+                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
+                    .permitAll()
+
+                    .requestMatchers("/api/users/**", "/api/orders/**")
+                    .hasAuthority(Role.USER.getName())
+
+                    .requestMatchers("/**")
+                    .hasAuthority(Role.ADMIN.getName())
+
+                    .anyRequest()
+                    .authenticated()
+                .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                    .authenticationProvider(authenticationProvider)
+                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

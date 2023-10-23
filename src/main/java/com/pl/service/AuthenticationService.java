@@ -7,7 +7,7 @@ import com.pl.repository.UserRepository;
 import com.pl.security.JwtService;
 import com.pl.security.Role;
 import com.pl.security.authentication.AuthenticationRequest;
-import com.pl.security.authentication.AuthenticationResponse;
+import com.pl.security.authentication.LoginResponse;
 import com.pl.security.authentication.RegisterRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-public class UserAuthenticationService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserAuthenticationService.class);
+public class AuthenticationService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public UserAuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -35,7 +35,7 @@ public class UserAuthenticationService {
     }
 
     @Transactional
-    public AuthenticationResponse register(RegisterRequest request) {
+    public LoginResponse register(RegisterRequest request) {
         emailCheck(request.getEmail());
         User user = new User();
         user.setFirstName(request.getFirstName());
@@ -46,12 +46,12 @@ public class UserAuthenticationService {
         userRepository.save(user);
         LOGGER.info("User successfully created with id " + user.getId());
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
+        return LoginResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public LoginResponse login(AuthenticationRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new NotFoundException("Wrong email or password"));
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -60,7 +60,7 @@ public class UserAuthenticationService {
                     request.getPassword())
             );
             var jwtToken = jwtService.generateToken(user);
-            return AuthenticationResponse.builder()
+            return LoginResponse.builder()
                     .token(jwtToken)
                     .build();
         } else {

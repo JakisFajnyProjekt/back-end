@@ -6,9 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class AuthenticationRequest {
-    @Email(message = "you need to ener your email")
+    @Email(message = "Email is required")
     private String email;
-    @NotNull(message = "need a password")
+    @NotNull(message = "Password is required")
     private String password;
 
     public AuthenticationRequest() {
