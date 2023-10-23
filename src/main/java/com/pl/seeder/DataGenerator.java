@@ -6,6 +6,7 @@ import com.pl.repository.*;
 import com.pl.security.Role;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 
@@ -17,12 +18,14 @@ public class DataGenerator {
     private final OrderRepository orderRepository;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataGenerator(DishRepository dishRepository, OrderRepository orderRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+    public DataGenerator(DishRepository dishRepository, OrderRepository orderRepository, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.dishRepository = dishRepository;
         this.orderRepository = orderRepository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -40,8 +43,8 @@ public class DataGenerator {
             // Set other user properties
             userRepository.save(user);
         }
-        userRepository.save(new User("Jan", "Kowalski", "admin@gmail.com", "qwe123", Role.ADMIN));
-        userRepository.save(new User("Stachu", "Staszewski", "user@gmail.com", "qwe123", Role.USER));
+        userRepository.save(new User("Jan", "Kowalski", "admin@gmail.com", passwordEncoder.encode("qwe123"), Role.ADMIN));
+        userRepository.save(new User("Stachu", "Staszewski", "user@gmail.com", passwordEncoder.encode("qwe123"), Role.USER));
 
         // Generate and save restaurants
         for (int i = 0; i < 5; i++) {
