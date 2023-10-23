@@ -1,6 +1,7 @@
 package com.pl.model;
 
 import com.pl.security.Role;
+import com.pl.token.Token;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,6 +33,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
     private Set<Address> deliveryAddresses;
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
+
     public User() {
     }
 
