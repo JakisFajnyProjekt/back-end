@@ -4,13 +4,18 @@ package com.pl.security.authentication;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.Objects;
 
 public class RegisterRequest extends AbstractAuthRequest {
-    @NotNull(message = "{validation.firstName.required}")
+    @Pattern(regexp = "^.{2,}$", message = "{validation.name.min}")
+    @Pattern(regexp = "^.{0,50}$", message = "{validation.name.max}")
+    @Pattern(regexp = "^\\D*$", message = "{validation.name.digitsNotAllowed}")
     private String firstName;
-    @NotNull(message = "{validation.lastName.required}")
+    @Pattern(regexp = "^.{2,}$", message = "{validation.name.min}")
+    @Pattern(regexp = "^.{0,50}$", message = "{validation.name.max}")
+    @Pattern(regexp = "^\\D*$", message = "{validation.name.digitsNotAllowed}")
     private String lastName;
 
     public RegisterRequest() {

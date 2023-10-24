@@ -1,14 +1,19 @@
 package com.pl.security.authentication;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 public abstract class AbstractAuthRequest {
-    @Email(message = "{validation.email.required}")
+    @Pattern(
+            regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
+            message = "{validation.email.pattern.message}"
+    )
     protected String email;
-    @NotNull(message = "{validation.password.required}")
     @NotBlank(message = "{validation.field.blank}")
+    @Pattern(regexp = "^.{6,}$", message = "{validation.password.min}")
+    @Pattern(regexp = "^.{0,29}$", message = "{validation.password.max}")
+    @Pattern(regexp = ".*\\d.*", message = "{validation.password.digits}")
+    @Pattern(regexp = "^(?=.*[a-z]).*$", message = "{validation.password.lowerCase}")
+    @Pattern(regexp = "^(?=.*[A-Z]).*$", message = "{validation.password.capital}")
     protected String password;
 
     public String getEmail() {
