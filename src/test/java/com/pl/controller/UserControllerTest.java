@@ -32,7 +32,6 @@ public class UserControllerTest {
     @Autowired
     private
 
-
     @Test
     void shouldFindAllUsers(){
         //Given
