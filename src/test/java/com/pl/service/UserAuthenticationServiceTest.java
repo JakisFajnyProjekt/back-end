@@ -44,9 +44,10 @@ public class UserAuthenticationServiceTest {
     private AuthenticationManager authenticationManager;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
+
     @AfterEach
     void cleanUp() {
         userRepository.deleteAll();
@@ -80,6 +81,7 @@ public class UserAuthenticationServiceTest {
         assertThat(registerUser).isNotNull();
         assertThat(registerUser.getToken()).isEqualTo("jwtToken");
     }
+
     @Test
     void shouldThrowExceptionWhenEmailIsTaken() {
         // Given
@@ -96,6 +98,7 @@ public class UserAuthenticationServiceTest {
         assertThatThrownBy(() -> userAuthenticationService.register(request))
                 .isInstanceOf(UserEmailTakenException.class);
     }
+
     @Test
     void shouldAuthenticateUser() {
         // Given
@@ -140,7 +143,7 @@ public class UserAuthenticationServiceTest {
     }
 
     @Test
-    void shoudlHandleExceptionWhenUserPasswordIsWrong(){
+    void shoudlHandleExceptionWhenUserPasswordIsWrong() {
         //Given
         AuthenticationRequest request = new AuthenticationRequest();
         request.setEmail("test@example.com");
@@ -157,8 +160,8 @@ public class UserAuthenticationServiceTest {
         String exceptedMessage = "Wrong email or password";
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> userAuthenticationService.authenticate(request));
-        assertEquals(exceptedMessage,notFoundException.getMessage());
-        assertThatThrownBy(()-> userAuthenticationService.authenticate(request))
+        assertEquals(exceptedMessage, notFoundException.getMessage());
+        assertThatThrownBy(() -> userAuthenticationService.authenticate(request))
                 .isInstanceOf(NotFoundException.class);
 
 

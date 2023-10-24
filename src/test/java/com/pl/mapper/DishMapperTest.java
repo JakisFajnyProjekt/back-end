@@ -14,18 +14,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 public class DishMapperTest {
 
-    @InjectMocks
-    private DishMapper dishMapper;
     Dish dish;
     DishDTO dishDto;
     DishDTO expectedDto;
+    @InjectMocks
+    private DishMapper dishMapper;
 
     @BeforeEach
-    void testData(){
+    void testData() {
         dish = new Dish(0L, "Pizza", "This is very good pizza!");
-        dishDto = new DishDTO( "Pizza", "This is very good pizza!");
+        dishDto = new DishDTO("Pizza", "This is very good pizza!");
         expectedDto = new DishDTO("Pizza", "This is very good pizza!");
     }
+
     @Test
     void shouldMapToDto() {
         //Given
@@ -35,6 +36,7 @@ public class DishMapperTest {
         assertEquals(expectedDto.name(), attemptDishDto.name());
         assertEquals(expectedDto.description(), attemptDishDto.description());
     }
+
     @Test
     void shouldMapFromDto() {
         //Given
@@ -44,6 +46,7 @@ public class DishMapperTest {
         assertEquals(dish.getName(), attemptDish.getName());
         assertEquals(dish.getDescription(), attemptDish.getDescription());
     }
+
     @Test
     void shouldMapToListDto() {
         //Given

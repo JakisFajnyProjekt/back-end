@@ -21,32 +21,35 @@ public class RestaurantMapperTest {
     private RestaurantDTO expectedDto;
 
     @BeforeEach
-    void testData(){
+    void testData() {
         restaurant = new Restaurant("Luigi");
         restaurantDto = new RestaurantDTO("Luigi");
         expectedDto = new RestaurantDTO("Luigi");
 
     }
+
     @Test
     void shouldMapToDto() {
         //Given
         //When
         RestaurantDTO attemptRestaurantDto = restaurantMapper.mapToRestaurantDto(restaurant);
         //Then
-        assertEquals(RestaurantDTO.class,attemptRestaurantDto.getClass());
+        assertEquals(RestaurantDTO.class, attemptRestaurantDto.getClass());
         assertEquals(expectedDto.name(), attemptRestaurantDto.name());
 
     }
+
     @Test
     void shouldMapFromDto() {
         //Given
         //When
         Restaurant attemptRestaurant = restaurantMapper.mapToRestaurant(restaurantDto);
         //Then
-        assertEquals(Restaurant.class,attemptRestaurant.getClass());
+        assertEquals(Restaurant.class, attemptRestaurant.getClass());
         assertEquals(expectedDto.name(), attemptRestaurant.getName());
 
     }
+
     @Test
     void shouldMapToListDto() {
         //Given

@@ -2,7 +2,8 @@ package com.pl.service;
 
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.OrderMapper;
-import com.pl.model.*;
+import com.pl.model.Dish;
+import com.pl.model.Order;
 import com.pl.model.dto.OrderCreateDTO;
 import com.pl.model.dto.OrderDTO;
 import com.pl.repository.*;
@@ -36,14 +37,14 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
 
     @Transactional
     public OrderDTO createOrder(OrderCreateDTO createOrder) {
-        if (presenceCheck(createOrder)){
+        if (presenceCheck(createOrder)) {
             Order order = orderMapper.mapToOrder(createOrder);
             order.setOrderTime(LocalDateTime.now());
             order.setTotalPrice(calculateTotalPrice(createOrder.dishIds()));
             Order savedOrder = orderRepository.save(order);
             LOGGER.info("Order are created");
             return orderMapper.mapToOrderDto(savedOrder);
-        }else{
+        } else {
             LOGGER.error("Something went wrong");
             throw new RuntimeException();
         }
@@ -51,17 +52,17 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
 
     private boolean presenceCheck(OrderCreateDTO createOrder) {
         userRepository.findById(createOrder.userId())
-               .orElseThrow(() -> new NotFoundException("User Not Found"));
+                .orElseThrow(() -> new NotFoundException("User Not Found"));
         restaurantRepository.findById(createOrder.restaurantId())
-               .orElseThrow(() -> new NotFoundException("Restaurant NotFound"));
+                .orElseThrow(() -> new NotFoundException("Restaurant NotFound"));
         addressRepository.findById(createOrder.deliveryAddressId())
-               .orElseThrow(() -> new NotFoundException("Address not found"));
+                .orElseThrow(() -> new NotFoundException("Address not found"));
         LOGGER.info("presence checked");
-        return true ;
+        return true;
     }
 
     private BigDecimal calculateTotalPrice(List<Long> dishes) {
-        if (dishes.isEmpty()){
+        if (dishes.isEmpty()) {
             LOGGER.error("list are empty");
             throw new NotFoundException("List of Dishes are empty");
         }

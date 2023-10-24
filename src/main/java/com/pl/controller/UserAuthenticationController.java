@@ -20,13 +20,15 @@ public class UserAuthenticationController {
     public UserAuthenticationController(UserAuthenticationService userAuthenticationService) {
         this.userAuthenticationService = userAuthenticationService;
     }
-    @PostMapping(value = "/register",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public AuthenticationResponse register(@Valid @RequestBody RegisterRequest request){
+
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public AuthenticationResponse register(@Valid @RequestBody RegisterRequest request) {
         return userAuthenticationService.register(request);
 
     }
+
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest request){
+    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(userAuthenticationService.authenticate(request));
     }
 

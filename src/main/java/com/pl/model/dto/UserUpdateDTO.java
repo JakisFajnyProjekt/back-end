@@ -1,6 +1,6 @@
 package com.pl.model.dto;
 
-public record UserUpdateDTO (String firstName,
-                             String lastName,
-                             String email){
+public record UserUpdateDTO(String firstName,
+                            String lastName,
+                            String email) {
 }

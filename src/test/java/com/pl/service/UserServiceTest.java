@@ -54,8 +54,8 @@ public class UserServiceTest {
         userDTO1 = new UserDTO("firstName_dto",
                 "lastName_dto", "email", "123456789qwerty", Role.USER);
         update = new HashMap<>();
-        userUpdateDTO = new UserUpdateDTO("firstName_dto","lastName_dto","email");
-        userUpdateDTOWithNull = new UserUpdateDTO(null,null,"email");
+        userUpdateDTO = new UserUpdateDTO("firstName_dto", "lastName_dto", "email");
+        userUpdateDTOWithNull = new UserUpdateDTO(null, null, "email");
 
     }
 
@@ -87,7 +87,7 @@ public class UserServiceTest {
                 () -> userService.getUserById(nonExistingUserId));
 
         //Then
-        String expectedMessage = "Order not found with given id "+ nonExistingUserId;
+        String expectedMessage = "Order not found with given id " + nonExistingUserId;
         String actualMessage = notFoundException.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -142,7 +142,7 @@ public class UserServiceTest {
 
         //Whne
         NotFoundException userNotFound = assertThrows(NotFoundException.class,
-                ()->userService.remove(nonexistingUserId));
+                () -> userService.remove(nonexistingUserId));
         String expectedMessage = "Order not found with given id " + nonexistingUserId; //need to change message
 
         String meesageFromException = userNotFound.getMessage();
