@@ -1,5 +1,6 @@
 package com.pl.security;
 
+import com.pl.token.Token;
 import com.pl.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,6 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class LogoutService implements LogoutHandler {
@@ -23,16 +26,12 @@ public class LogoutService implements LogoutHandler {
             Authentication authentication
     ) {
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
         if(StringUtils.isEmpty(authHeader) || !org.apache.commons.lang3.StringUtils.startsWith(authHeader, "Bearer ")){
             return;
         }
-        jwt = authHeader.substring(7);
-        var storedToken = tokenRepository.findByToken(jwt).orElse(null);
-        if(storedToken != null) {
-            storedToken.setExpired(true);
-            storedToken.setRevoked(true);
-            tokenRepository.save(storedToken);
-        }
+        final String jwt = authHeader.substring(7);
+        tokenRepository
+                .findByToken(jwt)
+                .ifPresent(tokenRepository::deleteToken);
     }
 }

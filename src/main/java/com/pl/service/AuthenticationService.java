@@ -57,17 +57,12 @@ public class AuthenticationService {
                 .build();
     }
 
-    private void revokeAllUserTokens(User user) {
-        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
-        if(validUserTokens.isEmpty()) {
-            return;
+    private void removeUserTokenIfExists(User user) {
+        Optional<Token> tokenToDelete = tokenRepository.findByUser(user);
+        if (tokenToDelete.isPresent()) {
+            Token deletedToken = tokenToDelete.get();
+            tokenRepository.delete(deletedToken);
         }
-        validUserTokens.forEach(t -> {
-            t.setExpired(true);
-            t.setRevoked(true);
-        });
-        tokenRepository.saveAll(validUserTokens);
-
     }
 
     private void saveUserToken(User user, String jwtToken) {
@@ -75,8 +70,6 @@ public class AuthenticationService {
                 .user(user)
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
-                .revoked(false)
-                .expired(false)
                 .build();
         tokenRepository.save(token);
     }
@@ -89,8 +82,8 @@ public class AuthenticationService {
                     request.getEmail(),
                     request.getPassword())
             );
+            removeUserTokenIfExists(user);
             var jwtToken = jwtService.generateToken(user);
-            revokeAllUserTokens(user);
             saveUserToken(user, jwtToken);
             return LoginResponse.builder()
                     .token(jwtToken)
