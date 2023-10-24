@@ -8,9 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class RegisterRequest extends AbstractAuthRequest {
-    @NotNull(message = "first name is required")
+    @NotNull(message = "{validation.firstName.required}")
     private String firstName;
-    @NotNull(message = "last name is required")
+    @NotNull(message = "{validation.lastName.required}")
     private String lastName;
 
     public RegisterRequest() {

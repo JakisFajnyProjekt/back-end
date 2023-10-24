@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public abstract class AbstractAuthRequest {
-    @Email(message = "Email is required")
+    @Email(message = "{validation.email.required}")
     protected String email;
-    @NotNull(message = "Password is required")
-    @NotBlank(message = "The field cannot be blank or contain only whitespace.")
+    @NotNull(message = "{validation.password.required}")
+    @NotBlank(message = "{validation.field.blank}")
     protected String password;
 
     public String getEmail() {
