@@ -1,43 +1,24 @@
 package com.pl.security.authentication;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
-public class AuthenticationRequest {
-    @Email(message = "Email is required")
-    private String email;
-    @NotNull(message = "Password is required")
-    private String password;
+public class LoginRequest extends AbstractAuthRequest {
 
-    public AuthenticationRequest() {
-    }
+    public LoginRequest() {}
 
-    public AuthenticationRequest(String email, String password) {
+    public LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }
-    private AuthenticationRequest(Builder builder){
-        this.email = builder.email;
-        this.password = builder.password;
+    private LoginRequest(Builder builder){
+        setEmail(builder.email);
+        setPassword(builder.password);
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public static Builder builder(){
         return new Builder();
@@ -56,8 +37,8 @@ public class AuthenticationRequest {
             this.password = password;
             return this;
         }
-        public AuthenticationRequest build(){
-            return new AuthenticationRequest(this);
+        public LoginRequest build(){
+            return new LoginRequest(this);
         }
     }
 
@@ -65,7 +46,7 @@ public class AuthenticationRequest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AuthenticationRequest that = (AuthenticationRequest) o;
+        LoginRequest that = (LoginRequest) o;
         return Objects.equals(email, that.email) && Objects.equals(password, that.password);
     }
 

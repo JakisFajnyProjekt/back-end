@@ -1,7 +1,7 @@
 package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pl.security.authentication.AuthenticationRequest;
+import com.pl.security.authentication.LoginRequest;
 import com.pl.security.authentication.LoginResponse;
 import com.pl.security.authentication.RegisterRequest;
 import com.pl.service.AuthenticationService;
@@ -67,20 +67,20 @@ public class AuthenticationControllerTest {
     @Test
     public void shouldAuthenticateUserSuccessfully() throws Exception {
         // given
-        AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-        authenticationRequest.setEmail("test@example.com");
-        authenticationRequest.setPassword("password");
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail("test@example.com");
+        loginRequest.setPassword("password");
 
 
         LoginResponse loginResponse = new LoginResponse
                 ("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
 
-        when(authenticationService.login(authenticationRequest)).thenReturn(loginResponse);
+        when(authenticationService.login(loginRequest)).thenReturn(loginResponse);
 
         // when
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(authenticationRequest)))
+                        .content(asJsonString(loginRequest)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(asJsonString(loginResponse)));

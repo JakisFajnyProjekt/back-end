@@ -6,7 +6,7 @@ import com.pl.model.User;
 import com.pl.repository.UserRepository;
 import com.pl.security.JwtService;
 import com.pl.security.Role;
-import com.pl.security.authentication.AuthenticationRequest;
+import com.pl.security.authentication.LoginRequest;
 import com.pl.security.authentication.LoginResponse;
 import com.pl.security.authentication.RegisterRequest;
 import com.pl.token.Token;
@@ -74,7 +74,7 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public LoginResponse login(AuthenticationRequest request) {
+    public LoginResponse login(LoginRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new NotFoundException("Wrong email or password"));
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {

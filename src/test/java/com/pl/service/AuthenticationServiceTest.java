@@ -6,7 +6,7 @@ import com.pl.model.User;
 import com.pl.repository.UserRepository;
 import com.pl.security.JwtService;
 import com.pl.security.Role;
-import com.pl.security.authentication.AuthenticationRequest;
+import com.pl.security.authentication.LoginRequest;
 import com.pl.security.authentication.LoginResponse;
 import com.pl.security.authentication.RegisterRequest;
 import org.junit.jupiter.api.AfterEach;
@@ -99,7 +99,7 @@ public class AuthenticationServiceTest {
     @Test
     void shouldAuthenticateUser() {
         // Given
-        AuthenticationRequest request = new AuthenticationRequest();
+        LoginRequest request = new LoginRequest();
         request.setEmail("test@example.com");
         request.setPassword("testPassword");
 
@@ -121,7 +121,7 @@ public class AuthenticationServiceTest {
     @Test
     void shouldHandleExceptionWhenUserIsNotFound() {
         // Given
-        AuthenticationRequest request = new AuthenticationRequest();
+        LoginRequest request = new LoginRequest();
         request.setEmail("email@email.com");
         request.setPassword("password");
 
@@ -142,7 +142,7 @@ public class AuthenticationServiceTest {
     @Test
     void shoudlHandleExceptionWhenUserPasswordIsWrong(){
         //Given
-        AuthenticationRequest request = new AuthenticationRequest();
+        LoginRequest request = new LoginRequest();
         request.setEmail("test@example.com");
         request.setPassword("testPassword");
 

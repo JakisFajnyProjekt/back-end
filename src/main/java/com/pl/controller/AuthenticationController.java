@@ -1,6 +1,6 @@
 package com.pl.controller;
 
-import com.pl.security.authentication.AuthenticationRequest;
+import com.pl.security.authentication.LoginRequest;
 import com.pl.security.authentication.LoginResponse;
 import com.pl.security.authentication.RegisterRequest;
 import com.pl.service.AuthenticationService;
@@ -26,7 +26,7 @@ public class AuthenticationController {
 
     }
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody AuthenticationRequest request){
+    public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginRequest request){
         return ResponseEntity.ok(authenticationService.login(request));
     }
 
