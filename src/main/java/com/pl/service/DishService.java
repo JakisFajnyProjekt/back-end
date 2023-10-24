@@ -41,19 +41,19 @@ public class DishService extends AbstractService<DishRepository, Dish> {
         LOGGER.info("Dish with id " + dishId + " deleted");
     }
 
-    public DishDTO editDish(long dishId, Map<String,Object> update) {
+    public DishDTO editDish(long dishId, Map<String, Object> update) {
         return dishRepository.findById(dishId)
                 .map(existingUser -> {
-                        Optional.ofNullable(update.get("name"))
-                                .ifPresent(value -> existingUser.setName(value.toString()));
-                        Optional.ofNullable(update.get("description"))
-                                .ifPresent(value -> existingUser.setDescription(value.toString()));
-                        LOGGER.info("Changes are accepted");
-                        Dish savedUser = dishRepository.save(existingUser);
-                        return dishMapper.mapToDishDto(savedUser);
+                    Optional.ofNullable(update.get("name"))
+                            .ifPresent(value -> existingUser.setName(value.toString()));
+                    Optional.ofNullable(update.get("description"))
+                            .ifPresent(value -> existingUser.setDescription(value.toString()));
+                    LOGGER.info("Changes are accepted");
+                    Dish savedUser = dishRepository.save(existingUser);
+                    return dishMapper.mapToDishDto(savedUser);
                 }).orElseThrow(() -> {
-                        LOGGER.error("Wrong dish id");
-                        throw new NotFoundException("Dish Not found");
+                    LOGGER.error("Wrong dish id");
+                    throw new NotFoundException("Dish Not found");
                 });
     }
 

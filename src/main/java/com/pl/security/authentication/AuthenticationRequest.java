@@ -18,9 +18,14 @@ public class AuthenticationRequest {
         this.email = email;
         this.password = password;
     }
-    private AuthenticationRequest(Builder builder){
+
+    private AuthenticationRequest(Builder builder) {
         this.email = builder.email;
         this.password = builder.password;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public String getEmail() {
@@ -37,28 +42,6 @@ public class AuthenticationRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public static Builder builder(){
-        return new Builder();
-    }
-
-    public static class Builder{
-
-        private String email;
-        private String password;
-
-        public Builder email(String email){
-            this.email=email;
-            return this;
-        }
-        public Builder password(String password){
-            this.password = password;
-            return this;
-        }
-        public AuthenticationRequest build(){
-            return new AuthenticationRequest(this);
-        }
     }
 
     @Override
@@ -80,5 +63,25 @@ public class AuthenticationRequest {
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public static class Builder {
+
+        private String email;
+        private String password;
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public AuthenticationRequest build() {
+            return new AuthenticationRequest(this);
+        }
     }
 }

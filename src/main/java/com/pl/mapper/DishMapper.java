@@ -8,20 +8,20 @@ import java.util.List;
 
 @Component
 public class DishMapper {
-    public Dish mapToDish(DishDTO dishDto){
+    public Dish mapToDish(DishDTO dishDto) {
         return new Dish(
                 dishDto.name(),
                 dishDto.description()
         );
     }
 
-    public DishDTO mapToDishDto(Dish dish){
+    public DishDTO mapToDishDto(Dish dish) {
         return new DishDTO(
                 dish.getName(),
                 dish.getDescription());
     }
 
-    public List<DishDTO> mapToListDto(final List<Dish> dishes){
+    public List<DishDTO> mapToListDto(final List<Dish> dishes) {
         return dishes.stream()
                 .map(this::mapToDishDto)
                 .toList();
