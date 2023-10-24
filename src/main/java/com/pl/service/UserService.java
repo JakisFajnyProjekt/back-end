@@ -4,6 +4,7 @@ import com.pl.exception.NotFoundException;
 import com.pl.mapper.UserMapper;
 import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
+import com.pl.model.dto.UserUpdateDTO;
 import com.pl.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,15 +46,15 @@ public class UserService extends AbstractService<UserRepository, User> {
     }
 
     @Transactional
-    public UserDTO edit(long userId, final Map<String, Object> update) {
+    public UserDTO edit(long userId, final UserUpdateDTO userUpdateDTO) {
         return userRepository.findById(userId)
                 .map(existingUser -> {
-                    Optional.ofNullable(update.get("firstName"))
-                            .ifPresent(value -> existingUser.setFirstName(value.toString()));
-                    Optional.ofNullable(update.get("lastName"))
-                            .ifPresent(value -> existingUser.setLastName(value.toString()));
-                    Optional.ofNullable(update.get("email"))
-                            .ifPresent(value -> existingUser.setEmail(value.toString()));
+                    Optional.ofNullable(userUpdateDTO.firstName())
+                            .ifPresent(existingUser::setFirstName);
+                    Optional.ofNullable(userUpdateDTO.lastName())
+                            .ifPresent(existingUser::setLastName);
+                    Optional.ofNullable(userUpdateDTO.email())
+                            .ifPresent(existingUser::setEmail);
                     User savedUser = userRepository.save(existingUser);
                     LOGGER.info("Changes are accepted");
                     return userMapper.mapToUserDto(savedUser);

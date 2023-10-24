@@ -53,7 +53,7 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
         userRepository.findById(createOrder.userId())
                .orElseThrow(() -> new NotFoundException("User Not Found"));
         restaurantRepository.findById(createOrder.restaurantId())
-               .orElseThrow(() -> new NotFoundException("RestaurantNotFound"));
+               .orElseThrow(() -> new NotFoundException("Restaurant NotFound"));
         addressRepository.findById(createOrder.deliveryAddressId())
                .orElseThrow(() -> new NotFoundException("Address not found"));
         LOGGER.info("presence checked");

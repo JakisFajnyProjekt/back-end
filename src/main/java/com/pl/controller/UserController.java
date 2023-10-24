@@ -1,6 +1,7 @@
 package com.pl.controller;
 
 import com.pl.model.dto.UserDTO;
+import com.pl.model.dto.UserUpdateDTO;
 import com.pl.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
-@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 public class UserController {
 
     private final UserService userService;
@@ -28,20 +28,21 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
-    @GetMapping("")
+    @GetMapping()
     public List<UserDTO> list() {
         return userService.list();
     }
 
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> remove(@PathVariable long userId) {
         userService.remove(userId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> editUser(@PathVariable long userId, @RequestBody Map<String, Object> user) {
-        userService.edit(userId, user);
+    public ResponseEntity<UserDTO> editUser(@PathVariable long userId, @RequestBody UserUpdateDTO userUpdateDTO) {
+        userService.edit(userId, userUpdateDTO);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 }
