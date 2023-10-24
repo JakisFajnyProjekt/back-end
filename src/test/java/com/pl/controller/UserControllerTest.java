@@ -6,8 +6,9 @@ import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
 import com.pl.security.JwtService;
 import com.pl.security.Role;
-import com.pl.service.UserAuthenticationService;
+import com.pl.service.AuthenticationService;
 import com.pl.service.UserService;
+import com.pl.token.TokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,9 @@ public class UserControllerTest {
     @MockBean
     private UserService userService;
     @MockBean
-    private UserAuthenticationService userAuthenticationService;
-
+    private AuthenticationService userAuthenticationService;
+    @MockBean
+    private TokenRepository tokenRepository;
 
     private User user1;
     private User user2;

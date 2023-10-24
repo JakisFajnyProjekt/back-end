@@ -2,9 +2,9 @@ package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.security.authentication.AuthenticationRequest;
-import com.pl.security.authentication.AuthenticationResponse;
+import com.pl.security.authentication.LoginResponse;
 import com.pl.security.authentication.RegisterRequest;
-import com.pl.service.UserAuthenticationService;
+import com.pl.service.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,20 +19,20 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserAuthenticationControllerTest {
+public class AuthenticationControllerTest {
 
     @Mock
-    private UserAuthenticationService userAuthenticationService;
+    private AuthenticationService authenticationService;
 
     @InjectMocks
-    private UserAuthenticationController userAuthenticationController;
+    private AuthenticationController authenticationController;
 
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(userAuthenticationController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(authenticationController).build();
     }
 
     private String asJsonString(Object obj) throws Exception {
@@ -50,11 +50,11 @@ public class UserAuthenticationControllerTest {
         registerRequest.setLastName("Test User");
         registerRequest.setFirstName("Test User");
 
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse
+        LoginResponse loginResponse = new LoginResponse
                 ("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
 
 
-        when(userAuthenticationService.register(registerRequest)).thenReturn(authenticationResponse);
+        when(authenticationService.register(registerRequest)).thenReturn(loginResponse);
 
         // when
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/register")
@@ -62,7 +62,7 @@ public class UserAuthenticationControllerTest {
                         .content(asJsonString(registerRequest)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(asJsonString(authenticationResponse)));
+                .andExpect(content().json(asJsonString(loginResponse)));
     }
 
     @Test
@@ -73,10 +73,10 @@ public class UserAuthenticationControllerTest {
         authenticationRequest.setPassword("password");
 
 
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse
+        LoginResponse loginResponse = new LoginResponse
                 ("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
 
-        when(userAuthenticationService.authenticate(authenticationRequest)).thenReturn(authenticationResponse);
+        when(authenticationService.login(authenticationRequest)).thenReturn(loginResponse);
 
         // when
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/login")
@@ -84,7 +84,7 @@ public class UserAuthenticationControllerTest {
                         .content(asJsonString(authenticationRequest)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(asJsonString(authenticationResponse)));
+                .andExpect(content().json(asJsonString(loginResponse)));
     }
 
 

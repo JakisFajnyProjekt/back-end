@@ -6,7 +6,6 @@ import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
 import com.pl.repository.UserRepository;
 import com.pl.security.Role;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,7 @@ public class UserServiceTest {
     private User user3;
     private User user4;
     private Map<String, Object> update;
+    private Map<String, Object> updateWithNull;
     private UserDTO userDTO1;
     private UserUpdateDTO userUpdateDTO;
     private UserUpdateDTO userUpdateDTOWithNull;
@@ -53,13 +53,12 @@ public class UserServiceTest {
 
         userDTO1 = new UserDTO("firstName_dto",
                 "lastName_dto", "email", "123456789qwerty", Role.USER);
-        update = new HashMap<>();
-        userUpdateDTO = new UserUpdateDTO("firstName_dto", "lastName_dto", "email");
-        userUpdateDTOWithNull = new UserUpdateDTO(null, null, "email");
 
+        userUpdateDTO = new UserUpdateDTO("firstName_dto","lastName_dto","email");
+        userUpdateDTOWithNull = new UserUpdateDTO(null,null,"email");
     }
 
-    @AfterEach
+    @BeforeEach
     void cleanUp() {
         userRepository.deleteAll();
     }
@@ -87,7 +86,7 @@ public class UserServiceTest {
                 () -> userService.getUserById(nonExistingUserId));
 
         //Then
-        String expectedMessage = "Order not found with given id " + nonExistingUserId;
+        String expectedMessage = "Order not found with given id "+ nonExistingUserId;
         String actualMessage = notFoundException.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -142,7 +141,7 @@ public class UserServiceTest {
 
         //Whne
         NotFoundException userNotFound = assertThrows(NotFoundException.class,
-                () -> userService.remove(nonexistingUserId));
+                ()->userService.remove(nonexistingUserId));
         String expectedMessage = "Order not found with given id " + nonexistingUserId; //need to change message
 
         String meesageFromException = userNotFound.getMessage();

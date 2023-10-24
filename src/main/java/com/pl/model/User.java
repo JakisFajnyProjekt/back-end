@@ -1,6 +1,7 @@
 package com.pl.model;
 
 import com.pl.security.Role;
+import com.pl.token.Token;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,6 +33,8 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
     private Set<Address> deliveryAddresses;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Token> tokens;
 
     public User() {
     }
@@ -86,10 +89,6 @@ public class User implements UserDetails {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public String getUsername() {
         return email;
@@ -113,6 +112,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {

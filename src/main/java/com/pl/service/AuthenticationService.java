@@ -7,8 +7,11 @@ import com.pl.repository.UserRepository;
 import com.pl.security.JwtService;
 import com.pl.security.Role;
 import com.pl.security.authentication.AuthenticationRequest;
-import com.pl.security.authentication.AuthenticationResponse;
+import com.pl.security.authentication.LoginResponse;
 import com.pl.security.authentication.RegisterRequest;
+import com.pl.token.Token;
+import com.pl.token.TokenRepository;
+import com.pl.token.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,22 +23,24 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-public class UserAuthenticationService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserAuthenticationService.class);
+public class AuthenticationService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final TokenRepository tokenRepository;
 
-    public UserAuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, TokenRepository tokenRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.tokenRepository = tokenRepository;
     }
 
     @Transactional
-    public AuthenticationResponse register(RegisterRequest request) {
+    public LoginResponse register(RegisterRequest request) {
         emailCheck(request.getEmail());
         User user = new User();
         user.setFirstName(request.getFirstName());
@@ -43,15 +48,33 @@ public class UserAuthenticationService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
-        userRepository.save(user);
+        var savedUser = userRepository.save(user);
         LOGGER.info("User successfully created with id " + user.getId());
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
+        saveUserToken(savedUser, jwtToken);
+        return LoginResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    private void removeUserTokenIfExists(User user) {
+        Optional<Token> tokenToDelete = tokenRepository.findByUser(user);
+        if (tokenToDelete.isPresent()) {
+            Token deletedToken = tokenToDelete.get();
+            tokenRepository.delete(deletedToken);
+        }
+    }
+
+    private void saveUserToken(User user, String jwtToken) {
+        var token = Token.builder()
+                .user(user)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .build();
+        tokenRepository.save(token);
+    }
+
+    public LoginResponse login(AuthenticationRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new NotFoundException("Wrong email or password"));
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -59,8 +82,10 @@ public class UserAuthenticationService {
                     request.getEmail(),
                     request.getPassword())
             );
+            removeUserTokenIfExists(user);
             var jwtToken = jwtService.generateToken(user);
-            return AuthenticationResponse.builder()
+            saveUserToken(user, jwtToken);
+            return LoginResponse.builder()
                     .token(jwtToken)
                     .build();
         } else {

@@ -4,7 +4,7 @@ import com.pl.model.Dish;
 import com.pl.model.dto.DishDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 public class DishMapperTest {
 
-    Dish dish;
-    DishDTO dishDto;
-    DishDTO expectedDto;
-    @InjectMocks
+    private Dish dish;
+    private DishDTO dishDto;
+    private DishDTO expectedDto;
+    @Autowired
     private DishMapper dishMapper;
 
     @BeforeEach

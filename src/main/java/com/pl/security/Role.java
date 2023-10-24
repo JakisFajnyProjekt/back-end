@@ -2,5 +2,11 @@ package com.pl.security;
 
 public enum Role {
     USER,
-    ADMIN;
+    ADMIN
+    ;
+
+
+    public String getName() {
+        return this.toString().toLowerCase();
+    }
 }
