@@ -4,7 +4,9 @@ import com.pl.model.User;
 import com.pl.security.authentication.RegisterRequest;
 import jakarta.persistence.*;
 
-    @Entity
+
+//    @Table(name = "tokens")
+@Entity
     public class Token {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,8 +15,6 @@ import jakarta.persistence.*;
         private String token;
         @Enumerated(EnumType.STRING)
         private TokenType tokenType = TokenType.BEARER;
-        private boolean revoked;
-        private boolean expired;
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "user_id")
         private User user;
@@ -24,8 +24,6 @@ import jakarta.persistence.*;
             this.token = token;
             this.tokenType = tokenType;
             this.user = user;
-            this.revoked = false;
-            this.expired = false;
         }
         public Integer getId() {
             return id;
@@ -46,19 +44,6 @@ import jakarta.persistence.*;
         public void setTokenType(TokenType tokenType) {
             this.tokenType = tokenType;
         }
-        public boolean isRevoked() {
-            return revoked;
-        }
-        public void setRevoked(boolean revoked) {
-            this.revoked = revoked;
-        }
-        public boolean isExpired() {
-            return expired;
-        }
-
-        public void setExpired(boolean expired) {
-            this.expired = expired;
-        }
         public User getUser() {
             return user;
         }
@@ -71,8 +56,6 @@ import jakarta.persistence.*;
                     "id=" + id +
                     ", token='" + token + '\'' +
                     ", tokenType=" + tokenType +
-                    ", revoked=" + revoked +
-                    ", expired=" + expired +
                     '}';
         }
         public static TokenBuilder builder() {
@@ -82,8 +65,6 @@ import jakarta.persistence.*;
         public static class TokenBuilder {
             private String token;
             private TokenType tokenType = TokenType.BEARER;
-            private boolean revoked;
-            private boolean expired;
             private User user;
 
             public TokenBuilder token(String token) {
@@ -95,17 +76,6 @@ import jakarta.persistence.*;
                 this.tokenType = tokenType;
                 return this;
             }
-
-            public TokenBuilder revoked(boolean revoked) {
-                this.revoked = revoked;
-                return this;
-            }
-
-            public TokenBuilder expired(boolean expired) {
-                this.expired = expired;
-                return this;
-            }
-
             public TokenBuilder user(User user) {
                 this.user = user;
                 return this;
@@ -115,8 +85,6 @@ import jakarta.persistence.*;
                 Token token = new Token();
                 token.token = this.token;
                 token.tokenType = this.tokenType;
-                token.revoked = this.revoked;
-                token.expired = this.expired;
                 token.user = this.user;
                 return token;
             }
