@@ -10,9 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,12 +24,8 @@ public class UserServiceTest {
     private UserService userService;
 
     private User user1;
-    private User user2;
-    private User user3;
-    private User user4;
-    private Map<String, Object> update;
-    private Map<String, Object> updateWithNull;
-    private UserDTO userDTO1;
+    private UserDTO update;
+    private UserDTO updateWithNull;
     private List<User> userList;
 
     @BeforeEach
@@ -39,6 +33,9 @@ public class UserServiceTest {
         user1 = new User("firstName_user1",
                 "lastName_user1", "email_user1", "123456789qwerty_user1", Role.USER);
 
+        User user2;
+        User user3;
+        User user4;
         userList = List.of(
                 user2 = new User("firstName_user2",
                         "lastName_user2", "email_user2", "123456789qwerty_user2", Role.USER),
@@ -48,14 +45,8 @@ public class UserServiceTest {
                         "lastName_user4", "email_user4", "123456789qwerty_user4", Role.USER)
         );
 
-        userDTO1 = new UserDTO("firstName_dto",
+        update = new UserDTO("firstName_dto",
                 "lastName_dto", "email", "123456789qwerty", Role.USER);
-        update = new HashMap<>();
-        update.put("firstName", "firstName_dto");
-        update.put("lastName", "lastName_dto");
-        updateWithNull = new HashMap<>();
-        updateWithNull.put("firstName", null);
-        updateWithNull.put("lastName", null);
     }
 
     @BeforeEach
@@ -188,7 +179,7 @@ public class UserServiceTest {
         //When
         UserDTO updateWithNulls = userService.edit(savedUserId, updateWithNull);
 
-        //The
+        //Then
         assertEquals("firstName_user1", updateWithNulls.firstName());
         assertEquals("lastName_user1", updateWithNulls.lastName());
     }

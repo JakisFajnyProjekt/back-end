@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> editUser(@PathVariable long userId, @RequestBody Map<String, Object> user) {
+    public ResponseEntity<UserDTO> editUser(@PathVariable long userId, @RequestBody UserDTO user) {
         userService.edit(userId, user);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }

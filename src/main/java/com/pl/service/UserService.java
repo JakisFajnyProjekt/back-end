@@ -45,19 +45,23 @@ public class UserService extends AbstractService<UserRepository, User> {
     }
 
     @Transactional
-    public UserDTO edit(long userId, final Map<String, Object> update) {
+    public UserDTO edit(long userId, final UserDTO update) {
         return userRepository.findById(userId)
                 .map(existingUser -> {
-                    Optional.ofNullable(update.get("firstName"))
-                            .ifPresent(value -> existingUser.setFirstName(value.toString()));
-                    Optional.ofNullable(update.get("lastName"))
-                            .ifPresent(value -> existingUser.setLastName(value.toString()));
-                    Optional.ofNullable(update.get("email"))
-                            .ifPresent(value -> existingUser.setEmail(value.toString()));
+                    if (update.firstName() != null) {
+                        existingUser.setFirstName(update.firstName());
+                    }
+                    if (update.lastName() != null) {
+                        existingUser.setLastName(update.lastName());
+                    }
+                    if (update.email() != null) {
+                        existingUser.setEmail(update.email());
+                    }
                     User savedUser = userRepository.save(existingUser);
                     LOGGER.info("Changes are accepted");
                     return userMapper.mapToUserDto(savedUser);
-                }).orElseThrow(() -> {
+                })
+                .orElseThrow(() -> {
                     LOGGER.error("Wrong user id");
                     return new NotFoundException("User Not found");
                 });
