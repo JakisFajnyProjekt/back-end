@@ -1,5 +1,7 @@
 package com.pl.service;
 
+import com.pl.exception.AuthenticationError;
+import com.pl.exception.AuthenticationErrorException;
 import com.pl.exception.NotFoundException;
 import com.pl.exception.UserEmailTakenException;
 import com.pl.model.User;
@@ -14,12 +16,16 @@ import com.pl.token.TokenRepository;
 import com.pl.token.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.auth.login.CredentialNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -74,23 +80,29 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public LoginResponse login(LoginRequest request) {
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new NotFoundException("Wrong email or password"));
-        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    request.getEmail(),
-                    request.getPassword())
-            );
-            removeUserTokenIfExists(user);
-            var jwtToken = jwtService.generateToken(user);
-            saveUserToken(user, jwtToken);
-            return LoginResponse.builder()
-                    .token(jwtToken)
-                    .build();
-        } else {
-            throw new NotFoundException("Wrong email or password");
+    public LoginResponse login(LoginRequest request){
+        try {
+            var user = userRepository.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new AuthenticationErrorException(AuthenticationError.EMAIL, "Email not found"));
+            if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword())
+                );
+                removeUserTokenIfExists(user);
+                var jwtToken = jwtService.generateToken(user);
+                saveUserToken(user, jwtToken);
+                return LoginResponse.builder()
+                        .token(jwtToken)
+                        .build();
+            } else {
+                throw new AuthenticationErrorException(AuthenticationError.PASSWORD, "Password not found");
+            }
+        } catch (AuthenticationErrorException ex) {
+            throw new RuntimeException(ex);
+
         }
+
     }
 
     public void emailCheck(String email) {
