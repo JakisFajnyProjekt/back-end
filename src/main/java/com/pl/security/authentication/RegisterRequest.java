@@ -7,13 +7,13 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class RegisterRequest {
-    @NotNull(message = "firstName shouldn't be null or empty ")
+    @NotNull(message = "first name is required")
     private String firstName;
-    @NotNull(message = "lastNAme shouldn't be null or empty")
+    @NotNull(message = "last name is required")
     private String lastName;
     @Email(message = "email is required")
     private String email;
-    @NotNull(message = "password cannot be null")
+    @NotNull(message = "password is required")
     private String password;
 
     public RegisterRequest() {

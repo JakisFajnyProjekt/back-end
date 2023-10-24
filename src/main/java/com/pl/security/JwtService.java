@@ -25,7 +25,7 @@ public class JwtService {
         return extractClaim(token,Claims::getSubject);
     }
     public <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
-        final Claims claims = extractAllClames(token);
+        final Claims claims = extractAllClams(token);
         return claimsResolver.apply(claims);
     }
 
@@ -36,11 +36,12 @@ public class JwtService {
     public String generateToken(Map<String, Objects> extraClaims,
                                 UserDetails userDetails){
         String ROLE_PREFIX = "ROLE_";
+        int ONE_DAY = 1000 * 60 * 24;
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + ONE_DAY))
                 .claim("roles", userDetails.getAuthorities().stream()
                         .map(grantedAuthority -> ROLE_PREFIX + grantedAuthority.getAuthority())
                         .collect(Collectors.toList()))
@@ -48,7 +49,7 @@ public class JwtService {
                 .compact();
     }
 
-    private Claims extractAllClames(String token){
+    private Claims extractAllClams(String token){
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignInKey())

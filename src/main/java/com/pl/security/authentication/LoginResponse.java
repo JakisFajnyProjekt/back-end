@@ -2,18 +2,18 @@ package com.pl.security.authentication;
 
 import java.util.Objects;
 
-public class AuthenticationResponse {
+public class LoginResponse {
     private String token;
 
 
-    public AuthenticationResponse() {
+    public LoginResponse() {
     }
 
-    public AuthenticationResponse(String token) {
+    public LoginResponse(String token) {
         this.token = token;
     }
 
-    private AuthenticationResponse(Builder builder) {
+    private LoginResponse(Builder builder) {
         this.token = builder.token;
     }
 
@@ -33,8 +33,8 @@ public class AuthenticationResponse {
             return this;
         }
 
-        public AuthenticationResponse build() {
-            return new AuthenticationResponse(this);
+        public LoginResponse build() {
+            return new LoginResponse(this);
         }
     }
 
@@ -42,7 +42,7 @@ public class AuthenticationResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AuthenticationResponse that = (AuthenticationResponse) o;
+        LoginResponse that = (LoginResponse) o;
         return Objects.equals(token, that.token);
     }
 
