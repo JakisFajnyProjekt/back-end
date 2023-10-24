@@ -12,11 +12,11 @@ import java.time.LocalDate;
 public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleFoundException(NotFoundException notFoundException){
+    public ResponseEntity<ApiErrorResponse> handleFoundException(NotFoundException notFoundException) {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(notFoundException.getMessage(),
-                HttpStatus.FORBIDDEN.toString(),
+                HttpStatus.NOT_FOUND.toString(),
                 LocalDate.now());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiErrorResponse);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiErrorResponse);
     }
 
     @ExceptionHandler(UserEmailTakenException.class)
@@ -24,6 +24,13 @@ public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(userEmailTakenException.getMessage(),
                 HttpStatus.BAD_REQUEST.toString(),
                 LocalDate.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
+    }
+
+    @ExceptionHandler(InvalidValuesException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidValueException(InvalidValuesException invalidValuesException) {
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(invalidValuesException.getMessage(),
+                HttpStatus.BAD_REQUEST.toString(), LocalDate.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 

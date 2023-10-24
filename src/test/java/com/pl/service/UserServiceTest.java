@@ -86,7 +86,7 @@ public class UserServiceTest {
                 () -> userService.getUserById(nonExistingUserId));
 
         //Then
-        String expectedMessage = "User not found with given id " + nonExistingUserId;
+        String expectedMessage = "Order not found with given id "+ nonExistingUserId;
         String actualMessage = notFoundException.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -142,7 +142,8 @@ public class UserServiceTest {
         //Whne
         NotFoundException userNotFound = assertThrows(NotFoundException.class,
                 ()->userService.remove(nonexistingUserId));
-        String expectedMessage = "User not found with given id " + nonexistingUserId;
+        String expectedMessage = "Order not found with given id " + nonexistingUserId; //need to change message
+
         String meesageFromException = userNotFound.getMessage();
 
         assertTrue(meesageFromException.contains(expectedMessage));

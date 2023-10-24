@@ -1,9 +1,8 @@
 package com.pl.model;
 
 import com.pl.security.Role;
-import jakarta.annotation.Nonnull;
+import com.pl.token.Token;
 import jakarta.persistence.*;
-import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,27 +10,31 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "users")
 @Entity
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String firstName;
-
     private String lastName;
-    private String password;
     @Column(unique = true)
     private String email;
+    private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-
-
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
+    @ManyToMany
+    @JoinTable(name = "user_address",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id")
+    )
+    private Set<Address> deliveryAddresses;
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     public User() {
     }

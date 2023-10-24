@@ -1,7 +1,10 @@
 package com.pl.controller;
 
+import com.pl.model.dto.OrderCreateDTO;
 import com.pl.model.dto.OrderDTO;
 import com.pl.service.OrderService;
+import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +30,8 @@ public class OrderController {
         return orderService.listOrders();
     }
 
-    @PostMapping("")
-    public OrderDTO create(@RequestBody Map<String,Object> order) {
+    @PostMapping(value = "",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public OrderDTO create(@Valid  @RequestBody OrderCreateDTO order) {
         return orderService.createOrder(order);
     }
 

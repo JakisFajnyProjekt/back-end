@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/hello")
 public class DemoController {
 
+    //    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("hi")
-    public ResponseEntity<String>sayHello(){
+    public ResponseEntity<String> sayHello() {
         return ResponseEntity.ok("Hello from secured endpoint");
     }
 }

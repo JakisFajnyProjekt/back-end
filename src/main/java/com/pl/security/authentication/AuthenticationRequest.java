@@ -1,9 +1,14 @@
 package com.pl.security.authentication;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Objects;
 
 public class AuthenticationRequest {
+    @Email(message = "Email is required")
     private String email;
+    @NotNull(message = "Password is required")
     private String password;
 
     public AuthenticationRequest() {

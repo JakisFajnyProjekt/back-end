@@ -9,36 +9,32 @@ import java.util.Set;
 @Table(name = "restaurants")
 @Entity
 public class Restaurant {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private long id;
     private String name;
-
-    private String address;
     @OneToMany(mappedBy = "restaurant")
-    private Set<Order> orders;
+    private List<Dish> dish;
+    @OneToOne()
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @OneToOne
+    private Address address;
 
     public Restaurant() {
     }
 
-    public Restaurant(Long id, String name, String address) {
-        this.id = id;
+    public Restaurant(String name) {
         this.name = name;
-        this.address = address;
     }
 
-    public Restaurant(String name, String address) {
-        this.name = name;
-        this.address = address;
-    }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -50,20 +46,20 @@ public class Restaurant {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
+    public List<Dish> getDish() {
+        return dish;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDish(List<Dish> dish) {
+        this.dish = dish;
     }
 
-    public Set<Order> getOrders() {
-        return orders;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override
@@ -71,11 +67,11 @@ public class Restaurant {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Restaurant that = (Restaurant) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(address, that.address);
+        return id == that.id && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, address);
+        return Objects.hash(id, name);
     }
 }

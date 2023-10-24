@@ -3,8 +3,11 @@ package com.pl.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "orders")
 @Entity
@@ -12,41 +15,75 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
+
+    private LocalDateTime orderTime;
+    private BigDecimal totalPrice;
+    private String status;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
-
+    @ManyToMany
+    @JoinTable(name = "order_food_items",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id")
+    )
+    private List<Dish> dishSet;
     @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address deliveryAddress;
+    @ManyToOne()
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
-    private boolean isCompleted;
 
-    private LocalDateTime date = LocalDateTime.now();
-
-    private BigDecimal price;
 
     public Order() {
     }
 
-    public Order(Long id, boolean isCompleted, LocalDateTime date, BigDecimal price) {
-        this.id = id;
-        this.isCompleted = isCompleted;
-        this.date = date;
-        this.price = price;
+
+    public Order(LocalDateTime orderTime, BigDecimal totalPrice,
+                 String status, User user, List<Dish> dishSet,
+                 Address deliveryAddress, Restaurant restaurant) {
+        this.orderTime = orderTime;
+        this.totalPrice = totalPrice;
+        this.status = status;
+        this.user = user;
+        this.dishSet = dishSet;
+        this.deliveryAddress = deliveryAddress;
+        this.restaurant = restaurant;
     }
 
-    public Order(boolean isCompleted, LocalDateTime date, BigDecimal price) {
-        this.isCompleted = isCompleted;
-        this.date = date;
-        this.price = price;
-    }
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public LocalDateTime getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(LocalDateTime orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public User getUser() {
@@ -57,48 +94,27 @@ public class Order {
         this.user = user;
     }
 
+    public List<Dish> getDishSet() {
+        return dishSet;
+    }
+
+    public void setDishSet(List<Dish> dishSet) {
+        this.dishSet = dishSet;
+    }
+
+    public Address getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(Address deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
     public Restaurant getRestaurant() {
         return restaurant;
     }
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
-    }
-
-    public boolean getIsCompleted() {
-        return isCompleted;
-    }
-
-    public void setIsCompleted(boolean completed) {
-        isCompleted = completed;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return isCompleted == order.isCompleted && Objects.equals(id, order.id) && Objects.equals(date, order.date) && Objects.equals(price, order.price);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, isCompleted, date, price);
     }
 }
