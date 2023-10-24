@@ -13,18 +13,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -51,7 +46,7 @@ public class UserControllerTest {
     private UserDTO userDTO2;
     private UserDTO userDTO3;
     private List<UserDTO> listOfUsers;
-    
+
 
     @BeforeEach
     public void testData() {
@@ -80,6 +75,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value(userDTO1.firstName()))
                 .andExpect(jsonPath("$.lastName").value(userDTO1.lastName()));
+
     }
 
     @Test
@@ -91,7 +87,6 @@ public class UserControllerTest {
         when(userService.list()).thenReturn(listOfUsers);
 
         //Then
-
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(UserDTO.class)))
@@ -122,7 +117,7 @@ public class UserControllerTest {
     public void shouldModifyUser() throws Exception {
         // Given
         long userId = 1L;
-        UserUpdateDTO userUpdateDTO = new UserUpdateDTO("differentFirstName","newLastName","email");
+        UserUpdateDTO userUpdateDTO = new UserUpdateDTO("differentFirstName", "newLastName", "email");
 
         // When
         mockMvc.perform(MockMvcRequestBuilders.put("/api/users/{userId}", userId)

@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -28,14 +29,14 @@ public class SecurityConfig  {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/auth/**")
+                .requestMatchers("/api/**")
                 .permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
                 .permitAll()
                 .requestMatchers("/api/users/**", "/api/orders/**")
-                .hasAuthority("USER")
+                .hasAuthority(Role.USER.name())
                 .requestMatchers("/**")
-                .hasAuthority("ADMIN")
+                .hasAuthority(Role.ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -44,6 +45,7 @@ public class SecurityConfig  {
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
