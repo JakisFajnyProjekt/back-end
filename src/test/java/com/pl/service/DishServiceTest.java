@@ -2,14 +2,17 @@ package com.pl.service;
 
 import com.pl.exception.NotFoundException;
 import com.pl.model.Dish;
+import com.pl.model.Restaurant;
 import com.pl.model.dto.DishDTO;
 import com.pl.repository.DishRepository;
+import com.pl.repository.RestaurantRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +23,9 @@ public class DishServiceTest {
 
     @Autowired
     private DishRepository dishRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
     @Autowired
     private DishService dishService;
 
@@ -27,16 +33,19 @@ public class DishServiceTest {
     private Dish dish1;
     private Dish dish2;
     private Dish dish3;
+    private Restaurant restaurant;
     private DishDTO dishDTO;
     private List<Dish> dishList;
 
 
     @BeforeEach
     void dataForTests() {
-        dish1 = new Dish("dish1", "descriotion1");
-        dish2 = new Dish("dish2", "descriotion2");
-        dish3 = new Dish("dish3", "descriotion3");
-        dishDTO = new DishDTO("dish_DTO", "description_DTO");
+        restaurant = new Restaurant("restaurant1");
+        restaurantRepository.save(restaurant);
+        dish1 = new Dish("dish1", "descriotion1",new BigDecimal(30),restaurant);
+        dish2 = new Dish("dish2", "descriotion2",new BigDecimal(30),restaurant);
+        dish3 = new Dish("dish3", "descriotion3",new BigDecimal(30),restaurant);
+        dishDTO = new DishDTO("dish_DTO", "description_DTO",new BigDecimal(30),1L);
         dishList = List.of(dish1, dish2, dish3);
     }
 

@@ -21,8 +21,8 @@ public class DishMapper {
 
     public Dish mapToDish(DishDTO dishDto) {
         Dish dish = new Dish();
-        dish.setName(dish.getName());
-        dish.setDescription(dish.getDescription());
+        dish.setName(dishDto.name());
+        dish.setDescription(dishDto.description());
         dish.setPrice(dishDto.price());
         Optional<Restaurant> restaurant = restaurantRepository.findById(dishDto.restaurantId());
         restaurant.ifPresent(dish::setRestaurant);
