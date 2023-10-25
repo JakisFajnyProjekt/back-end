@@ -1,11 +1,13 @@
 package com.pl.service;
 
+import ch.qos.logback.classic.encoder.JsonEncoder;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.UserMapper;
 import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
 import com.pl.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +18,13 @@ import java.util.List;
 public class UserService extends AbstractService<UserRepository, User> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDTO getUserById(long userId) {
@@ -57,7 +61,7 @@ public class UserService extends AbstractService<UserRepository, User> {
                         existingUser.setEmail(update.email());
                     }
                     if (update.password() != null) {
-                        existingUser.setPassword(update.password());
+                        existingUser.setPassword(passwordEncoder.encode(update.password()) );
                     }
                     User savedUser = userRepository.save(existingUser);
                     LOGGER.info("Changes are accepted");
