@@ -2,7 +2,7 @@ package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.model.User;
-import com.pl.security.Role;
+import com.pl.auth.Role;
 import com.pl.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

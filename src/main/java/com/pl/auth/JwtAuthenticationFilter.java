@@ -1,7 +1,6 @@
-package com.pl.security;
+package com.pl.auth;
 
 import com.pl.exception.NotFoundException;
-import com.pl.token.Token;
 import com.pl.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

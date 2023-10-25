@@ -7,7 +7,7 @@ import com.pl.repository.AddressRepository;
 import com.pl.repository.DishRepository;
 import com.pl.repository.RestaurantRepository;
 import com.pl.repository.UserRepository;
-import com.pl.security.Role;
+import com.pl.auth.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

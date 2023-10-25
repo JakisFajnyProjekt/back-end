@@ -3,7 +3,7 @@ package com.pl.seeder;
 import com.github.javafaker.Faker;
 import com.pl.model.*;
 import com.pl.repository.*;
-import com.pl.security.Role;
+import com.pl.auth.Role;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;

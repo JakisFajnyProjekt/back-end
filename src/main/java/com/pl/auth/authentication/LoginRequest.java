@@ -1,8 +1,4 @@
-package com.pl.security.authentication;
-
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+package com.pl.auth.authentication;
 
 import java.util.Objects;
 

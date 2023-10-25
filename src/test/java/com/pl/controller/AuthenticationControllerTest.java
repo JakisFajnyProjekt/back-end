@@ -1,9 +1,10 @@
 package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pl.security.authentication.LoginRequest;
-import com.pl.security.authentication.LoginResponse;
-import com.pl.security.authentication.RegisterRequest;
+import com.pl.auth.AuthenticationController;
+import com.pl.auth.authentication.LoginRequest;
+import com.pl.auth.authentication.LoginResponse;
+import com.pl.auth.authentication.RegisterRequest;
 import com.pl.service.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

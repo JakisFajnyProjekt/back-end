@@ -1,4 +1,4 @@
-package com.pl.security.authentication;
+package com.pl.auth.authentication;
 
 import jakarta.validation.constraints.*;
 

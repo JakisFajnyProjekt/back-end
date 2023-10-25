@@ -1,8 +1,8 @@
-package com.pl.controller;
+package com.pl.auth;
 
-import com.pl.security.authentication.LoginRequest;
-import com.pl.security.authentication.LoginResponse;
-import com.pl.security.authentication.RegisterRequest;
+import com.pl.auth.authentication.LoginRequest;
+import com.pl.auth.authentication.LoginResponse;
+import com.pl.auth.authentication.RegisterRequest;
 import com.pl.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;

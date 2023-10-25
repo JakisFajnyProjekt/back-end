@@ -2,30 +2,25 @@ package com.pl.service;
 
 import com.pl.exception.AuthenticationError;
 import com.pl.exception.AuthenticationErrorException;
-import com.pl.exception.NotFoundException;
 import com.pl.exception.UserEmailTakenException;
 import com.pl.model.User;
 import com.pl.repository.UserRepository;
-import com.pl.security.JwtService;
-import com.pl.security.Role;
-import com.pl.security.authentication.LoginRequest;
-import com.pl.security.authentication.LoginResponse;
-import com.pl.security.authentication.RegisterRequest;
+import com.pl.auth.JwtService;
+import com.pl.auth.Role;
+import com.pl.auth.authentication.LoginRequest;
+import com.pl.auth.authentication.LoginResponse;
+import com.pl.auth.authentication.RegisterRequest;
 import com.pl.token.Token;
 import com.pl.token.TokenRepository;
 import com.pl.token.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.security.auth.login.CredentialNotFoundException;
 import java.util.Optional;
 
 @Service

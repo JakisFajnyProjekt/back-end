@@ -1,6 +1,6 @@
 package com.pl.model;
 
-import com.pl.security.Role;
+import com.pl.auth.Role;
 import com.pl.token.Token;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
