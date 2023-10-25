@@ -25,10 +25,11 @@ public class Dish {
     public Dish() {
     }
 
-    public Dish(Long id, String name, String description) {
-        this.id = id;
+    public Dish(String name, String description, BigDecimal price, Restaurant restaurant) {
         this.name = name;
         this.description = description;
+        this.price = price;
+        this.restaurant = restaurant;
     }
 
     public Dish(String name, String description) {
@@ -66,6 +67,14 @@ public class Dish {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.pl.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,7 +31,24 @@ public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidValuesException.class)
     public ResponseEntity<ApiErrorResponse> handleInvalidValueException(InvalidValuesException invalidValuesException) {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(invalidValuesException.getMessage(),
-                HttpStatus.BAD_REQUEST.toString(), LocalDate.now());
+                HttpStatus.BAD_REQUEST.toString(),
+                LocalDate.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ApiErrorResponse> handleNullPointerException(NullPointerException invalidValuesException) {
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(invalidValuesException.getMessage(),
+                HttpStatus.BAD_REQUEST.toString(),
+                LocalDate.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ApiErrorResponse> handleExpiredJwtException(ExpiredJwtException expiredJwtException) {
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(expiredJwtException.getMessage(),
+                HttpStatus.BAD_REQUEST.toString(),
+                LocalDate.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 

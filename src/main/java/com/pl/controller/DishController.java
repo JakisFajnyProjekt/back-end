@@ -30,8 +30,8 @@ public class DishController {
         return dishService.listDishes();
     }
 
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public DishDTO create(@RequestBody Map<String, Object> dish) {
+    @PostMapping( consumes = MediaType.APPLICATION_JSON_VALUE)
+    public DishDTO create(@RequestBody DishDTO dish) {
         return dishService.createDish(dish);
     }
 
@@ -41,7 +41,7 @@ public class DishController {
     }
 
     @PutMapping("/{dishId}")
-    public ResponseEntity<DishDTO> edit(@PathVariable long dishId, @RequestBody Map<String, Object> dish) {
+    public ResponseEntity<DishDTO> edit(@PathVariable long dishId, @RequestBody DishDTO dish) {
         dishService.editDish(dishId, dish);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }

@@ -6,6 +6,7 @@ import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
 import com.pl.repository.UserRepository;
 import com.pl.security.Role;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,6 @@ public class UserServiceTest {
     private User user2;
     private User user3;
     private User user4;
-    private Map<String, Object> update;
-    private Map<String, Object> updateWithNull;
     private UserDTO userDTO1;
     private UserUpdateDTO userUpdateDTO;
     private UserUpdateDTO userUpdateDTOWithNull;
@@ -58,8 +57,12 @@ public class UserServiceTest {
         userUpdateDTOWithNull = new UserUpdateDTO(null,null,"email");
     }
 
+    @AfterEach
+    void cleanUpafter() {
+        userRepository.deleteAll();
+    }
     @BeforeEach
-    void cleanUp() {
+    void cleanUpaBefore() {
         userRepository.deleteAll();
     }
 

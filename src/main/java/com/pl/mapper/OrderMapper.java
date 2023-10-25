@@ -38,7 +38,6 @@ public class OrderMapper {
                 .collect(Collectors.toList()));
         order.setDeliveryAddress(addressRepository.findById(rderCreateDTO.deliveryAddressId()).orElse(null));
         order.setRestaurant(restaurantRepository.findById(rderCreateDTO.restaurantId()).orElse(null));
-
         return order;
     }
 
