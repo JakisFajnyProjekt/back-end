@@ -49,36 +49,37 @@ public class OrderMapperTest {
     @BeforeEach
     void testData() {
         restaurant = new Restaurant("name");
-        dish1 = new Dish("name1","description1");
-        dish2 = new Dish("name2","description2");
+        dish1 = new Dish("name1", "description1");
+        dish2 = new Dish("name2", "description2");
         user = new User("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
         order1 = new Order();
-        address = new Address("12","street","city","64-100",Set.of(user),List.of(order1));
+        address = new Address("12", "street", "city", "64-100", Set.of(user), List.of(order1));
         order1 = new Order(LocalDateTime.now(),
-                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1,dish2), address, restaurant
+                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1, dish2), address, restaurant
         );
         order2 = new Order(LocalDateTime.now(),
-                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1,dish2), address, restaurant
+                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1, dish2), address, restaurant
         );
         order3 = new Order(LocalDateTime.now(),
-                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1,dish2), address, restaurant
+                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1, dish2), address, restaurant
         );
     }
 
-        @BeforeEach
-        void setUp() {
-            MockitoAnnotations.openMocks(this);
-            orderMapper = new OrderMapper(userRepository, dishRepository, addressRepository, restaurantRepository);
-        }
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        orderMapper = new OrderMapper(userRepository, dishRepository, addressRepository, restaurantRepository);
+    }
+
     @Test
     void testMapToOrderWhileCreatingOrder() {
         //Given
         OrderCreateDTO orderDTOtest = new OrderCreateDTO(
-               1L,List.of(1L, 2L),1L,1L);
+                1L, List.of(1L, 2L), 1L, 1L);
 
         User mockUser = new User();
-        Dish mockDish1 = new Dish("name1","description1");
-        Dish mockDish2 = new Dish("name2","description2");
+        Dish mockDish1 = new Dish("name1", "description1");
+        Dish mockDish2 = new Dish("name2", "description2");
         Address mockAddress = new Address();
         Restaurant mockRestaurant = new Restaurant();
         when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser));
@@ -98,21 +99,20 @@ public class OrderMapperTest {
     }
 
 
-
     @Test
     void shouldMapToDto() {
         //Given
         //When
         OrderDTO attemptOrderDto = orderMapper.mapToOrderDto(order1);
         //Then
-        assertEquals(OrderDTO.class,attemptOrderDto.getClass());
+        assertEquals(OrderDTO.class, attemptOrderDto.getClass());
 
     }
 
     @Test
     void shouldMapToListDto() {
         //Given
-        List<Order> orders = List.of(order1,order2,order3);
+        List<Order> orders = List.of(order1, order2, order3);
         //When
         List<OrderDTO> attemptList = orderMapper.mapToListDto(orders);
         //Then

@@ -1,15 +1,14 @@
 package com.pl.model.dto;
-
-import com.pl.model.Dish;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.List;
-import java.util.Set;
 
 public record OrderCreateDTO(
         @NotNull(message = "userId required")
+        @Min(value = 1, message = "Delivery address ID must be greater than or equal to 1")
+        @Positive
         Long userId,
         @NotNull(message = "dish required")
         List<Long> dishIds,

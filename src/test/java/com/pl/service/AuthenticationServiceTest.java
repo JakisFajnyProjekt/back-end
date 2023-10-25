@@ -4,11 +4,20 @@ import com.pl.exception.NotFoundException;
 import com.pl.exception.UserEmailTakenException;
 import com.pl.model.User;
 import com.pl.repository.UserRepository;
+<<<<<<< HEAD
 import com.pl.auth.JwtService;
 import com.pl.auth.Role;
 import com.pl.auth.authentication.LoginRequest;
 import com.pl.auth.authentication.LoginResponse;
 import com.pl.auth.authentication.RegisterRequest;
+=======
+import com.pl.security.JwtService;
+import com.pl.security.Role;
+import com.pl.security.authentication.AuthenticationRequest;
+import com.pl.security.authentication.LoginResponse;
+import com.pl.security.authentication.RegisterRequest;
+import com.pl.token.TokenRepository;
+>>>>>>> ccd3abb1860f66ef3261a17d1b29613bf811c520
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +48,9 @@ public class AuthenticationServiceTest {
     private JwtService jwtService;
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private TokenRepository tokenRepository;
 
     @Mock
     private AuthenticationManager authenticationManager;

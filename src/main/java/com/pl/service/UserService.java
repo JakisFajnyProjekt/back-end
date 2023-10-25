@@ -4,14 +4,13 @@ import com.pl.exception.NotFoundException;
 import com.pl.mapper.UserMapper;
 import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
+import com.pl.model.dto.UserUpdateDTO;
 import com.pl.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class UserService extends AbstractService<UserRepository, User> {
@@ -45,7 +44,7 @@ public class UserService extends AbstractService<UserRepository, User> {
     }
 
     @Transactional
-    public UserDTO edit(long userId, final UserDTO update) {
+    public UserDTO edit(long userId, final UserUpdateDTO update) {
         return userRepository.findById(userId)
                 .map(existingUser -> {
                     if (update.firstName() != null) {
@@ -56,6 +55,9 @@ public class UserService extends AbstractService<UserRepository, User> {
                     }
                     if (update.email() != null) {
                         existingUser.setEmail(update.email());
+                    }
+                    if (update.password() != null) {
+                        existingUser.setPassword(update.password());
                     }
                     User savedUser = userRepository.save(existingUser);
                     LOGGER.info("Changes are accepted");

@@ -3,7 +3,6 @@ package com.pl.auth.authentication;
 
 import jakarta.validation.constraints.Pattern;
 
-import java.util.Objects;
 
 public class RegisterRequest extends AbstractAuthRequest {
     @Pattern(regexp = "^.{2,}$", message = "{validation.name.min}")
@@ -18,6 +17,9 @@ public class RegisterRequest extends AbstractAuthRequest {
     public RegisterRequest() {
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public String getFirstName() {
         return firstName;
@@ -70,33 +72,6 @@ public class RegisterRequest extends AbstractAuthRequest {
             request.setPassword(password);
             return request;
         }
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RegisterRequest that = (RegisterRequest) o;
-        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, email, password);
-    }
-
-    @Override
-    public String toString() {
-        return "RegisterRequest{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }
 

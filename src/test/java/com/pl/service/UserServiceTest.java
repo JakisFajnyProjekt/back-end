@@ -3,6 +3,7 @@ package com.pl.service;
 import com.pl.exception.NotFoundException;
 import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
+import com.pl.model.dto.UserUpdateDTO;
 import com.pl.repository.UserRepository;
 import com.pl.auth.Role;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +25,19 @@ public class UserServiceTest {
     private UserService userService;
 
     private User user1;
+<<<<<<< HEAD
     private UserDTO update;
     private UserDTO updateWithNull;
+=======
+    private User user2;
+    private User user3;
+    private User user4;
+    private Map<String, Object> update;
+    private Map<String, Object> updateWithNull;
+    private UserDTO userDTO1;
+    private UserUpdateDTO userUpdateDTO;
+    private UserUpdateDTO userUpdateDTOWithNull;
+>>>>>>> ccd3abb1860f66ef3261a17d1b29613bf811c520
     private List<User> userList;
 
     @BeforeEach
@@ -47,6 +59,12 @@ public class UserServiceTest {
 
         update = new UserDTO("firstName_dto",
                 "lastName_dto", "email", "123456789qwerty", Role.USER);
+<<<<<<< HEAD
+=======
+
+        userUpdateDTO = new UserUpdateDTO("firstName_dto","lastName_dto","email");
+        userUpdateDTOWithNull = new UserUpdateDTO(null,null,"email");
+>>>>>>> ccd3abb1860f66ef3261a17d1b29613bf811c520
     }
 
     @BeforeEach
@@ -147,7 +165,7 @@ public class UserServiceTest {
         Long idOfUserInDb = savedUser.getId();
 
         // When
-        UserDTO modifyUser = userService.edit(idOfUserInDb, update);
+        UserDTO modifyUser = userService.edit(idOfUserInDb, userUpdateDTO);
 
         // Then
         assertEquals("firstName_dto", modifyUser.firstName());
@@ -163,7 +181,7 @@ public class UserServiceTest {
         //When
         String expectedMessage = "User Not found";
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
-                () -> userService.edit(nonExistingId, update));
+                () -> userService.edit(nonExistingId, userUpdateDTO));
         String notFoundExceptionMessage = notFoundException.getMessage();
 
         //Then
@@ -177,7 +195,7 @@ public class UserServiceTest {
         Long savedUserId = savedUser.getId();
 
         //When
-        UserDTO updateWithNulls = userService.edit(savedUserId, updateWithNull);
+        UserDTO updateWithNulls = userService.edit(savedUserId, userUpdateDTOWithNull);
 
         //Then
         assertEquals("firstName_user1", updateWithNulls.firstName());

@@ -35,6 +35,7 @@ public class AuthenticationControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(authenticationController).build();
     }
+
     private String asJsonString(Object obj) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(obj);

@@ -5,7 +5,7 @@ import com.pl.model.dto.UserDTO;
 import com.pl.auth.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -14,20 +14,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class UserMapperTest {
+    @Autowired
+    private UserMapper userMapper;
 
-    @InjectMocks
-    UserMapper userMapper;
-
-    User user;
-    UserDTO userDto;
-    UserDTO expectedDto;
+    private User user;
+    private UserDTO userDto;
+    private UserDTO expectedDto;
 
     @BeforeEach
-    void testData(){
+    void testData() {
         user = new User("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
         userDto = new UserDTO("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
         expectedDto = new UserDTO("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
     }
+
     @Test
     void shouldMapToDto() {
         //Given
@@ -40,6 +40,7 @@ public class UserMapperTest {
         assertEquals(expectedDto.email(), attemptUserDto.email());
         assertEquals(expectedDto.role(), attemptUserDto.role());
     }
+
     @Test
     void shouldMapFromDto() {
         //Given
@@ -52,6 +53,7 @@ public class UserMapperTest {
         assertEquals(expectedDto.email(), attemptUser.getEmail());
         assertEquals(expectedDto.role(), attemptUser.getRole());
     }
+
     @Test
     void shouldMapToListDto() {
         //Given
