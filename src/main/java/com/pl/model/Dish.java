@@ -9,6 +9,17 @@ import java.util.Objects;
 @Table(name = "dishes")
 @Entity
 public class Dish {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

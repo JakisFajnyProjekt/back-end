@@ -39,6 +39,22 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public Set<Address> getDeliveryAddresses() {
+        return deliveryAddresses;
+    }
+
+    public void setDeliveryAddresses(Set<Address> deliveryAddresses) {
+        this.deliveryAddresses = deliveryAddresses;
+    }
+
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
+    }
+
     public User(String firstName, String lastName, String email, String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;

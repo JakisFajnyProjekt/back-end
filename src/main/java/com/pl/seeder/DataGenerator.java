@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.util.Set;
+
 
 @Component
 @ConditionalOnProperty(name = "spring.jpa.hibernate.ddl-auto", havingValue = "create")
@@ -19,13 +22,15 @@ public class DataGenerator {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AddressRepository addressRepository;
 
-    public DataGenerator(DishRepository dishRepository, OrderRepository orderRepository, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public DataGenerator(DishRepository dishRepository, OrderRepository orderRepository, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, AddressRepository addressRepository) {
         this.dishRepository = dishRepository;
         this.orderRepository = orderRepository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.addressRepository = addressRepository;
     }
 
     @PostConstruct
@@ -43,14 +48,25 @@ public class DataGenerator {
             // Set other user properties
             userRepository.save(user);
         }
-        userRepository.save(new User("Jan", "Kowalski", "admin@gmail.com", passwordEncoder.encode("qwe123"), Role.ADMIN));
-        userRepository.save(new User("Stachu", "Staszewski", "user@gmail.com", passwordEncoder.encode("qwe123"), Role.USER));
+        userRepository.save(new User("Jan", "Kowalski", "admin@gmail.com", passwordEncoder.encode("Qwe123"), Role.ADMIN));
+        userRepository.save(new User("Stachu", "Staszewski", "user@gmail.com", passwordEncoder.encode("Qwe123"), Role.USER));
+
+        // Generate and save addresses
+        for (User user : userRepository.findAll()) {
+            Address address = new Address();
+            address.setCity(faker.address().city());
+            address.setHouseNumber(faker.address().buildingNumber());
+            address.setPostalCode(faker.address().zipCode());
+            address.setStreet(faker.address().streetAddress());
+            address.setUser( Set.of(user) );
+            user.setDeliveryAddresses(Set.of(address));
+            addressRepository.save(address);
+        }
 
         // Generate and save restaurants
         for (int i = 0; i < 5; i++) {
             Restaurant restaurant = new Restaurant();
             restaurant.setName(faker.company().name());
-
             restaurantRepository.save(restaurant);
         }
 
@@ -58,39 +74,18 @@ public class DataGenerator {
         for (int i = 0; i < 20; i++) {
             Dish dish = new Dish();
             dish.setName(faker.food().dish());
-            dish.setDescription(faker.lorem().sentence());
-            // Set other dish properties
+            dish.setDescription(faker.food().ingredient());
+            dish.setPrice(new BigDecimal(faker.number().numberBetween(10, 100)));
             dishRepository.save(dish);
         }
 
-//        // Create associations (populating the pivot table)
-//        List<Dish> allDishes = dishRepository.findAll();
-//        List<Restaurant> allRestaurants = restaurantRepository.findAll();
-//        List<RestaurantDish> restaurantsDishes = new ArrayList<>();
-//        for (Dish dish : allDishes) {
-//            for (Restaurant restaurant : allRestaurants) {
-//                RestaurantDish association = new RestaurantDish();
-//                association.setDish(dish);
-//                association.setRestaurant(restaurant);
-//                association.setPrice(new BigDecimal(faker.number().numberBetween(20, 100) ));
-//                restaurantsDishes.add(association);
-//            }
-//        }
-//        restaurantDishRepository.saveAll(restaurantsDishes);
-//
-//        // Generate and save orders
-//        for (int i = 0; i < 30; i++) {
-//            Order order = new Order();
-//            User randomUser = userRepository.findById(faker.number().numberBetween(1L, 10L)).orElse(null);
-//            Restaurant randomRestaurant = restaurantRepository.findById(faker.number().numberBetween(1L, 5L)).orElse(null);
-//            order.setUser(randomUser);
-//            order.setRestaurant(randomRestaurant);
-//            order.setIsCompleted(faker.bool().bool());
-//
-//            order.setTotalCost(BigDecimal.valueOf(faker.number().randomDouble(2, 5, 50)));
-//
-//            // Set other order properties
-//            orderRepository.save(order);
-//        }
+        // Generate and save orders
+        for (User user : userRepository.findAll()) {
+            Order order = new Order();
+            order.setUser(user);
+            order.setStatus("na chuj to tutaj");
+            order.setTotalPrice(new BigDecimal(faker.number().numberBetween(20, 300)));
+            orderRepository.save(order);
+        }
     }
 }
