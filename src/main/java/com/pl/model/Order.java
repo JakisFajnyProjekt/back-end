@@ -3,11 +3,8 @@ package com.pl.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 @Table(name = "orders")
 @Entity
@@ -29,7 +26,7 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id")
     )
-    private List<Dish> dishSet;
+    private List<Dish> dishes;
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address deliveryAddress;
@@ -43,13 +40,13 @@ public class Order {
 
 
     public Order(LocalDateTime orderTime, BigDecimal totalPrice,
-                 String status, User user, List<Dish> dishSet,
+                 String status, User user, List<Dish> dishes,
                  Address deliveryAddress, Restaurant restaurant) {
         this.orderTime = orderTime;
         this.totalPrice = totalPrice;
         this.status = status;
         this.user = user;
-        this.dishSet = dishSet;
+        this.dishes = dishes;
         this.deliveryAddress = deliveryAddress;
         this.restaurant = restaurant;
     }
@@ -94,12 +91,12 @@ public class Order {
         this.user = user;
     }
 
-    public List<Dish> getDishSet() {
-        return dishSet;
+    public List<Dish> getDishes() {
+        return dishes;
     }
 
-    public void setDishSet(List<Dish> dishSet) {
-        this.dishSet = dishSet;
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 
     public Address getDeliveryAddress() {

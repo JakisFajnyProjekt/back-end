@@ -33,7 +33,7 @@ public class OrderMapper {
     public Order mapToOrder(OrderCreateDTO rderCreateDTO) {
         Order order = new Order();
         order.setUser(userRepository.findById(rderCreateDTO.userId()).orElse(null));
-        order.setDishSet(rderCreateDTO.dishIds().stream()
+        order.setDishes(rderCreateDTO.dishIds().stream()
                 .map(dishId -> dishRepository.findById(dishId).orElse(null))
                 .collect(Collectors.toList()));
         order.setDeliveryAddress(addressRepository.findById(rderCreateDTO.deliveryAddressId()).orElse(null));
@@ -47,7 +47,7 @@ public class OrderMapper {
                 order.getOrderTime(),
                 order.getTotalPrice(),
                 order.getUser().getId(),
-                order.getDishSet().stream()
+                order.getDishes().stream()
                         .map(Dish::getId)
                         .collect(Collectors.toList()),
                 order.getDeliveryAddress().getId(),

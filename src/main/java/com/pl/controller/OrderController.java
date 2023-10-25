@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -27,12 +26,12 @@ public class OrderController {
 
     @GetMapping("")
     public List<OrderDTO> list() {
-        return orderService.listOrders();
+        return orderService.list();
     }
 
     @PostMapping(value = "",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public OrderDTO create(@Valid  @RequestBody OrderCreateDTO order) {
-        return orderService.createOrder(order);
+    public OrderDTO create(@Valid @RequestBody OrderCreateDTO order) {
+        return orderService.create(order);
     }
 
     @DeleteMapping("/{orderId}")

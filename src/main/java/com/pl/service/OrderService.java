@@ -35,15 +35,15 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
     }
 
     @Transactional
-    public OrderDTO createOrder(OrderCreateDTO createOrder) {
-        if (presenceCheck(createOrder)){
+    public OrderDTO create(OrderCreateDTO createOrder) {
+        if (presenceCheck(createOrder)) {
             Order order = orderMapper.mapToOrder(createOrder);
             order.setOrderTime(LocalDateTime.now());
             order.setTotalPrice(calculateTotalPrice(createOrder.dishIds()));
             Order savedOrder = orderRepository.save(order);
             LOGGER.info("Order are created");
             return orderMapper.mapToOrderDto(savedOrder);
-        }else{
+        } else {
             LOGGER.error("Something went wrong");
             throw new RuntimeException();
         }
@@ -57,13 +57,13 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
         addressRepository.findById(createOrder.deliveryAddressId())
                .orElseThrow(() -> new NotFoundException("Address not found"));
         LOGGER.info("presence checked");
-        return true ;
+        return true;
     }
 
     private BigDecimal calculateTotalPrice(List<Long> dishes) {
         if (dishes.isEmpty()){
             LOGGER.error("list are empty");
-            throw new NotFoundException("List of Dishes are empty");
+            throw new NotFoundException("You have not ordered anything");
         }
         LOGGER.info("Total price are summed");
         return dishes.stream()
@@ -75,7 +75,7 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
     }
 
 
-    public List<OrderDTO> listOrders() {
+    public List<OrderDTO> list() {
         List<Order> orders = orderRepository.findAll();
         if (orders.isEmpty()) {
             LOGGER.info("the list of orders are empty");

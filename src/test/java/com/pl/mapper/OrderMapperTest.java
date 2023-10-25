@@ -92,7 +92,7 @@ public class OrderMapperTest {
 
         //Then
         assertEquals(mockUser, mappedOrder.getUser());
-        assertEquals(2, mappedOrder.getDishSet().size());
+        assertEquals(2, mappedOrder.getDishes().size());
         assertEquals(mockAddress, mappedOrder.getDeliveryAddress());
         assertEquals(mockRestaurant, mappedOrder.getRestaurant());
     }
