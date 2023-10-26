@@ -12,7 +12,7 @@ public abstract class AbstractService<R extends JpaRepository<EntityType, Long>,
         return repository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.error("Id not found");
-                    return new NotFoundException("Order not found with given id " + id);
+                    return new NotFoundException("Not found with given id " + id);
                 });
     }
 

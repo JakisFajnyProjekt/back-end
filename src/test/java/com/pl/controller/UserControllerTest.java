@@ -1,16 +1,12 @@
 package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pl.auth.JwtService;
 import com.pl.model.User;
-<<<<<<< HEAD
 import com.pl.auth.Role;
-=======
 import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
-import com.pl.security.JwtService;
-import com.pl.security.Role;
 import com.pl.service.AuthenticationService;
->>>>>>> ccd3abb1860f66ef3261a17d1b29613bf811c520
 import com.pl.service.UserService;
 import com.pl.token.TokenRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,9 +49,6 @@ public class UserControllerTest {
     private UserDTO userDTO3;
     private List<UserDTO> listOfUsers;
 
-<<<<<<< HEAD
-=======
-
     @BeforeEach
     public void testData() {
         user1 = new User("firstname1", "lastname", "password", "email@email.com", Role.USER);
@@ -67,7 +60,6 @@ public class UserControllerTest {
         listOfUsers = List.of(userDTO1, userDTO2, userDTO3);
     }
 
->>>>>>> ccd3abb1860f66ef3261a17d1b29613bf811c520
     @Test
     @WithMockUser(roles = "USER")
     void shouldFindUserById() throws Exception {
@@ -126,7 +118,7 @@ public class UserControllerTest {
     public void shouldModifyUser() throws Exception {
         // Given
         long userId = 1L;
-        UserUpdateDTO userUpdateDTO = new UserUpdateDTO("differentFirstName", "newLastName", "email");
+        UserUpdateDTO userUpdateDTO = new UserUpdateDTO("differentFirstName", "newLastName", "email@gmail.com", "Password123");
 
         // When
         mockMvc.perform(MockMvcRequestBuilders.put("/api/users/{userId}", userId)

@@ -25,19 +25,14 @@ public class UserServiceTest {
     private UserService userService;
 
     private User user1;
-<<<<<<< HEAD
     private UserDTO update;
     private UserDTO updateWithNull;
-=======
     private User user2;
     private User user3;
     private User user4;
-    private Map<String, Object> update;
-    private Map<String, Object> updateWithNull;
     private UserDTO userDTO1;
     private UserUpdateDTO userUpdateDTO;
     private UserUpdateDTO userUpdateDTOWithNull;
->>>>>>> ccd3abb1860f66ef3261a17d1b29613bf811c520
     private List<User> userList;
 
     @BeforeEach
@@ -59,12 +54,6 @@ public class UserServiceTest {
 
         update = new UserDTO("firstName_dto",
                 "lastName_dto", "email", "123456789qwerty", Role.USER);
-<<<<<<< HEAD
-=======
-
-        userUpdateDTO = new UserUpdateDTO("firstName_dto","lastName_dto","email");
-        userUpdateDTOWithNull = new UserUpdateDTO(null,null,"email");
->>>>>>> ccd3abb1860f66ef3261a17d1b29613bf811c520
     }
 
     @BeforeEach
@@ -144,18 +133,19 @@ public class UserServiceTest {
     }
 
     @Test
-    void shoudlHandleNotFoundExceptionWhileTryingToDeleteByWrongId() {
+    void shouldHandleNotFoundExceptionWhileTryingToDeleteByWrongId() {
         //Given
-        long nonexistingUserId = 100;
+        long nonExistingUserId = 100L;
 
-        //Whne
-        NotFoundException userNotFound = assertThrows(NotFoundException.class,
-                ()->userService.remove(nonexistingUserId));
-        String expectedMessage = "Order not found with given id " + nonexistingUserId; //need to change message
+        //When
+        NotFoundException userNotFound = assertThrows(
+                NotFoundException.class,
+                ()->userService.remove(nonExistingUserId)
+        );
+        String expectedMessage = "Not found with given id " + nonExistingUserId; //need to change message
+        String messageFromException = userNotFound.getMessage();
 
-        String meesageFromException = userNotFound.getMessage();
-
-        assertTrue(meesageFromException.contains(expectedMessage));
+        assertTrue(messageFromException.contains(expectedMessage));
     }
 
     @Test

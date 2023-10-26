@@ -94,7 +94,7 @@ public class AuthenticationService {
                 throw new AuthenticationErrorException(AuthenticationError.PASSWORD, "Password not found");
             }
         } catch (AuthenticationErrorException ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException(ex.getMessage());
 
         }
 
