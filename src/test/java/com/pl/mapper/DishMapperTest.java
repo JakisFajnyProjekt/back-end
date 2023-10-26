@@ -1,12 +1,15 @@
 package com.pl.mapper;
 
 import com.pl.model.Dish;
+import com.pl.model.Restaurant;
 import com.pl.model.dto.DishDTO;
+import com.pl.repository.RestaurantRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,14 +20,20 @@ public class DishMapperTest {
     private Dish dish;
     private DishDTO dishDto;
     private DishDTO expectedDto;
+    private Restaurant restaurant;
     @Autowired
     private DishMapper dishMapper;
 
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
     @BeforeEach
     void testData() {
-        dish = new Dish(0L, "Pizza", "This is very good pizza!");
-        dishDto = new DishDTO("Pizza", "This is very good pizza!");
-        expectedDto = new DishDTO("Pizza", "This is very good pizza!");
+        restaurant = new Restaurant("restaurant");
+        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+        dish = new Dish( "Pizza", "This is very good pizza!",new BigDecimal(30),restaurant);
+        dishDto = new DishDTO("Pizza", "This is very good pizza!",new BigDecimal(30),savedRestaurant.getId());
+        expectedDto = new DishDTO("Pizza", "This is very good pizza!",new BigDecimal(30),savedRestaurant.getId());
     }
 
     @Test
@@ -51,9 +60,9 @@ public class DishMapperTest {
     void shouldMapToListDto() {
         //Given
         List<Dish> dishes = List.of(
-                new Dish("Pizza", "This is very good pizza"),
-                new Dish("Burger", "Delicious burger"),
-                new Dish("Pasta", "Homemade pasta")
+                new Dish("Pizza", "This is very good pizza",new BigDecimal(30),restaurant),
+                new Dish("Burger", "Delicious burger",new BigDecimal(30),restaurant),
+                new Dish("Pasta", "Homemade pasta",new BigDecimal(30),restaurant)
         );
         //When
         List<DishDTO> attemptList = dishMapper.mapToListDto(dishes);

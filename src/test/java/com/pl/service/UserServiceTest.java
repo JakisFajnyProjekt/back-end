@@ -6,6 +6,7 @@ import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
 import com.pl.repository.UserRepository;
 import com.pl.auth.Role;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,11 @@ public class UserServiceTest {
     private UserService userService;
 
     private User user1;
-    private UserDTO update;
-    private UserUpdateDTO userUpdateDTO;
+        User user2;
+        User user3;
+        User user4;
+
+    private UserDTO update;private UserUpdateDTO userUpdateDTO;
     private UserUpdateDTO userUpdateDTOWithNull;
     private List<User> userList;
 
@@ -35,9 +39,6 @@ public class UserServiceTest {
         user1 = new User("firstNameUser",
                 "lastNameUser", "email@gmail.com", "123456789qwErty_user1", Role.USER);
 
-        User user2;
-        User user3;
-        User user4;
         userList = List.of(
                 user2 = new User("firstNameUser",
                         "lastNameUser", "email_user2@gmail.com", "123456789Qwerty_user2", Role.USER),
@@ -54,8 +55,12 @@ public class UserServiceTest {
         userUpdateDTOWithNull = new UserUpdateDTO(null,null,"newEmail@gmail.com", null);
     }
 
+    @AfterEach
+    void cleanUpafter() {
+        userRepository.deleteAll();
+    }
     @BeforeEach
-    void cleanUp() {
+    void cleanUpaBefore() {
         userRepository.deleteAll();
     }
 
