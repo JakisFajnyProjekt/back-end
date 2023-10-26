@@ -31,7 +31,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
     }
 
     public DishDTO getDishById(Long dishId) {
-        Dish dish = getDishIfExist(dishId);
+        Dish dish = findEntity(dishRepository,dishId);
         LOGGER.info("Dish found with id" + dishId);
         return dishMapper.mapToDishDto(dish);
     }
@@ -47,7 +47,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
 
     @Transactional
     public void removeDish(Long dishId) {
-        Dish userById = getDishIfExist(dishId);
+        Dish userById = findEntity(dishRepository,dishId);
         dishRepository.delete(userById);
         LOGGER.info("Dish with id " + dishId + " deleted");
     }
@@ -100,28 +100,19 @@ public class DishService extends AbstractService<DishRepository, Dish> {
                     .requireNonNull(dishDTO.description(), "description of your dish must not be null");
             BigDecimal price = Objects
                     .requireNonNull(dishDTO.price());
-            Optional<Restaurant> findRestaurantInDb = Objects
-                    .requireNonNull(restaurantRepository.findById(dishDTO.restaurantId()),"restaurant must not be null");
+            Optional<Restaurant> restaurantOptional = restaurantRepository.findById(dishDTO.restaurantId());
+            if (restaurantOptional.isEmpty()) {
+                throw new NotFoundException("Restaurant Not Found");
+            }
             newDish.setName(name);
             newDish.setDescription(description);
             newDish.setPrice(price);
-            newDish.setRestaurant(findRestaurantInDb
-                    .orElseThrow(()-> {
-                        throw new NotFoundException("Restaurant Not Found");
-                    }));
+            newDish.setRestaurant(restaurantOptional.get());
         } catch (NullPointerException e) {
             LOGGER.error(e.getMessage());
             throw new NullPointerException("the dish name, description, price and restaurant cannot be empty.");
         }
         LOGGER.info("Dish object created");
         return newDish;
-    }
-
-    private Dish getDishIfExist(Long dishId) {
-        return dishRepository.findById(dishId)
-                .orElseThrow(() -> {
-                    LOGGER.error("Dish with given id not found");
-                    throw new  NotFoundException("Dish not found with given id " + dishId);
-                });
     }
 }
