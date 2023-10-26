@@ -14,7 +14,8 @@ public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleFoundException(NotFoundException notFoundException) {
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(notFoundException.getMessage(),
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                notFoundException.getMessage(),
                 HttpStatus.NOT_FOUND.toString(),
                 LocalDate.now());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiErrorResponse);
@@ -22,31 +23,25 @@ public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserEmailTakenException.class)
     public ResponseEntity<ApiErrorResponse> handleUserEmailTakenException(UserEmailTakenException userEmailTakenException) {
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(userEmailTakenException.getMessage(),
-                HttpStatus.BAD_REQUEST.toString(),
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                userEmailTakenException.getMessage(),
+                HttpStatus.CONFLICT.toString(),
                 LocalDate.now());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiErrorResponse);
     }
 
     @ExceptionHandler(InvalidValuesException.class)
     public ResponseEntity<ApiErrorResponse> handleInvalidValueException(InvalidValuesException invalidValuesException) {
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(invalidValuesException.getMessage(),
-                HttpStatus.BAD_REQUEST.toString(),
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                invalidValuesException.getMessage(),
+                HttpStatus.UNPROCESSABLE_ENTITY.toString(),
                 LocalDate.now());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(apiErrorResponse);
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ApiErrorResponse> handleNullPointerException(NullPointerException invalidValuesException) {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(invalidValuesException.getMessage(),
-                HttpStatus.BAD_REQUEST.toString(),
-                LocalDate.now());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
-    }
-
-    @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<ApiErrorResponse> handleExpiredJwtException(ExpiredJwtException expiredJwtException) {
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(expiredJwtException.getMessage(),
                 HttpStatus.BAD_REQUEST.toString(),
                 LocalDate.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);

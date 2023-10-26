@@ -5,16 +5,14 @@ import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
 import com.pl.repository.UserRepository;
-import com.pl.security.Role;
+import com.pl.auth.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,33 +26,33 @@ public class UserServiceTest {
     private UserService userService;
 
     private User user1;
-    private User user2;
-    private User user3;
-    private User user4;
-    private UserDTO userDTO1;
-    private UserUpdateDTO userUpdateDTO;
+        User user2;
+        User user3;
+        User user4;
+
+    private UserDTO update;private UserUpdateDTO userUpdateDTO;
     private UserUpdateDTO userUpdateDTOWithNull;
     private List<User> userList;
 
     @BeforeEach
     void testData() {
-        user1 = new User("firstName_user1",
-                "lastName_user1", "email_user1", "123456789qwerty_user1", Role.USER);
+        user1 = new User("firstNameUser",
+                "lastNameUser", "email@gmail.com", "123456789qwErty_user1", Role.USER);
 
         userList = List.of(
-                user2 = new User("firstName_user2",
-                        "lastName_user2", "email_user2", "123456789qwerty_user2", Role.USER),
-                user3 = new User("firstName_user3",
-                        "lastName_user3", "email_user3", "123456789qwerty_user3", Role.USER),
-                user4 = new User("firstName_user4",
-                        "lastName_user4", "email_user4", "123456789qwerty_user4", Role.USER)
+                user2 = new User("firstNameUser",
+                        "lastNameUser", "email_user2@gmail.com", "123456789Qwerty_user2", Role.USER),
+                user3 = new User("firstNameUser",
+                        "lastNameUser", "email_user3@gmail.com", "123456789Qwerty_user3", Role.USER),
+                user4 = new User("firstNameUser",
+                        "lastNameUser", "email_user4@gmail.com", "123456789Qwerty_user4", Role.USER)
         );
 
-        userDTO1 = new UserDTO("firstName_dto",
-                "lastName_dto", "email", "123456789qwerty", Role.USER);
-
-        userUpdateDTO = new UserUpdateDTO("firstName_dto","lastName_dto","email");
-        userUpdateDTOWithNull = new UserUpdateDTO(null,null,"email");
+        update = new UserDTO("firstNameDto",
+                "lastNameDto", "email@gmail.com", "123456789Qwerty", Role.USER);
+        userUpdateDTO = new UserUpdateDTO("firstNameDto",
+                "lastNameDto", "email@gmail.com", "123456789Qwerty");
+        userUpdateDTOWithNull = new UserUpdateDTO(null,null,"newEmail@gmail.com", null);
     }
 
     @AfterEach
@@ -75,27 +73,29 @@ public class UserServiceTest {
         UserDTO userById = userService.getUserById(saveUser.getId());
 
         //Then
-        assertEquals("firstName_user1", userById.firstName());
-        assertEquals("lastName_user1", userById.lastName());
+        assertEquals("firstNameUser", userById.firstName());
+        assertEquals("lastNameUser", userById.lastName());
     }
 
     @Test
     void shouldHandleExceptionUserNotFoundTryingRetriveUserById() {
         //Given --> testData
-        long nonExistingUserId = 1;
+        long nonExistingUserId = 100L;
 
         //When
-        NotFoundException notFoundException = assertThrows(NotFoundException.class,
-                () -> userService.getUserById(nonExistingUserId));
+        NotFoundException notFoundException = assertThrows(
+                NotFoundException.class,
+                () -> userService.getUserById(nonExistingUserId)
+        );
 
         //Then
-        String expectedMessage = "Order not found with given id "+ nonExistingUserId;
+        String expectedMessage = "Not found with given id " + nonExistingUserId;
         String actualMessage = notFoundException.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
-    void shoudlFindAllUsersFromDb() {
+    void shouldFindAllUsersFromDb() {
         //Given
         userRepository.saveAll(userList);
 
@@ -138,18 +138,19 @@ public class UserServiceTest {
     }
 
     @Test
-    void shoudlHandleNotFoundExceptionWhileTryingToDeleteByWrongId() {
+    void shouldHandleNotFoundExceptionWhileTryingToDeleteByWrongId() {
         //Given
-        long nonexistingUserId = 100;
+        long nonExistingUserId = 100L;
 
-        //Whne
-        NotFoundException userNotFound = assertThrows(NotFoundException.class,
-                ()->userService.remove(nonexistingUserId));
-        String expectedMessage = "Order not found with given id " + nonexistingUserId; //need to change message
+        //When
+        NotFoundException userNotFound = assertThrows(
+                NotFoundException.class,
+                ()->userService.remove(nonExistingUserId)
+        );
+        String expectedMessage = "Not found with given id " + nonExistingUserId; //need to change message
+        String messageFromException = userNotFound.getMessage();
 
-        String meesageFromException = userNotFound.getMessage();
-
-        assertTrue(meesageFromException.contains(expectedMessage));
+        assertTrue(messageFromException.contains(expectedMessage));
     }
 
     @Test
@@ -162,8 +163,8 @@ public class UserServiceTest {
         UserDTO modifyUser = userService.edit(idOfUserInDb, userUpdateDTO);
 
         // Then
-        assertEquals("firstName_dto", modifyUser.firstName());
-        assertEquals("lastName_dto", modifyUser.lastName());
+        assertEquals("firstNameDto", modifyUser.firstName());
+        assertEquals("lastNameDto", modifyUser.lastName());
 
     }
 
@@ -187,13 +188,13 @@ public class UserServiceTest {
         //Given
         User savedUser = userRepository.save(user1);
         Long savedUserId = savedUser.getId();
-
         //When
         UserDTO updateWithNulls = userService.edit(savedUserId, userUpdateDTOWithNull);
 
-        //The
-        assertEquals("firstName_user1", updateWithNulls.firstName());
-        assertEquals("lastName_user1", updateWithNulls.lastName());
+        //Then
+        assertEquals("firstNameUser", updateWithNulls.firstName());
+        assertEquals("lastNameUser", updateWithNulls.lastName());
+        assertEquals("newEmail@gmail.com", updateWithNulls.email());
     }
 
 

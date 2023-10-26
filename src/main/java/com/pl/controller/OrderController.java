@@ -26,12 +26,12 @@ public class OrderController {
 
     @GetMapping("")
     public List<OrderDTO> list() {
-        return orderService.listOrders();
+        return orderService.list();
     }
 
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "",consumes = MediaType.APPLICATION_JSON_VALUE)
     public OrderDTO create(@Valid @RequestBody OrderCreateDTO order) {
-        return orderService.createOrder(order);
+        return orderService.create(order);
     }
 
     @DeleteMapping("/{orderId}")

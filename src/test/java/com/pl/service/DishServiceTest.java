@@ -106,7 +106,7 @@ public class DishServiceTest {
                 () -> dishService.getDishById(wrongDishID));
 
         //Thne
-        String expectedMessage = "Order not found with given id " + wrongDishID;
+        String expectedMessage = "Not found with given id " + wrongDishID;
         assertEquals(expectedMessage, notFoundException.getMessage());
     }
 
@@ -174,7 +174,7 @@ public class DishServiceTest {
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> dishService.removeDish(wrongId));
         //Thne
-        String expectedMessage = "Order not found with given id " + wrongId; //<-- need to change this message
+        String expectedMessage = "Not found with given id " + wrongId; //<-- need to change this message
         assertTrue(notFoundException.getMessage().contains(expectedMessage));
     }
 

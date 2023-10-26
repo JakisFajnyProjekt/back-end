@@ -1,4 +1,4 @@
-package com.pl.security;
+package com.pl.auth;
 
 public enum Role {
     USER,

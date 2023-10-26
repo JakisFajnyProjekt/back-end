@@ -1,8 +1,8 @@
-package com.pl.controller;
+package com.pl.auth;
 
-import com.pl.security.authentication.AuthenticationRequest;
-import com.pl.security.authentication.LoginResponse;
-import com.pl.security.authentication.RegisterRequest;
+import com.pl.auth.authentication.LoginRequest;
+import com.pl.auth.authentication.LoginResponse;
+import com.pl.auth.authentication.RegisterRequest;
 import com.pl.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
@@ -20,15 +20,12 @@ public class AuthenticationController {
     public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-    @PostMapping(value = "/register",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/register")
     public LoginResponse register(@Valid @RequestBody RegisterRequest request){
         return authenticationService.register(request);
-
     }
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody AuthenticationRequest request){
+    @PostMapping(value = "/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
         return ResponseEntity.ok(authenticationService.login(request));
     }
-
-
 }

@@ -9,7 +9,6 @@ import java.util.Objects;
 @Table(name = "dishes")
 @Entity
 public class Dish {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

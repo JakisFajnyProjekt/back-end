@@ -1,6 +1,5 @@
-package com.pl.security;
+package com.pl.auth;
 
-import com.pl.token.Token;
 import com.pl.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -8,8 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class LogoutService implements LogoutHandler {

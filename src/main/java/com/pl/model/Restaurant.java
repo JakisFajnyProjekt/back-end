@@ -8,6 +8,14 @@ import java.util.Objects;
 @Table(name = "restaurants")
 @Entity
 public class Restaurant {
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

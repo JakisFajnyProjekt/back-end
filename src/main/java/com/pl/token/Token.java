@@ -1,7 +1,6 @@
 package com.pl.token;
 
 import com.pl.model.User;
-import com.pl.security.authentication.RegisterRequest;
 import jakarta.persistence.*;
 
 

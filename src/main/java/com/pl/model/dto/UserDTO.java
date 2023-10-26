@@ -1,6 +1,6 @@
 package com.pl.model.dto;
 
-import com.pl.security.Role;
+import com.pl.auth.Role;
 
 public record UserDTO(
         String firstName,
