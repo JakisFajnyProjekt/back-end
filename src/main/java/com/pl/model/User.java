@@ -1,6 +1,6 @@
 package com.pl.model;
 
-import com.pl.security.Role;
+import com.pl.auth.Role;
 import com.pl.token.Token;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
     @ManyToMany
     @JoinTable(name = "user_address",
@@ -37,6 +37,22 @@ public class User implements UserDetails {
     private List<Token> tokens;
 
     public User() {
+    }
+
+    public Set<Address> getDeliveryAddresses() {
+        return deliveryAddresses;
+    }
+
+    public void setDeliveryAddresses(Set<Address> deliveryAddresses) {
+        this.deliveryAddresses = deliveryAddresses;
+    }
+
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
     }
 
     public User(String firstName, String lastName, String email, String password, Role role) {

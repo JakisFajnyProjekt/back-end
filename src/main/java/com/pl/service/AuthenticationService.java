@@ -1,14 +1,15 @@
 package com.pl.service;
 
-import com.pl.exception.NotFoundException;
+import com.pl.exception.AuthenticationError;
+import com.pl.exception.AuthenticationErrorException;
 import com.pl.exception.UserEmailTakenException;
 import com.pl.model.User;
 import com.pl.repository.UserRepository;
-import com.pl.security.JwtService;
-import com.pl.security.Role;
-import com.pl.security.authentication.AuthenticationRequest;
-import com.pl.security.authentication.LoginResponse;
-import com.pl.security.authentication.RegisterRequest;
+import com.pl.auth.JwtService;
+import com.pl.auth.Role;
+import com.pl.auth.authentication.LoginRequest;
+import com.pl.auth.authentication.LoginResponse;
+import com.pl.auth.authentication.RegisterRequest;
 import com.pl.token.Token;
 import com.pl.token.TokenRepository;
 import com.pl.token.TokenType;
@@ -74,23 +75,29 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public LoginResponse login(AuthenticationRequest request) {
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new NotFoundException("Wrong email or password"));
-        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    request.getEmail(),
-                    request.getPassword())
-            );
-            removeUserTokenIfExists(user);
-            var jwtToken = jwtService.generateToken(user);
-            saveUserToken(user, jwtToken);
-            return LoginResponse.builder()
-                    .token(jwtToken)
-                    .build();
-        } else {
-            throw new NotFoundException("Wrong email or password");
+    public LoginResponse login(LoginRequest request){
+        try {
+            var user = userRepository.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new AuthenticationErrorException(AuthenticationError.EMAIL, "Email not found"));
+            if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword())
+                );
+                removeUserTokenIfExists(user);
+                var jwtToken = jwtService.generateToken(user);
+                saveUserToken(user, jwtToken);
+                return LoginResponse.builder()
+                        .token(jwtToken)
+                        .build();
+            } else {
+                throw new AuthenticationErrorException(AuthenticationError.PASSWORD, "Password not found");
+            }
+        } catch (AuthenticationErrorException ex) {
+            throw new RuntimeException(ex.getMessage());
+
         }
+
     }
 
     public void emailCheck(String email) {

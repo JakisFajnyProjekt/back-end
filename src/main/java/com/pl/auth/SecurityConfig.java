@@ -1,4 +1,4 @@
-package com.pl.security;
+package com.pl.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

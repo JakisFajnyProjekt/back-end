@@ -1,14 +1,15 @@
 package com.pl.service;
 
+import com.pl.exception.AuthenticationErrorException;
 import com.pl.exception.NotFoundException;
 import com.pl.exception.UserEmailTakenException;
 import com.pl.model.User;
 import com.pl.repository.UserRepository;
-import com.pl.security.JwtService;
-import com.pl.security.Role;
-import com.pl.security.authentication.AuthenticationRequest;
-import com.pl.security.authentication.LoginResponse;
-import com.pl.security.authentication.RegisterRequest;
+import com.pl.auth.JwtService;
+import com.pl.auth.Role;
+import com.pl.auth.authentication.LoginRequest;
+import com.pl.auth.authentication.LoginResponse;
+import com.pl.auth.authentication.RegisterRequest;
 import com.pl.token.TokenRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,7 +104,7 @@ public class AuthenticationServiceTest {
     @Test
     void shouldAuthenticateUser() {
         // Given
-        AuthenticationRequest request = new AuthenticationRequest();
+        LoginRequest request = new LoginRequest();
         request.setEmail("test@example.com");
         request.setPassword("testPassword");
 
@@ -125,9 +126,9 @@ public class AuthenticationServiceTest {
     @Test
     void shouldHandleExceptionWhenUserIsNotFound() {
         // Given
-        AuthenticationRequest request = new AuthenticationRequest();
-        request.setEmail("email@email.com");
-        request.setPassword("password");
+        LoginRequest request = new LoginRequest();
+        request.setEmail("email@gmail.com");
+        request.setPassword("Qwe123");
 
         when(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
@@ -140,15 +141,15 @@ public class AuthenticationServiceTest {
         // When
         // Then
         assertThatThrownBy(() -> authenticationService.login(request))
-                .isInstanceOf(NotFoundException.class);
+                .isInstanceOf(RuntimeException.class);
     }
 
     @Test
-    void shoudlHandleExceptionWhenUserPasswordIsWrong(){
+    void shouldHandleExceptionWhenUserPasswordIsWrong(){
         //Given
-        AuthenticationRequest request = new AuthenticationRequest();
+        LoginRequest request = new LoginRequest();
         request.setEmail("test@example.com");
-        request.setPassword("testPassword");
+        request.setPassword("testPassword123");
 
         User user = new User();
         user.setEmail(request.getEmail());
@@ -158,12 +159,12 @@ public class AuthenticationServiceTest {
         when(passwordEncoder.matches(request.getPassword(), user.getPassword())).thenReturn(false);
 
         //When && Then
-        String exceptedMessage = "Wrong email or password";
-        NotFoundException notFoundException = assertThrows(NotFoundException.class,
+        String exceptedMessage = "Password not found";
+        RuntimeException notFoundException = assertThrows(RuntimeException.class,
                 () -> authenticationService.login(request));
         assertEquals(exceptedMessage,notFoundException.getMessage());
         assertThatThrownBy(()-> authenticationService.login(request))
-                .isInstanceOf(NotFoundException.class);
+                .isInstanceOf(RuntimeException.class);
 
 
     }

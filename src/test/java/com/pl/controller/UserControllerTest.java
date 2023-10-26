@@ -1,11 +1,11 @@
 package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pl.auth.JwtService;
 import com.pl.model.User;
+import com.pl.auth.Role;
 import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
-import com.pl.security.JwtService;
-import com.pl.security.Role;
 import com.pl.service.AuthenticationService;
 import com.pl.service.UserService;
 import com.pl.token.TokenRepository;
@@ -48,7 +48,6 @@ public class UserControllerTest {
     private UserDTO userDTO2;
     private UserDTO userDTO3;
     private List<UserDTO> listOfUsers;
-
 
     @BeforeEach
     public void testData() {
@@ -119,7 +118,7 @@ public class UserControllerTest {
     public void shouldModifyUser() throws Exception {
         // Given
         long userId = 1L;
-        UserUpdateDTO userUpdateDTO = new UserUpdateDTO("differentFirstName", "newLastName", "email");
+        UserUpdateDTO userUpdateDTO = new UserUpdateDTO("differentFirstName", "newLastName", "email@gmail.com", "Password123");
 
         // When
         mockMvc.perform(MockMvcRequestBuilders.put("/api/users/{userId}", userId)
