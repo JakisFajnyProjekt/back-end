@@ -97,7 +97,7 @@ public class DishServiceTest {
     }
 
     @Test
-    void shoudlHandleExceptionWhenDishIdIsWrong() {
+    void shouldHandleExceptionWhenDishIdIsWrong() {
         //Given
         long wrongDishID = 1231;
 
@@ -111,7 +111,7 @@ public class DishServiceTest {
     }
 
     @Test
-    void shoudReturnEmptyListWhenDishListAreEmpty() {
+    void shouldReturnEmptyListWhenDishListAreEmpty() {
         //Give
         int emptyListOfDishes =0;
 
