@@ -1,7 +1,10 @@
 package com.pl.auth.authentication;
 
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.Objects;
 
+@ResponseBody
 public class LoginResponse {
     private String token;
 
@@ -32,7 +35,6 @@ public class LoginResponse {
             this.token = token;
             return this;
         }
-
         public LoginResponse build() {
             return new LoginResponse(this);
         }

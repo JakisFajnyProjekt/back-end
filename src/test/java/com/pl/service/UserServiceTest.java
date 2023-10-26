@@ -26,34 +26,32 @@ public class UserServiceTest {
 
     private User user1;
     private UserDTO update;
-    private UserDTO updateWithNull;
-    private User user2;
-    private User user3;
-    private User user4;
-    private UserDTO userDTO1;
     private UserUpdateDTO userUpdateDTO;
     private UserUpdateDTO userUpdateDTOWithNull;
     private List<User> userList;
 
     @BeforeEach
     void testData() {
-        user1 = new User("firstName_user1",
-                "lastName_user1", "email_user1", "123456789qwerty_user1", Role.USER);
+        user1 = new User("firstNameUser",
+                "lastNameUser", "email@gmail.com", "123456789qwErty_user1", Role.USER);
 
         User user2;
         User user3;
         User user4;
         userList = List.of(
-                user2 = new User("firstName_user2",
-                        "lastName_user2", "email_user2", "123456789qwerty_user2", Role.USER),
-                user3 = new User("firstName_user3",
-                        "lastName_user3", "email_user3", "123456789qwerty_user3", Role.USER),
-                user4 = new User("firstName_user4",
-                        "lastName_user4", "email_user4", "123456789qwerty_user4", Role.USER)
+                user2 = new User("firstNameUser",
+                        "lastNameUser", "email_user2@gmail.com", "123456789Qwerty_user2", Role.USER),
+                user3 = new User("firstNameUser",
+                        "lastNameUser", "email_user3@gmail.com", "123456789Qwerty_user3", Role.USER),
+                user4 = new User("firstNameUser",
+                        "lastNameUser", "email_user4@gmail.com", "123456789Qwerty_user4", Role.USER)
         );
 
-        update = new UserDTO("firstName_dto",
-                "lastName_dto", "email", "123456789qwerty", Role.USER);
+        update = new UserDTO("firstNameDto",
+                "lastNameDto", "email@gmail.com", "123456789Qwerty", Role.USER);
+        userUpdateDTO = new UserUpdateDTO("firstNameDto",
+                "lastNameDto", "email@gmail.com", "123456789Qwerty");
+        userUpdateDTOWithNull = new UserUpdateDTO(null,null,"newEmail@gmail.com", null);
     }
 
     @BeforeEach
@@ -70,27 +68,29 @@ public class UserServiceTest {
         UserDTO userById = userService.getUserById(saveUser.getId());
 
         //Then
-        assertEquals("firstName_user1", userById.firstName());
-        assertEquals("lastName_user1", userById.lastName());
+        assertEquals("firstNameUser", userById.firstName());
+        assertEquals("lastNameUser", userById.lastName());
     }
 
     @Test
     void shouldHandleExceptionUserNotFoundTryingRetriveUserById() {
         //Given --> testData
-        long nonExistingUserId = 1;
+        long nonExistingUserId = 100L;
 
         //When
-        NotFoundException notFoundException = assertThrows(NotFoundException.class,
-                () -> userService.getUserById(nonExistingUserId));
+        NotFoundException notFoundException = assertThrows(
+                NotFoundException.class,
+                () -> userService.getUserById(nonExistingUserId)
+        );
 
         //Then
-        String expectedMessage = "Order not found with given id "+ nonExistingUserId;
+        String expectedMessage = "Not found with given id " + nonExistingUserId;
         String actualMessage = notFoundException.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
-    void shoudlFindAllUsersFromDb() {
+    void shouldFindAllUsersFromDb() {
         //Given
         userRepository.saveAll(userList);
 
@@ -158,8 +158,8 @@ public class UserServiceTest {
         UserDTO modifyUser = userService.edit(idOfUserInDb, userUpdateDTO);
 
         // Then
-        assertEquals("firstName_dto", modifyUser.firstName());
-        assertEquals("lastName_dto", modifyUser.lastName());
+        assertEquals("firstNameDto", modifyUser.firstName());
+        assertEquals("lastNameDto", modifyUser.lastName());
 
     }
 
@@ -183,13 +183,13 @@ public class UserServiceTest {
         //Given
         User savedUser = userRepository.save(user1);
         Long savedUserId = savedUser.getId();
-
         //When
         UserDTO updateWithNulls = userService.edit(savedUserId, userUpdateDTOWithNull);
 
         //Then
-        assertEquals("firstName_user1", updateWithNulls.firstName());
-        assertEquals("lastName_user1", updateWithNulls.lastName());
+        assertEquals("firstNameUser", updateWithNulls.firstName());
+        assertEquals("lastNameUser", updateWithNulls.lastName());
+        assertEquals("newEmail@gmail.com", updateWithNulls.email());
     }
 
 

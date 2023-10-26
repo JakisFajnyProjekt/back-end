@@ -1,7 +1,10 @@
 package com.pl.auth.authentication;
 
-public class LoginRequest extends AbstractAuthRequest {
+import io.swagger.v3.oas.models.parameters.RequestBody;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
+public class LoginRequest extends AbstractAuthRequest {
     public LoginRequest() {}
 
     public LoginRequest(String email, String password) {

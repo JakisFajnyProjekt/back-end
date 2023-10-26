@@ -1,8 +1,9 @@
 package com.pl.auth.authentication;
 
+import io.swagger.v3.oas.models.parameters.RequestBody;
 import jakarta.validation.constraints.*;
 
-public abstract class AbstractAuthRequest {
+public abstract class AbstractAuthRequest extends RequestBody {
     @Pattern(
             regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
             message = "{validation.email.pattern.message}"

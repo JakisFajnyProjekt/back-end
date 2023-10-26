@@ -1,5 +1,6 @@
 package com.pl.controller;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.auth.AuthenticationController;
 import com.pl.auth.authentication.LoginRequest;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,9 +49,9 @@ public class AuthenticationControllerTest {
         // given
         RegisterRequest registerRequest = new RegisterRequest();
         registerRequest.setEmail("test@example.com");
-        registerRequest.setPassword("password");
-        registerRequest.setLastName("Test User");
-        registerRequest.setFirstName("Test User");
+        registerRequest.setPassword("Password123");
+        registerRequest.setLastName("Test");
+        registerRequest.setFirstName("Test");
 
         LoginResponse loginResponse = new LoginResponse
                 ("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
@@ -71,22 +73,19 @@ public class AuthenticationControllerTest {
         // given
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail("test@example.com");
-        loginRequest.setPassword("password");
+        loginRequest.setPassword("Password123");
 
-
-        LoginResponse loginResponse = new LoginResponse
-                ("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+        LoginResponse loginResponse = new LoginResponse(
+                "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
 
         when(authenticationService.login(loginRequest)).thenReturn(loginResponse);
 
         // when
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(asJsonString(loginRequest)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(asJsonString(loginResponse)));
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(content().json(asJsonString(loginResponse)));
     }
-
-
 }
