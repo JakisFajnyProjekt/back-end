@@ -1,8 +1,5 @@
 package com.pl.exception;
 
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-
 public class AuthenticationErrorException extends RuntimeException {
     private final AuthenticationError type;
     private final String message;

@@ -5,13 +5,13 @@ import jakarta.validation.constraints.Pattern;
 
 
 public class RegisterRequest extends AbstractAuthRequest {
-    @Pattern(regexp = "^.{2,}$", message = "{validation.name.min}")
-    @Pattern(regexp = "^.{0,50}$", message = "{validation.name.max}")
-    @Pattern(regexp = "^\\D*$", message = "{validation.name.digitsNotAllowed}")
+    @Pattern(regexp = "^.{2,}$", message = "${validation.name.min}")
+    @Pattern(regexp = "^.{0,50}$", message = "${validation.name.max}")
+    @Pattern(regexp = "^\\D*$", message = "${validation.name.digitsNotAllowed}")
     private String firstName;
-    @Pattern(regexp = "^.{2,}$", message = "{validation.name.min}")
-    @Pattern(regexp = "^.{0,50}$", message = "{validation.name.max}")
-    @Pattern(regexp = "^\\D*$", message = "{validation.name.digitsNotAllowed}")
+    @Pattern(regexp = "^.{2,}$", message = "${validation.name.min}")
+    @Pattern(regexp = "^.{0,50}$", message = "${validation.name.max}")
+    @Pattern(regexp = "^\\D*$", message = "${validation.name.digitsNotAllowed}")
     private String lastName;
 
     public RegisterRequest() {

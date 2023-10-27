@@ -1,7 +1,6 @@
 package com.pl.exception;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import com.pl.config.MessagePropertiesConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,17 +11,20 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestControllerAdvice
-@PropertySource("classpath:messages.properties")
 public class AuthenticationErrorExceptionHandler {
 
-    @Value("${authentication.invalidCredentials}")
-    private String invalidCredentials;
+
+    private final MessagePropertiesConfig messagePropertiesConfig;
+
+    public AuthenticationErrorExceptionHandler(MessagePropertiesConfig messagePropertiesConfig) {
+        this.messagePropertiesConfig = messagePropertiesConfig;
+    }
 
     @ExceptionHandler(AuthenticationErrorException.class)
     public ResponseEntity<ValidationErrorResponse> handleAuthenticationErrorException(AuthenticationErrorException ex) {
         ValidationErrorResponse response = new ValidationErrorResponse() {
         };
-        response.setMessage(invalidCredentials);
+        response.setMessage(messagePropertiesConfig.getInvalidCredentials());
         AuthenticationError cause = ex.getType();
         if (Objects.equals(cause, AuthenticationError.EMAIL)) {
             response.setErrors(Map.of(ex.getType().toString(), Collections.singletonList(ex.getMessage()) ));
