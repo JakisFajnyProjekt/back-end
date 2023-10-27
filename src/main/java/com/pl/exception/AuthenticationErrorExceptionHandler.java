@@ -14,17 +14,17 @@ import java.util.Objects;
 public class AuthenticationErrorExceptionHandler {
 
 
-    private final MessagePropertiesConfig messagePropertiesConfig;
+    private final MessagePropertiesConfig message;
 
     public AuthenticationErrorExceptionHandler(MessagePropertiesConfig messagePropertiesConfig) {
-        this.messagePropertiesConfig = messagePropertiesConfig;
+        this.message = messagePropertiesConfig;
     }
 
     @ExceptionHandler(AuthenticationErrorException.class)
     public ResponseEntity<ValidationErrorResponse> handleAuthenticationErrorException(AuthenticationErrorException ex) {
         ValidationErrorResponse response = new ValidationErrorResponse() {
         };
-        response.setMessage(messagePropertiesConfig.getInvalidCredentials());
+        response.setMessage(message.getInvalidCredentials());
         AuthenticationError cause = ex.getType();
         if (Objects.equals(cause, AuthenticationError.EMAIL)) {
             response.setErrors(Map.of(ex.getType().toString(), Collections.singletonList(ex.getMessage()) ));

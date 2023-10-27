@@ -1,5 +1,6 @@
 package com.pl.service;
 
+import com.pl.config.MessagePropertiesConfig;
 import com.pl.exception.AuthenticationErrorException;
 import com.pl.exception.NotFoundException;
 import com.pl.exception.UserEmailTakenException;
@@ -18,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,12 +36,10 @@ import static org.mockito.Mockito.when;
 
 public class AuthenticationServiceTest {
 
-    @Value("${authentication.invalidCredentials.password}")
-    private String invalidPassword;
-
-
     @InjectMocks
     private AuthenticationService authenticationService;
+    @Mock
+    private MessagePropertiesConfig message;
 
     @Mock
     private UserRepository userRepository;
@@ -165,7 +165,7 @@ public class AuthenticationServiceTest {
         when(passwordEncoder.matches(request.getPassword(), user.getPassword())).thenReturn(false);
 
         //When && Then
-        String exceptedMessage = invalidPassword;
+        String exceptedMessage = message.getInvalidPassword();
         AuthenticationErrorException notFoundException = assertThrows(AuthenticationErrorException.class,
                 () -> authenticationService.login(request));
         assertEquals(exceptedMessage,notFoundException.getMessage());

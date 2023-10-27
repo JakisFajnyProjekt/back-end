@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
+@PropertySource("classpath:messages.properties")
 public class AuthenticationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
     private final UserRepository userRepository;
@@ -34,16 +35,18 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
-    private final MessagePropertiesConfig messagePropertiesConfig;
+
+    private final MessagePropertiesConfig message;
 
 
-    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, TokenRepository tokenRepository, MessagePropertiesConfig messagePropertiesConfig) {
+
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, TokenRepository tokenRepository, MessagePropertiesConfig message) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.tokenRepository = tokenRepository;
-        this.messagePropertiesConfig = messagePropertiesConfig;
+        this.message = message;
     }
 
     @Transactional
@@ -83,7 +86,7 @@ public class AuthenticationService {
 
     public LoginResponse login(LoginRequest request) {
             var user = userRepository.findByEmail(request.getEmail())
-                    .orElseThrow(() -> new AuthenticationErrorException(AuthenticationError.EMAIL, messagePropertiesConfig.getInvalidEmail()));
+                    .orElseThrow(() -> new AuthenticationErrorException(AuthenticationError.EMAIL, message.getInvalidEmail()));
             if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -96,14 +99,14 @@ public class AuthenticationService {
                         .token(jwtToken)
                         .build();
             } else {
-                throw new AuthenticationErrorException(AuthenticationError.PASSWORD, messagePropertiesConfig.getInvalidPassword());
+                throw new AuthenticationErrorException(AuthenticationError.PASSWORD, message.getInvalidPassword());
             }
     }
 
     public void emailCheck(String email) {
         Optional<User> byEmail = userRepository.findByEmail(email);
         if (byEmail.isPresent()) {
-            throw new UserEmailTakenException(messagePropertiesConfig.getEmailTaken());
+            throw new UserEmailTakenException(message.getEmailTaken());
         }
     }
 
