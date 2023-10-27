@@ -1,5 +1,6 @@
 package com.pl.service;
 
+import com.pl.config.MessagePropertiesConfig;
 import com.pl.exception.AuthenticationError;
 import com.pl.exception.AuthenticationErrorException;
 import com.pl.exception.UserEmailTakenException;
@@ -15,6 +16,8 @@ import com.pl.token.TokenRepository;
 import com.pl.token.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
+@PropertySource("classpath:messages.properties")
 public class AuthenticationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
     private final UserRepository userRepository;
@@ -32,12 +36,17 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
 
-    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, TokenRepository tokenRepository) {
+    private final MessagePropertiesConfig message;
+
+
+
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, TokenRepository tokenRepository, MessagePropertiesConfig message) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.tokenRepository = tokenRepository;
+        this.message = message;
     }
 
     @Transactional
@@ -75,10 +84,9 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public LoginResponse login(LoginRequest request){
-        try {
+    public LoginResponse login(LoginRequest request) {
             var user = userRepository.findByEmail(request.getEmail())
-                    .orElseThrow(() -> new AuthenticationErrorException(AuthenticationError.EMAIL, "Email not found"));
+                    .orElseThrow(() -> new AuthenticationErrorException(AuthenticationError.EMAIL, message.getInvalidEmail()));
             if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -91,19 +99,14 @@ public class AuthenticationService {
                         .token(jwtToken)
                         .build();
             } else {
-                throw new AuthenticationErrorException(AuthenticationError.PASSWORD, "Password not found");
+                throw new AuthenticationErrorException(AuthenticationError.PASSWORD, message.getInvalidPassword());
             }
-        } catch (AuthenticationErrorException ex) {
-            throw new RuntimeException(ex.getMessage());
-
-        }
-
     }
 
     public void emailCheck(String email) {
         Optional<User> byEmail = userRepository.findByEmail(email);
         if (byEmail.isPresent()) {
-            throw new UserEmailTakenException("Email already taken");
+            throw new UserEmailTakenException(message.getEmailTaken());
         }
     }
 

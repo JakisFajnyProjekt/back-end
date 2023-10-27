@@ -2,6 +2,7 @@ package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.auth.JwtService;
+import com.pl.config.MessagePropertiesConfig;
 import com.pl.model.User;
 import com.pl.auth.Role;
 import com.pl.model.dto.UserDTO;
@@ -40,6 +41,8 @@ public class UserControllerTest {
     private AuthenticationService userAuthenticationService;
     @MockBean
     private TokenRepository tokenRepository;
+    @MockBean
+    private  MessagePropertiesConfig message;
 
     private User user1;
     private User user2;

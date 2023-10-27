@@ -74,4 +74,3 @@ public class RegisterRequest extends AbstractAuthRequest {
         }
     }
 }
-

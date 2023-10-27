@@ -1,5 +1,6 @@
 package com.pl.service;
 
+import com.pl.config.MessagePropertiesConfig;
 import com.pl.exception.AuthenticationErrorException;
 import com.pl.exception.NotFoundException;
 import com.pl.exception.UserEmailTakenException;
@@ -18,6 +19,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +38,8 @@ public class AuthenticationServiceTest {
 
     @InjectMocks
     private AuthenticationService authenticationService;
+    @Mock
+    private MessagePropertiesConfig message;
 
     @Mock
     private UserRepository userRepository;
@@ -141,7 +147,7 @@ public class AuthenticationServiceTest {
         // When
         // Then
         assertThatThrownBy(() -> authenticationService.login(request))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(AuthenticationErrorException.class);
     }
 
     @Test
@@ -159,12 +165,12 @@ public class AuthenticationServiceTest {
         when(passwordEncoder.matches(request.getPassword(), user.getPassword())).thenReturn(false);
 
         //When && Then
-        String exceptedMessage = "Password not found";
-        RuntimeException notFoundException = assertThrows(RuntimeException.class,
+        String exceptedMessage = message.getInvalidPassword();
+        AuthenticationErrorException notFoundException = assertThrows(AuthenticationErrorException.class,
                 () -> authenticationService.login(request));
         assertEquals(exceptedMessage,notFoundException.getMessage());
         assertThatThrownBy(()-> authenticationService.login(request))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(AuthenticationErrorException.class);
 
 
     }

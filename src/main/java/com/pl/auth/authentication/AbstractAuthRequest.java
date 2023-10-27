@@ -17,6 +17,8 @@ public abstract class AbstractAuthRequest extends RequestBody {
     @Pattern(regexp = "^(?=.*[A-Z]).*$", message = "{validation.password.capital}")
     protected String password;
 
+    protected AbstractAuthRequest() {}
+
     public String getEmail() {
         return email;
     }
