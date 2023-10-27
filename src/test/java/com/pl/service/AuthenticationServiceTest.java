@@ -18,6 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+@PropertySource("classpath:messages.properties")
 public class AuthenticationServiceTest {
+
+    @Value("${authentication.invalidCredentials.password}")
+    private String invalidPassword;
+
 
     @InjectMocks
     private AuthenticationService authenticationService;
@@ -141,7 +148,7 @@ public class AuthenticationServiceTest {
         // When
         // Then
         assertThatThrownBy(() -> authenticationService.login(request))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(AuthenticationErrorException.class);
     }
 
     @Test
@@ -159,12 +166,12 @@ public class AuthenticationServiceTest {
         when(passwordEncoder.matches(request.getPassword(), user.getPassword())).thenReturn(false);
 
         //When && Then
-        String exceptedMessage = "Password not found";
-        RuntimeException notFoundException = assertThrows(RuntimeException.class,
+        String exceptedMessage = invalidPassword;
+        AuthenticationErrorException notFoundException = assertThrows(AuthenticationErrorException.class,
                 () -> authenticationService.login(request));
         assertEquals(exceptedMessage,notFoundException.getMessage());
         assertThatThrownBy(()-> authenticationService.login(request))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(AuthenticationErrorException.class);
 
 
     }
