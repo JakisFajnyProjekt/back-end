@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/dishes")
@@ -25,12 +24,12 @@ public class DishController {
         return dishService.getDishById(dishId);
     }
 
-    @GetMapping("")
+    @GetMapping()
     public List<DishDTO> list() {
         return dishService.listDishes();
     }
 
-    @PostMapping( consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public DishDTO create(@RequestBody DishDTO dish) {
         return dishService.createDish(dish);
     }

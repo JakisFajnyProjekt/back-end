@@ -31,7 +31,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
     }
 
     public DishDTO getDishById(Long dishId) {
-        Dish dish = findEntity(dishRepository,dishId);
+        Dish dish = findEntity(dishRepository, dishId);
         LOGGER.info("Dish found with id" + dishId);
         return dishMapper.mapToDishDto(dish);
     }
@@ -47,7 +47,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
 
     @Transactional
     public void removeDish(Long dishId) {
-        Dish userById = findEntity(dishRepository,dishId);
+        Dish userById = findEntity(dishRepository, dishId);
         dishRepository.delete(userById);
         LOGGER.info("Dish with id " + dishId + " deleted");
     }
