@@ -2,9 +2,7 @@ package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.model.Dish;
-import com.pl.model.Restaurant;
 import com.pl.model.dto.DishDTO;
-import com.pl.repository.RestaurantRepository;
 import com.pl.service.DishService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,14 +48,13 @@ public class DishControllerTest {
     private List<DishDTO> dishList;
 
 
-
     @BeforeEach
     void testData() {
         dish1 = new Dish("dishName1", "description1");
         dishDTO1 = new DishDTO("nameDto", "descriptionDTO", new BigDecimal(30), 1L);
         dishDTO2 = new DishDTO("nameDto2", "descriptionDTO2", new BigDecimal(12), 1L);
         dishDTOForUpdateName = new DishDTO("nameUpdate", "descriptionDTO", new BigDecimal(30), 1L);
-        dishList = List.of(dishDTO1,dishDTO2);
+        dishList = List.of(dishDTO1, dishDTO2);
 
     }
 
@@ -71,7 +68,6 @@ public class DishControllerTest {
     @Test
     void mockCheck() {
         assertNotNull(mockMvc);
-
     }
 
     @Test
@@ -117,7 +113,7 @@ public class DishControllerTest {
 
         //When & Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/dishes")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$.[0].name").value("nameDto"))
@@ -143,21 +139,19 @@ public class DishControllerTest {
     }
 
     @Test
-    void shouldModifyDish() throws Exception{
+    void shouldModifyDish() throws Exception {
         //Given
         long dishId = 12L;
         when(dishService.createDish(dishDTO1)).thenReturn(dishDTO1);
         doNothing().when(dishService).editDish(dishId, dishDTOForUpdateName);
 
 
-        //When
+        //When && Then
         mockMvc.perform(MockMvcRequestBuilders.put("/api/dishes/" + dishId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(dishDTOForUpdateName)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dishDTOForUpdateName)))
                 .andExpect(status().isAccepted());
     }
-
-
 
 
 }
