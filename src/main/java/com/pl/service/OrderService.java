@@ -54,9 +54,9 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
         userRepository.findById(createOrder.userId())
                 .orElseThrow(() -> new NotFoundException("User Not Found"));
         restaurantRepository.findById(createOrder.restaurantId())
-                .orElseThrow(() -> new NotFoundException("Restaurant NotFound"));
+                .orElseThrow(() -> new NotFoundException("Restaurant Not Found"));
         addressRepository.findById(createOrder.deliveryAddressId())
-                .orElseThrow(() -> new NotFoundException("Address not found"));
+                .orElseThrow(() -> new NotFoundException("Address Not found"));
         LOGGER.info("presence checked");
         return true;
     }
@@ -93,12 +93,10 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
 
 
     @Transactional
-    public OrderDTO remove(long orderId) {
+    public void remove(long orderId) {
         Order order = findEntity(orderRepository, orderId);
         orderRepository.delete(order);
-        LOGGER.info("Order with id " + order + " deleted");
-
-        return orderMapper.mapToOrderDto(order);
+        LOGGER.info("Order with id " + orderId + " deleted");
     }
 
 }
