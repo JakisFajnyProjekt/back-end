@@ -7,6 +7,7 @@ import com.pl.model.dto.OrderCreateDTO;
 import com.pl.model.dto.OrderDTO;
 import com.pl.repository.*;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -76,7 +77,7 @@ public class OrderServiceTest {
         order1 = new OrderDTO(LocalDateTime.now(),new BigDecimal(60),user1.getId(), dishListLong,address.getId(),restaurant.getId());
         order2 = new OrderDTO(LocalDateTime.now(),new BigDecimal(60),user1.getId(), dishListLong,address.getId(),restaurant.getId());
         orderNoDto = new Order(LocalDateTime.now(),new BigDecimal(60),"status",user1, dishList,address,restaurant);
-        orderRepository.save(orderNoDto);
+
         orderCreateWithWrongUserId = new OrderCreateDTO(12L, dishListLong,address.getId(),restaurant.getId());
         orderCreateWithWrongRestaurantrId = new OrderCreateDTO(user1.getId(), dishListLong,address.getId(),12020L);
         orderCreateWithWrongAddressrId = new OrderCreateDTO(user1.getId(), dishListLong,1L,restaurant.getId());
@@ -92,7 +93,7 @@ public class OrderServiceTest {
 
 
 
-    @BeforeEach
+    @AfterEach
      void cleanUpBeforeEach(){
         userRepository.deleteAll();
         addressRepository.deleteAll();
@@ -202,13 +203,16 @@ public class OrderServiceTest {
     @Test
     void shouldRemoveOrder() {
         // Given
+        Order orderToBeDeleted = orderRepository.save(orderNoDto);
+        long orderId = orderToBeDeleted.getId();
 
 
         // When
-        orderService.remove(orderNoDto.getId());
+        orderService.remove(orderId);
 
         // Then
-        assertFalse(orderRepository.existsById(orderNoDto.getId()));
+        assertTrue(orderRepository.existsById(orderId));
+
     }
 
 
