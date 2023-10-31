@@ -13,7 +13,8 @@ public class RestaurantMapper {
     }
 
     public RestaurantDTO mapToRestaurantDto(Restaurant restaurant) {
-        return new RestaurantDTO(restaurant.getName());
+        return new RestaurantDTO(restaurant.getName(),
+                restaurant.getAddress().getId());
     }
 
     public List<RestaurantDTO> mapToListDto(final List<Restaurant> restaurants) {

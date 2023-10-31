@@ -1,5 +1,6 @@
 package com.pl.mapper;
 
+import com.pl.model.Address;
 import com.pl.model.Restaurant;
 import com.pl.model.dto.RestaurantDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,9 +23,9 @@ public class RestaurantMapperTest {
 
     @BeforeEach
     void testData() {
-        restaurant = new Restaurant("Luigi");
-        restaurantDto = new RestaurantDTO("Luigi");
-        expectedDto = new RestaurantDTO("Luigi");
+        restaurant = new Restaurant("Luigi",new Address());
+        restaurantDto = new RestaurantDTO("Luigi",1L);
+        expectedDto = new RestaurantDTO("Luigi",1L);
 
     }
 
