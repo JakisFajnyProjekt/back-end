@@ -53,7 +53,7 @@ public class OrderMapperTest {
         dish2 = new Dish("name2", "description2");
         user = new User("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
         order1 = new Order();
-        address = new Address("12", "street", "city", "64-100", Set.of(user), List.of(order1));
+        address = new Address("12", "street", "city", "64-100");
         order1 = new Order(LocalDateTime.now(),
                 BigDecimal.valueOf(100), "CREATED", user, List.of(dish1, dish2), address, restaurant
         );

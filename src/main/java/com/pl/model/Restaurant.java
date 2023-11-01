@@ -4,17 +4,11 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "restaurants")
 @Entity
 public class Restaurant {
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +21,20 @@ public class Restaurant {
     private Order order;
 
     @OneToOne
+    @JoinTable(name = "restaurant_address",
+    joinColumns = @JoinColumn (name = "restaurant_id"),
+    inverseJoinColumns = @JoinColumn(name = "address_id"))
     private Address address;
 
     public Restaurant() {
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Restaurant(String name) {

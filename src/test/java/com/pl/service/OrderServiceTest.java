@@ -65,7 +65,7 @@ public class OrderServiceTest {
 
         user1 = new User("firstName","lastName","email@email.com","password", Role.USER);
         userRepository.save(user1);
-        address = new Address("address","address","address","address", null,null);
+        address = new Address("address","address","address","address");
         addressRepository.save(address);
         restaurant = new Restaurant("name");
         restaurantRepository.save(restaurant);
