@@ -28,8 +28,10 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
     public List<AddressDTO> list(){
         List<Address> addresses = addressRepository.findAll();
         if (addresses.isEmpty()) {
+            LOGGER.info("no addresses found");
             return new ArrayList<>();
         }
+        LOGGER.info("list of " + addresses.size() + " founded");
         return addresses.stream()
                 .map(addressMapper::mapToDTO)
                 .toList();
