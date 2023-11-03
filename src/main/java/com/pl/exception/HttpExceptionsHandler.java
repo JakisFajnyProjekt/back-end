@@ -46,6 +46,13 @@ public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
                 LocalDate.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException illegalArgumentException) {
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(illegalArgumentException.getMessage(),
+                HttpStatus.BAD_REQUEST.toString(),
+                LocalDate.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
+    }
 
 
 }

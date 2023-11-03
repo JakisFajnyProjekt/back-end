@@ -23,8 +23,6 @@ public class Address {
     @OneToMany(mappedBy = "deliveryAddress")
     private List<Order> orders;
 
-    @OneToOne
-    private Restaurant restaurant;
 
     public Address() {
 
