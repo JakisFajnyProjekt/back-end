@@ -36,6 +36,10 @@ public class Restaurant {
         this.name = name;
     }
 
+    public Restaurant(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
 
     public long getId() {
         return id;
