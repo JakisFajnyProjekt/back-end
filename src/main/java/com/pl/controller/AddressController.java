@@ -23,13 +23,12 @@ public class AddressController {
     }
 
     @GetMapping("/all")
-    public List<AddressDTO> list(){
+    public List<AddressDTO> list() {
         return addressService.list();
     }
 
     @GetMapping("{addressId}")
-    public AddressDTO findById(@PathVariable long addressId){
+    public AddressDTO findById(@PathVariable long addressId) {
         return addressService.getAddressById(addressId);
     }
-
 }

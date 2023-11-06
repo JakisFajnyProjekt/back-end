@@ -21,8 +21,8 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
         this.addressMapper = addressMapper;
     }
 
-    public AddressDTO getAddressById(Long addresId) {
-        Address findAddress = findEntity(addressRepository, addresId);
+    public AddressDTO getAddressById(Long addressId) {
+        Address findAddress = findEntity(addressRepository, addressId);
         LOGGER.info("addres finded with id " + findAddress.getId());
         return addressMapper.mapToDTO(findAddress);
     }
