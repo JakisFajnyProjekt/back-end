@@ -41,9 +41,9 @@ public class RestaurantServiceTest {
 
     @BeforeEach
     void dataForTests(){
-        address = new Address("123","street","city","postalCode",null,null);
-        address2= new Address("123","street","city","postalCode",null,null);
-        address3 = new Address("123","street","city","postalCode",null,null);
+        address = new Address("123","street","city","postalCode");
+        address2= new Address("123","street","city","postalCode");
+        address3 = new Address("123","street","city","postalCode");
         restaurant = new Restaurant("restaurant");
         restaurant1 = new Restaurant("restaurant",address);
         restaurant2 = new Restaurant("restaurant",address2);

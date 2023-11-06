@@ -3,6 +3,7 @@ package com.pl.model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -22,20 +23,17 @@ public class Address {
     @OneToMany(mappedBy = "deliveryAddress")
     private List<Order> orders;
 
-    @OneToOne
-    private Restaurant restaurant;
 
     public Address() {
 
     }
 
-    public Address(String houseNumber, String street, String city, String postalCode, Set<User> user, List<Order> orders) {
+    public Address(String houseNumber, String street, String city, String postalCode) {
         this.houseNumber = houseNumber;
         this.street = street;
         this.city = city;
         this.postalCode = postalCode;
-        this.user = user;
-        this.orders = orders;
+
     }
 
     public long getId() {
@@ -92,5 +90,18 @@ public class Address {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return id == address.id && Objects.equals(houseNumber, address.houseNumber) && Objects.equals(street, address.street) && Objects.equals(city, address.city) && Objects.equals(postalCode, address.postalCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, houseNumber, street, city, postalCode);
     }
 }
