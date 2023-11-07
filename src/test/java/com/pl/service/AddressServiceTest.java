@@ -11,6 +11,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -23,6 +25,8 @@ public class AddressServiceTest {
     private AddressRepository addressRepository;
 
     private Address address;
+    private Address address2;
+    private Address address3;
     private AddressDTO addressDTO;
     private AddressDTO addressDTOWithNull;
 
@@ -30,6 +34,8 @@ public class AddressServiceTest {
     @BeforeEach
     void dataForTests(){
         address = new Address("15","street","city","postalCode");
+        address2 = new Address("16","street","city","postalCode");
+        address3 = new Address("16","street","city","postalCode");
         addressDTO = new AddressDTO("15_dto","street_dto","city_dto","postalCode_dto");
         addressDTOWithNull = new AddressDTO(null,"street_dto","city_dto","postalCode_dto");
     }
@@ -94,6 +100,30 @@ public class AddressServiceTest {
         //Then
         String expectedMessage = "Not found with given id " + wrongId;
         assertTrue(notFoundException.getMessage().contains(expectedMessage));
+    }
+
+    @Test
+    void shouldFindListOfAddressesIfExist(){
+        //Given
+        List<Address> addresses = List.of(address, address2, address3);
+        addressRepository.saveAll(addresses);
+
+        //When
+        List<AddressDTO> addressDTOS = addressService.addressesList();
+
+        //Then
+        assertEquals(3, addressDTOS.size());
+    }
+
+    @Test
+    void shouldReturnEmptyListIfIsNoAddressesInDb(){
+        //Given
+
+        //When
+        List<AddressDTO> listOfAddresses = addressService.addressesList();
+
+        //Then
+        assertEquals(0,listOfAddresses.size());
 
     }
 

@@ -24,7 +24,7 @@ public class AddressController {
 
     @GetMapping("/all")
     public List<AddressDTO> list() {
-        return addressService.list();
+        return addressService.addressesList();
     }
 
     @GetMapping("{addressId}")
