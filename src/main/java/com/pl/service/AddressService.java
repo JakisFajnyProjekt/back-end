@@ -27,7 +27,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
         return addressMapper.mapToDTO(findAddress);
     }
 
-    public List<AddressDTO> list() {
+    public List<AddressDTO> addressesList() {
         List<Address> addresses = addressRepository.findAll();
         if (addresses.isEmpty()) {
             LOGGER.info("no addresses found");
