@@ -1,5 +1,6 @@
 package com.pl.service;
 
+import com.pl.exception.AddressAlreadyExist;
 import com.pl.mapper.AddressMapper;
 import com.pl.model.Address;
 import com.pl.model.dto.AddressDTO;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class AddressService extends AbstractService<AddressRepository, Address> {
@@ -23,7 +25,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
 
     public AddressDTO getAddressById(Long addressId) {
         Address findAddress = findEntity(addressRepository, addressId);
-        LOGGER.info("addres finded with id " + findAddress.getId());
+        LOGGER.info("address found with id " + findAddress.getId());
         return addressMapper.mapToDTO(findAddress);
     }
 
@@ -41,6 +43,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
     public AddressDTO createAddress(AddressDTO addressDTO) {
         try {
             Address validatedAddressObj = addressCheck(addressDTO);
+            checkIfAddressAlreadyExist(addressDTO.houseNumber(),addressDTO.street());
             Address savedAddress = addressRepository.save(validatedAddressObj);
             LOGGER.info("address saved");
             return addressMapper.mapToDTO(savedAddress);
@@ -61,7 +64,21 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
                 .requireNonNull(addressDTO.street(), "street cannot be null");
         LOGGER.info("address checked");
         return addressMapper.mapFromDTO(addressDTO);
+    }
 
+    private void checkIfAddressAlreadyExist(String houseNumber, String street){
+        Optional<Address> byHouseNumber = addressRepository.findByHouseNumber(houseNumber);
+        Optional<Address> byStreet = addressRepository.findByStreet(street);
+        if (byHouseNumber.isPresent() && byStreet.isPresent()){
+            LOGGER.info("address exist");
+            throw new AddressAlreadyExist("Address already exist");
+        }
+    }
+    @Transactional
+    public void deleteAddress(long addressId){
+        Address address = findEntity(addressRepository, addressId);
+        addressRepository.delete(address);
+        LOGGER.info("address with id" + addressId + "deleted");
     }
 
 
