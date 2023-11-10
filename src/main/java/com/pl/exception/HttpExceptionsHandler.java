@@ -53,6 +53,13 @@ public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
                 LocalDate.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
+    @ExceptionHandler(AddressAlreadyExist.class)
+    public ResponseEntity<ApiErrorResponse>handleAddressAlreadyExist(AddressAlreadyExist addressAlreadyExist){
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(addressAlreadyExist.getMessage(),
+                HttpStatus.BAD_REQUEST.toString(),
+                LocalDate.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
+    }
 
 
 }

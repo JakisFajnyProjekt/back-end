@@ -19,9 +19,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -87,12 +90,29 @@ public class AddressControllerTest {
     @Test
     void shouldRetrieveListOfAddresses() throws Exception{
         //Given
-        given(addressService.addressesList()).willReturn(List.of(addressDTO,addressDTO1,addressDTO2));
+        when(addressService.addressesList()).thenReturn(List.of(addressDTO,addressDTO1,addressDTO2));
 
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/addresses/all")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()").value(3));
+    }
+
+    @Test
+    void shouldRemoveAddress() throws Exception{
+        //Given
+        long addressId = 12L;
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/addresses/{addressId}",addressId))
+                .andExpect(status().isAccepted());
+
+        //Then
+        verify(addressService).deleteAddress(addressId);
+        AddressDTO addressById = addressService.getAddressById(addressId);
+        assertNull(addressById);
+
+
     }
 
 
