@@ -20,6 +20,8 @@ public class Dish {
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     public Dish() {
     }
@@ -75,6 +77,7 @@ public class Dish {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+
 
     @Override
     public boolean equals(Object o) {
