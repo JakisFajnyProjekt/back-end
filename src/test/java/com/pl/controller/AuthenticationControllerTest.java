@@ -2,7 +2,6 @@ package com.pl.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pl.auth.AuthenticationController;
 import com.pl.auth.authentication.LoginRequest;
 import com.pl.auth.authentication.LoginResponse;
 import com.pl.auth.authentication.RegisterRequest;

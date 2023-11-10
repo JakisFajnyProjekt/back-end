@@ -1,6 +1,5 @@
 package com.pl.service;
 
-import ch.qos.logback.classic.encoder.JsonEncoder;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.UserMapper;
 import com.pl.model.User;
@@ -61,7 +60,7 @@ public class UserService extends AbstractService<UserRepository, User> {
                         existingUser.setEmail(update.email());
                     }
                     if (update.password() != null) {
-                        existingUser.setPassword(passwordEncoder.encode(update.password()) );
+                        existingUser.setPassword(passwordEncoder.encode(update.password()));
                     }
                     User savedUser = userRepository.save(existingUser);
                     LOGGER.info("Changes are accepted");

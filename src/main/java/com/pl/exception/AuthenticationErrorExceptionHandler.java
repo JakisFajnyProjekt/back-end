@@ -27,11 +27,11 @@ public class AuthenticationErrorExceptionHandler {
         response.setMessage(message.getInvalidCredentials());
         AuthenticationError cause = ex.getType();
         if (Objects.equals(cause, AuthenticationError.EMAIL)) {
-            response.setErrors(Map.of(ex.getType().toString(), Collections.singletonList(ex.getMessage()) ));
+            response.setErrors(Map.of(ex.getType().toString(), Collections.singletonList(ex.getMessage())));
         } else if (Objects.equals(cause, AuthenticationError.PASSWORD)) {
-            response.setErrors(Map.of(ex.getType().toString(), Collections.singletonList(ex.getMessage()) ));
+            response.setErrors(Map.of(ex.getType().toString(), Collections.singletonList(ex.getMessage())));
         } else {
-            response.setErrors(Map.of("credentials", Collections.singletonList("unknown error") ));
+            response.setErrors(Map.of("credentials", Collections.singletonList("unknown error")));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }

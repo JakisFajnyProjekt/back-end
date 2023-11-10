@@ -1,16 +1,9 @@
 package com.pl.seeder;
 
 import com.github.javafaker.Faker;
+import com.pl.auth.Role;
 import com.pl.model.*;
 import com.pl.repository.*;
-import com.pl.auth.Role;
-import com.pl.model.Dish;
-import com.pl.model.Restaurant;
-import com.pl.model.User;
-import com.pl.repository.DishRepository;
-import com.pl.repository.OrderRepository;
-import com.pl.repository.RestaurantRepository;
-import com.pl.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -65,7 +58,7 @@ public class DataGenerator {
             address.setHouseNumber(faker.address().buildingNumber());
             address.setPostalCode(faker.address().zipCode());
             address.setStreet(faker.address().streetAddress());
-            address.setUser( Set.of(user) );
+            address.setUser(Set.of(user));
             user.setDeliveryAddresses(Set.of(address));
             addressRepository.save(address);
         }

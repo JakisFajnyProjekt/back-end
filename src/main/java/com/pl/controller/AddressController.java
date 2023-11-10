@@ -24,6 +24,7 @@ public class AddressController {
     public AddressDTO addAddress(@RequestBody AddressDTO addressDTO) {
         return addressService.createAddress(addressDTO);
     }
+
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/all")
     public List<AddressDTO> list() {
@@ -36,7 +37,7 @@ public class AddressController {
     }
 
     @DeleteMapping("/{addressId}")
-    public ResponseEntity<Void>deleteAddress(@PathVariable long addressId){
+    public ResponseEntity<Void> deleteAddress(@PathVariable long addressId) {
         addressService.deleteAddress(addressId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }

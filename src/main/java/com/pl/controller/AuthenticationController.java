@@ -1,4 +1,4 @@
-package com.pl.auth;
+package com.pl.controller;
 
 import com.pl.auth.authentication.LoginRequest;
 import com.pl.auth.authentication.LoginResponse;
@@ -19,12 +19,14 @@ public class AuthenticationController {
     public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
+
     @PostMapping(value = "/register")
-    public LoginResponse register(@Valid @RequestBody RegisterRequest request){
+    public LoginResponse register(@Valid @RequestBody RegisterRequest request) {
         return authenticationService.register(request);
     }
+
     @PostMapping(value = "/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authenticationService.login(request));
     }
 }

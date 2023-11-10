@@ -24,8 +24,9 @@ public class RestaurantController {
     public RestaurantDTO findById(@PathVariable long restaurantId) {
         return restaurantService.findById(restaurantId);
     }
+
     @PostMapping()
-    public RestaurantDTO addRestaurant(RestaurantDTO restaurantDTO){
+    public RestaurantDTO addRestaurant(RestaurantDTO restaurantDTO) {
         return restaurantService.create(restaurantDTO);
     }
 }
