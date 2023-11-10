@@ -26,6 +26,7 @@ public class DishMapper {
         dish.setPrice(dishDto.price());
         Optional<Restaurant> restaurant = restaurantRepository.findById(dishDto.restaurantId());
         restaurant.ifPresent(dish::setRestaurant);
+        dish.setCategory(dishDto.category());
         return dish;
     }
 
@@ -34,7 +35,8 @@ public class DishMapper {
                 dish.getName(),
                 dish.getDescription(),
                 dish.getPrice(),
-                dish.getRestaurant().getId());
+                dish.getRestaurant().getId(),
+                dish.getCategory());
     }
 
     public List<DishDTO> mapToListDto(final List<Dish> dishes) {
