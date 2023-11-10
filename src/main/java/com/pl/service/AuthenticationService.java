@@ -1,22 +1,21 @@
 package com.pl.service;
 
+import com.pl.auth.JwtService;
+import com.pl.auth.Role;
+import com.pl.auth.authentication.LoginRequest;
+import com.pl.auth.authentication.LoginResponse;
+import com.pl.auth.authentication.RegisterRequest;
+import com.pl.auth.token.Token;
+import com.pl.auth.token.TokenRepository;
+import com.pl.auth.token.TokenType;
 import com.pl.config.MessagePropertiesConfig;
 import com.pl.exception.AuthenticationError;
 import com.pl.exception.AuthenticationErrorException;
 import com.pl.exception.UserEmailTakenException;
 import com.pl.model.User;
 import com.pl.repository.UserRepository;
-import com.pl.auth.JwtService;
-import com.pl.auth.Role;
-import com.pl.auth.authentication.LoginRequest;
-import com.pl.auth.authentication.LoginResponse;
-import com.pl.auth.authentication.RegisterRequest;
-import com.pl.token.Token;
-import com.pl.token.TokenRepository;
-import com.pl.token.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +36,6 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
 
     private final MessagePropertiesConfig message;
-
 
 
     public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, TokenRepository tokenRepository, MessagePropertiesConfig message) {
@@ -85,22 +83,22 @@ public class AuthenticationService {
     }
 
     public LoginResponse login(LoginRequest request) {
-            var user = userRepository.findByEmail(request.getEmail())
-                    .orElseThrow(() -> new AuthenticationErrorException(AuthenticationError.EMAIL, message.getInvalidEmail()));
-            if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword())
-                );
-                removeUserTokenIfExists(user);
-                var jwtToken = jwtService.generateToken(user);
-                saveUserToken(user, jwtToken);
-                return LoginResponse.builder()
-                        .token(jwtToken)
-                        .build();
-            } else {
-                throw new AuthenticationErrorException(AuthenticationError.PASSWORD, message.getInvalidPassword());
-            }
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new AuthenticationErrorException(AuthenticationError.EMAIL, message.getInvalidEmail()));
+        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    request.getEmail(),
+                    request.getPassword())
+            );
+            removeUserTokenIfExists(user);
+            var jwtToken = jwtService.generateToken(user);
+            saveUserToken(user, jwtToken);
+            return LoginResponse.builder()
+                    .token(jwtToken)
+                    .build();
+        } else {
+            throw new AuthenticationErrorException(AuthenticationError.PASSWORD, message.getInvalidPassword());
+        }
     }
 
     public void emailCheck(String email) {

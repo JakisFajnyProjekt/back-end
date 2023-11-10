@@ -1,7 +1,6 @@
 package com.pl.service;
 
 
-import com.pl.exception.InvalidValuesException;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.RestaurantMapper;
 import com.pl.model.Address;
@@ -21,7 +20,7 @@ import java.util.Optional;
 
 @Service
 public class RestaurantService extends AbstractService<RestaurantRepository, Restaurant> {
-    private  final Logger LOGGER = LoggerFactory.getLogger(RestaurantService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(RestaurantService.class);
     private final RestaurantRepository restaurantRepository;
     private final RestaurantMapper restaurantMapper;
     private final AddressRepository addressRepository;
@@ -49,21 +48,21 @@ public class RestaurantService extends AbstractService<RestaurantRepository, Res
     }
 
     @Transactional
-    public RestaurantDTO create(RestaurantDTO restaurantDTO){
+    public RestaurantDTO create(RestaurantDTO restaurantDTO) {
         Restaurant restaurant = new Restaurant();
-        try{
-            String name= Objects.requireNonNull(restaurantDTO.name(),
+        try {
+            String name = Objects.requireNonNull(restaurantDTO.name(),
                     "restaurant name cannot be null");
             Optional<Address> address = Objects.requireNonNull(addressRepository.findById(restaurantDTO.restaurantAddress()),
                     "address id cannot be null or wrong");
-            if (address.isPresent()){
-            restaurant.setName(name);
-            restaurant.setAddress(address.get());
+            if (address.isPresent()) {
+                restaurant.setName(name);
+                restaurant.setAddress(address.get());
             }
             Restaurant save = restaurantRepository.save(restaurant);
             LOGGER.info("Restaurant successfully created with id " + restaurantDTO.restaurantAddress());
             return restaurantMapper.mapToRestaurantDto(save);
-        }catch (Exception n){
+        } catch (Exception n) {
             LOGGER.error("wrong address id");
             throw new NotFoundException("Address not found");
         }

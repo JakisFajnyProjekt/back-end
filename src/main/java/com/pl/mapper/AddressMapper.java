@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 public class AddressMapper {
 
-    public AddressDTO mapToDTO(Address address){
+    public AddressDTO mapToDTO(Address address) {
         return new AddressDTO(address.getHouseNumber(),
                 address.getStreet(),
                 address.getCity(),
@@ -17,7 +17,7 @@ public class AddressMapper {
     }
 
 
-    public Address mapFromDTO(AddressDTO addressDTO){
+    public Address mapFromDTO(AddressDTO addressDTO) {
         return new Address(addressDTO.houseNumber(),
                 addressDTO.street(),
                 addressDTO.city(),
@@ -25,8 +25,8 @@ public class AddressMapper {
     }
 
 
-    public List<AddressDTO>mapToList(List<Address> address){
-        return  address.stream()
+    public List<AddressDTO> mapToList(List<Address> address) {
+        return address.stream()
                 .map(this::mapToDTO)
                 .toList();
     }

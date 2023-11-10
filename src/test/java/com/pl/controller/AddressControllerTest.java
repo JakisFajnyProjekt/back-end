@@ -11,10 +11,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser(roles = "USER")
+//@WithMockUser(roles = "USER")
 public class AddressControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -36,6 +38,9 @@ public class AddressControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private AddressService addressService;
+
+    @Autowired
+    private AddressController addressController;
 
     private AddressDTO addressDTO;
     private AddressDTO addressDTO1;
@@ -47,6 +52,13 @@ public class AddressControllerTest {
     @Test
     void mockCheck() {
         assertNotNull(mockMvc);
+    }
+
+    @BeforeEach
+    void setMockMvc() {
+        mockMvc = MockMvcBuilders.standaloneSetup(addressController)
+                .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
+                .build();
     }
 
     @BeforeEach

@@ -3,6 +3,7 @@ package com.pl.service;
 import com.pl.exception.InvalidValuesException;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.DishMapper;
+import com.pl.model.Category;
 import com.pl.model.Dish;
 import com.pl.model.Restaurant;
 import com.pl.model.dto.DishDTO;
@@ -83,7 +84,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
                 LOGGER.error("Failed to map dish to dish DTO");
                 throw new NotFoundException("Failed to map dish to dish DTO");
             }
-            LOGGER.info("Dish added with id" + savedDish.getId());
+            LOGGER.info("Dish added with id " + savedDish.getId());
             return dtoOptional.get();
         } catch (Exception e) {
             LOGGER.error("Failed to create dish", e);
@@ -101,6 +102,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
             BigDecimal price = Objects
                     .requireNonNull(dishDTO.price());
             Optional<Restaurant> restaurantOptional = restaurantRepository.findById(dishDTO.restaurantId());
+            Category category = Objects.requireNonNull(dishDTO.category(), "category required");
             if (restaurantOptional.isEmpty()) {
                 throw new NotFoundException("Restaurant Not Found");
             }
@@ -108,6 +110,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
             newDish.setDescription(description);
             newDish.setPrice(price);
             newDish.setRestaurant(restaurantOptional.get());
+            newDish.setCategory(category);
         } catch (NullPointerException e) {
             LOGGER.error(e.getMessage());
             throw new NullPointerException("the dish name, description, price and restaurant cannot be empty.");

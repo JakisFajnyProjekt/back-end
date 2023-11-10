@@ -5,6 +5,7 @@ import com.pl.mapper.AddressMapper;
 import com.pl.model.Address;
 import com.pl.model.dto.AddressDTO;
 import com.pl.repository.AddressRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
         return addressMapper.mapToDTO(findAddress);
     }
 
+    @Cacheable(cacheNames = "findList")
     public List<AddressDTO> addressesList() {
         List<Address> addresses = addressRepository.findAll();
         if (addresses.isEmpty()) {
@@ -43,7 +45,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
     public AddressDTO createAddress(AddressDTO addressDTO) {
         try {
             Address validatedAddressObj = addressCheck(addressDTO);
-            checkIfAddressAlreadyExist(addressDTO.houseNumber(),addressDTO.street());
+            checkIfAddressAlreadyExist(addressDTO.houseNumber(), addressDTO.street());
             Address savedAddress = addressRepository.save(validatedAddressObj);
             LOGGER.info("address saved");
             return addressMapper.mapToDTO(savedAddress);
@@ -66,16 +68,17 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
         return addressMapper.mapFromDTO(addressDTO);
     }
 
-    private void checkIfAddressAlreadyExist(String houseNumber, String street){
+    private void checkIfAddressAlreadyExist(String houseNumber, String street) {
         Optional<Address> byHouseNumber = addressRepository.findByHouseNumber(houseNumber);
         Optional<Address> byStreet = addressRepository.findByStreet(street);
-        if (byHouseNumber.isPresent() && byStreet.isPresent()){
+        if (byHouseNumber.isPresent() && byStreet.isPresent()) {
             LOGGER.info("address exist");
             throw new AddressAlreadyExist("Address already exist");
         }
     }
+
     @Transactional
-    public void deleteAddress(long addressId){
+    public void deleteAddress(long addressId) {
         Address address = findEntity(addressRepository, addressId);
         addressRepository.delete(address);
         LOGGER.info("address with id" + addressId + "deleted");

@@ -1,7 +1,8 @@
 package com.pl.auth.authentication;
 
 import io.swagger.v3.oas.models.parameters.RequestBody;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public abstract class AbstractAuthRequest extends RequestBody {
     @Pattern(
@@ -17,7 +18,8 @@ public abstract class AbstractAuthRequest extends RequestBody {
     @Pattern(regexp = "^(?=.*[A-Z]).*$", message = "{validation.password.capital}")
     protected String password;
 
-    protected AbstractAuthRequest() {}
+    protected AbstractAuthRequest() {
+    }
 
     public String getEmail() {
         return email;

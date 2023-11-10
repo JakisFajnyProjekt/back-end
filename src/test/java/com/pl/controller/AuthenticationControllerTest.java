@@ -2,7 +2,6 @@ package com.pl.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pl.auth.AuthenticationController;
 import com.pl.auth.authentication.LoginRequest;
 import com.pl.auth.authentication.LoginResponse;
 import com.pl.auth.authentication.RegisterRequest;
@@ -18,7 +17,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

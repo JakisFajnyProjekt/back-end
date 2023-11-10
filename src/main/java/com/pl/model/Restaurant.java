@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Table(name = "restaurants")
 @Entity
@@ -16,25 +15,17 @@ public class Restaurant {
     private String name;
     @OneToMany(mappedBy = "restaurant")
     private List<Dish> dish;
-    @OneToOne()
-    @JoinColumn(name = "order_id")
-    private Order order;
+//    @OneToOne()
+//    @JoinColumn(name = "order_id")
+//    private Order order;
 
     @OneToOne
     @JoinTable(name = "restaurant_address",
-    joinColumns = @JoinColumn (name = "restaurant_id"),
-    inverseJoinColumns = @JoinColumn(name = "address_id"))
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id"))
     private Address address;
 
     public Restaurant() {
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public Restaurant(String name) {
@@ -43,6 +34,14 @@ public class Restaurant {
 
     public Restaurant(String name, Address address) {
         this.name = name;
+        this.address = address;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -70,13 +69,13 @@ public class Restaurant {
         this.dish = dish;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+//    public Order getOrder() {
+//        return order;
+//    }
+//
+//    public void setOrder(Order order) {
+//        this.order = order;
+//    }
 
     @Override
     public boolean equals(Object o) {
