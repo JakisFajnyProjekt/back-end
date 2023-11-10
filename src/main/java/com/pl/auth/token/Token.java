@@ -1,4 +1,4 @@
-package com.pl.token;
+package com.pl.auth.token;
 
 import com.pl.model.User;
 import jakarta.persistence.*;

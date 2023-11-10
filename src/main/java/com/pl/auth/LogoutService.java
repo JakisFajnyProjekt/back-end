@@ -1,6 +1,6 @@
 package com.pl.auth;
 
-import com.pl.token.TokenRepository;
+import com.pl.auth.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;

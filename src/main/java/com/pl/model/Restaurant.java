@@ -16,9 +16,9 @@ public class Restaurant {
     private String name;
     @OneToMany(mappedBy = "restaurant")
     private List<Dish> dish;
-    @OneToOne()
-    @JoinColumn(name = "order_id")
-    private Order order;
+//    @OneToOne()
+//    @JoinColumn(name = "order_id")
+//    private Order order;
 
     @OneToOne
     @JoinTable(name = "restaurant_address",
@@ -70,13 +70,13 @@ public class Restaurant {
         this.dish = dish;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+//    public Order getOrder() {
+//        return order;
+//    }
+//
+//    public void setOrder(Order order) {
+//        this.order = order;
+//    }
 
     @Override
     public boolean equals(Object o) {

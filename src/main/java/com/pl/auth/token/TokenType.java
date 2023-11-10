@@ -1,4 +1,4 @@
-package com.pl.token;
+package com.pl.auth.token;
 
 public enum TokenType {
     BEARER
