@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @Service
 public class RestaurantService extends AbstractService<RestaurantRepository, Restaurant> {
-    private final Logger LOGGER = LoggerFactory.getLogger(RestaurantService.class);
     private final RestaurantRepository restaurantRepository;
     private final RestaurantMapper restaurantMapper;
     private final AddressRepository addressRepository;
