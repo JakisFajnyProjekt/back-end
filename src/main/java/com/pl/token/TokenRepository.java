@@ -1,4 +1,4 @@
-package com.pl.auth.token;
+package com.pl.token;
 
 import com.pl.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

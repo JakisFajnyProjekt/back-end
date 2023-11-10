@@ -1,4 +1,4 @@
-package com.pl.controller;
+package com.pl.auth;
 
 import com.pl.auth.authentication.LoginRequest;
 import com.pl.auth.authentication.LoginResponse;

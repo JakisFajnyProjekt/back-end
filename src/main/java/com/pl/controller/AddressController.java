@@ -24,7 +24,7 @@ public class AddressController {
     public AddressDTO addAddress(@RequestBody AddressDTO addressDTO) {
         return addressService.createAddress(addressDTO);
     }
-
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/all")
     public List<AddressDTO> list() {
         return addressService.addressesList();

@@ -9,7 +9,7 @@ import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
 import com.pl.service.AuthenticationService;
 import com.pl.service.UserService;
-import com.pl.auth.token.TokenRepository;
+import com.pl.token.TokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.pl.auth;
 
 import com.pl.exception.NotFoundException;
-import com.pl.auth.token.TokenRepository;
+import com.pl.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

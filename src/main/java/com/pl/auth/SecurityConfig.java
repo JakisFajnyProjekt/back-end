@@ -35,14 +35,14 @@ public class SecurityConfig  {
 //                    .requestMatchers("/api/**")
 //                    .permitAll() <--- for tests
 
-                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
+                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/api/auth/**")
                     .permitAll()
 
-                    .requestMatchers("/api/users/**", "/api/orders/**")
-                    .hasAuthority(Role.USER.getName())
+                    .requestMatchers("/api/users/**", "/api/orders/**","/api/addresses/**")
+                    .hasAuthority(Role.USER.name())
 
                     .requestMatchers("/**")
-                    .hasAuthority(Role.ADMIN.getName())
+                    .hasAuthority(Role.ADMIN.name())
 
                     .anyRequest()
                     .authenticated()
