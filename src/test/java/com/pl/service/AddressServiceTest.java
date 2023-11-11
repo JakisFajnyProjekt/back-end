@@ -10,16 +10,18 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AddressServiceTest {
 
     @Autowired
-    private  AddressService addressService;
+    private AddressService addressService;
 
     @Autowired
     private AddressRepository addressRepository;
@@ -32,45 +34,58 @@ public class AddressServiceTest {
 
 
     @BeforeEach
-    void dataForTests(){
-        address = new Address("15","street","city","postalCode");
-        address2 = new Address("16","street","city","postalCode");
-        address3 = new Address("16","street","city","postalCode");
-        addressDTO = new AddressDTO("15_dto","street_dto","city_dto","postalCode_dto");
-        addressDTOWithNull = new AddressDTO(null,"street_dto","city_dto","postalCode_dto");
+    void dataForTests() {
+        address = new Address("15", "street", "city", "postalCode");
+        address2 = new Address("16", "street", "city", "postalCode");
+        address3 = new Address("16", "street", "city", "postalCode");
+        addressDTO = new AddressDTO("15_dto", "street_dto", "city_dto", "postalCode_dto");
+        addressDTOWithNull = new AddressDTO(null, "street_dto", "city_dto", "postalCode_dto");
+
     }
 
     @AfterEach
-    void cleanUp(){
+    void cleanUp() {
         addressRepository.deleteAll();
     }
 
     @BeforeEach
-    void mock(){
+    void mock() {
         MockitoAnnotations.openMocks(this);
     }
 
 
+    @Test
+    void shouldReturnEmptyListIfIsNoAddressesInDb() {
+        //Given
+
+        //When
+        List<AddressDTO> listOfAddresses = addressService.addressesList();
+
+        //Then
+        assertEquals(0, listOfAddresses.size());
+
+    }
+
 
     @Test
-    void shouldCreateAndSaveAddress(){
+    void shouldCreateAndSaveAddress() {
         //Given
 
         //When
         AddressDTO address1 = addressService.createAddress(addressDTO);
 
         //Then
-        assertEquals(1,addressRepository.findAll().size());
-        assertEquals("15_dto",address1.houseNumber());
+        assertEquals(1, addressRepository.findAll().size());
+        assertEquals("15_dto", address1.houseNumber());
     }
 
     @Test
-    void shouldHandleExceptionIfTryTOSaveWithNull(){
+    void shouldHandleExceptionIfTryTOSaveWithNull() {
         //Given
 
         //When && Then
         assertThrows(IllegalArgumentException.class,
-                ()->addressService.createAddress(addressDTOWithNull));
+                () -> addressService.createAddress(addressDTOWithNull));
     }
 
     @Test
@@ -90,12 +105,13 @@ public class AddressServiceTest {
     }
 
     @Test
-    void shouldHandleWrongIdWhileRetrieveById(){
+    void shouldHandleWrongIdWhileRetrieveById() {
         //Given
         long wrongId = 123L;
 
         //When
-        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> addressService.getAddressById(wrongId));
+        NotFoundException notFoundException = assertThrows(NotFoundException.class,
+                () -> addressService.getAddressById(wrongId));
 
         //Then
         String expectedMessage = "Not found with given id " + wrongId;
@@ -103,7 +119,7 @@ public class AddressServiceTest {
     }
 
     @Test
-    void shouldFindListOfAddressesIfExist(){
+    void shouldFindListOfAddressesIfExist() {
         //Given
         List<Address> addresses = List.of(address, address2, address3);
         addressRepository.saveAll(addresses);
@@ -114,22 +130,6 @@ public class AddressServiceTest {
         //Then
         assertEquals(3, addressDTOS.size());
     }
-
-    @Test
-    void shouldReturnEmptyListIfIsNoAddressesInDb(){
-        //Given
-
-        //When
-        List<AddressDTO> listOfAddresses = addressService.addressesList();
-
-        //Then
-        assertEquals(0,listOfAddresses.size());
-
-    }
-
-
-
-
 
 
 }

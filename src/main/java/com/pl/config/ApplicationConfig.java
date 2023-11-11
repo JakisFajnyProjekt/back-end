@@ -19,12 +19,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableCaching
 public class ApplicationConfig {
 
+
     private final UserRepository userRepository;
 
     public ApplicationConfig(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
 
+    }
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
@@ -59,6 +60,9 @@ public class ApplicationConfig {
                                 .type(SecurityScheme.Type.APIKEY)
                                 .in(SecurityScheme.In.HEADER));
     }
+
+
+
 
 
 }

@@ -1,16 +1,16 @@
 package com.pl.service;
 
-import com.pl.config.MessagePropertiesConfig;
-import com.pl.exception.AuthenticationErrorException;
-import com.pl.exception.UserEmailTakenException;
-import com.pl.model.User;
-import com.pl.repository.UserRepository;
 import com.pl.auth.JwtService;
 import com.pl.auth.Role;
 import com.pl.auth.authentication.LoginRequest;
 import com.pl.auth.authentication.LoginResponse;
 import com.pl.auth.authentication.RegisterRequest;
 import com.pl.auth.token.TokenRepository;
+import com.pl.config.MessagePropertiesConfig;
+import com.pl.exception.AuthenticationErrorException;
+import com.pl.exception.UserEmailTakenException;
+import com.pl.model.User;
+import com.pl.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

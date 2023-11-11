@@ -75,7 +75,7 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-
+    @Transactional
     public List<OrderDTO> list() {
         List<Order> orders = orderRepository.findAll();
         if (orders.isEmpty()) {
@@ -85,6 +85,7 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
         return orderMapper.mapToListDto(orders);
     }
 
+    @Transactional
     public OrderDTO getOrderById(long orderId) {
         Order order = findEntity(orderRepository, orderId);
         LOGGER.info("Order found with id" + orderId);

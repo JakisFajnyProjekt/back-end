@@ -5,6 +5,7 @@ import com.pl.mapper.AddressMapper;
 import com.pl.model.Address;
 import com.pl.model.dto.AddressDTO;
 import com.pl.repository.AddressRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +24,15 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
         this.addressRepository = addressRepository;
         this.addressMapper = addressMapper;
     }
-
+    @Cacheable(value = "addressesList",key = "#addressId")
     public AddressDTO getAddressById(Long addressId) {
         Address findAddress = findEntity(addressRepository, addressId);
         LOGGER.info("address found with id " + findAddress.getId());
         return addressMapper.mapToDTO(findAddress);
     }
 
-    @Cacheable(cacheNames = "findList")
+
+    @Cacheable(cacheNames = "addressesList")
     public List<AddressDTO> addressesList() {
         List<Address> addresses = addressRepository.findAll();
         if (addresses.isEmpty()) {
@@ -42,6 +44,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
     }
 
     @Transactional
+    @CacheEvict(value = "addressesList", allEntries = true)
     public AddressDTO createAddress(AddressDTO addressDTO) {
         try {
             Address validatedAddressObj = addressCheck(addressDTO);
@@ -78,6 +81,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
     }
 
     @Transactional
+    @CacheEvict(value = "addressesList",allEntries = true)
     public void deleteAddress(long addressId) {
         Address address = findEntity(addressRepository, addressId);
         addressRepository.delete(address);

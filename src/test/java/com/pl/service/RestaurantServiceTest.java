@@ -16,7 +16,6 @@ import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class RestaurantServiceTest {
