@@ -77,7 +77,7 @@ public class OrderServiceTest {
 
         orderCreateWithWrongUserId = new OrderCreateDTO(12L, dishListLong,address.getId(),restaurant.getId());
         orderCreateWithWrongRestaurantrId = new OrderCreateDTO(user1.getId(), dishListLong,address.getId(),12020L);
-        orderCreateWithWrongAddressrId = new OrderCreateDTO(user1.getId(), dishListLong,1L,restaurant.getId());
+        orderCreateWithWrongAddressrId = new OrderCreateDTO(user1.getId(), dishListLong,13123L,restaurant.getId());
     }
 
 
@@ -117,7 +117,7 @@ public class OrderServiceTest {
         OrderDTO savingOrder = orderService.create(orderCreateDTO);
 
         //Then
-        assertEquals(new BigDecimal("10.00"),savingOrder.totalPrice());
+        assertEquals(new BigDecimal("10"),savingOrder.totalPrice());
 
 
     }

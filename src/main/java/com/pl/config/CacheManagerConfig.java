@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.util.Arrays;
 
 @Configuration
-@EnableScheduling
 public class CacheManagerConfig {
 
     @Bean
@@ -34,7 +33,7 @@ public class CacheManagerConfig {
         return cacheManager;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 3600000)
     public void evictAllCachesAtIntervals() {
         cacheManager().getCacheNames().forEach(cacheName -> cacheManager().getCache(cacheName).clear());
     }
