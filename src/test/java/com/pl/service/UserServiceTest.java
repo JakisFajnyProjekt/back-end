@@ -1,11 +1,11 @@
 package com.pl.service;
 
+import com.pl.auth.Role;
 import com.pl.exception.NotFoundException;
 import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
 import com.pl.repository.UserRepository;
-import com.pl.auth.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

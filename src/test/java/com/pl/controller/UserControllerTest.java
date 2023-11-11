@@ -2,14 +2,14 @@ package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.auth.JwtService;
+import com.pl.auth.Role;
+import com.pl.auth.token.TokenRepository;
 import com.pl.config.MessagePropertiesConfig;
 import com.pl.model.User;
-import com.pl.auth.Role;
 import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
 import com.pl.service.AuthenticationService;
 import com.pl.service.UserService;
-import com.pl.auth.token.TokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
