@@ -6,12 +6,9 @@ import com.pl.model.*;
 import com.pl.model.dto.OrderCreateDTO;
 import com.pl.model.dto.OrderDTO;
 import com.pl.repository.*;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.event.annotation.BeforeTestExecution;
@@ -19,15 +16,14 @@ import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class OrderServiceTest {
 
-    @Mock
+    @Autowired
     private OrderService orderService;
 
     @Autowired
@@ -48,21 +44,20 @@ public class OrderServiceTest {
     private Restaurant restaurant;
     private OrderCreateDTO orderCreateDTO;
     private Order orderNoDto;
-    private OrderDTO order1;
-    private OrderDTO order2;
+    private Order orderNoDto2;
+    private OrderDTO order1DTO;
+    private OrderDTO order2DTO;
 
     private OrderCreateDTO orderCreateWithWrongUserId;
     private OrderCreateDTO orderCreateWithWrongRestaurantrId;
     private OrderCreateDTO orderCreateWithWrongAddressrId;
     private List<Long> dishListLong;
     private List<Dish> dishList;
-    private List<OrderDTO>orders;
+    private List<Order>orders;
 
 
     @BeforeEach
     void dataForTest(){
-        MockitoAnnotations.openMocks(this);
-
         user1 = new User("firstName","lastName","email@email.com","password", Role.USER);
         userRepository.save(user1);
         address = new Address("address","address","address","address");
@@ -73,10 +68,13 @@ public class OrderServiceTest {
         dishListLong = List.of(dish1.getId());
         dishList = List.of(dish1);
         dishRepository.saveAll(dishList);
-        orderCreateDTO = new OrderCreateDTO(user1.getId(), dishListLong,address.getId(),restaurant.getId());
-        order1 = new OrderDTO(LocalDateTime.now(),new BigDecimal(60),user1.getId(), dishListLong,address.getId(),restaurant.getId());
-        order2 = new OrderDTO(LocalDateTime.now(),new BigDecimal(60),user1.getId(), dishListLong,address.getId(),restaurant.getId());
+        orderCreateDTO = new OrderCreateDTO(user1.getId(), List.of(dish1.getId()),address.getId(),restaurant.getId());
+        order1DTO = new OrderDTO(LocalDateTime.now(),new BigDecimal(60),user1.getId(), dishListLong,address.getId(),restaurant.getId());
+        order2DTO = new OrderDTO(LocalDateTime.now(),new BigDecimal(60),user1.getId(), dishListLong,address.getId(),restaurant.getId());
         orderNoDto = new Order(LocalDateTime.now(),new BigDecimal(60),"status",user1, dishList,address,restaurant);
+        orderNoDto2 = new Order(LocalDateTime.now(),new BigDecimal(60),"status",user1, dishList,address,restaurant);
+        orderRepository.save(orderNoDto);
+        orderRepository.save(orderNoDto2);
 
         orderCreateWithWrongUserId = new OrderCreateDTO(12L, dishListLong,address.getId(),restaurant.getId());
         orderCreateWithWrongRestaurantrId = new OrderCreateDTO(user1.getId(), dishListLong,address.getId(),12020L);
@@ -105,7 +103,6 @@ public class OrderServiceTest {
     @Test
     void shouldCreateAndSaveOrder(){
         //Given
-        when(orderService.create(orderCreateDTO)).thenReturn(order1);
 
         //When
         OrderDTO savingOrder = orderService.create(orderCreateDTO);
@@ -117,13 +114,11 @@ public class OrderServiceTest {
     @Test
     void shouldCalculateTotalPriceCorrectly(){
         //Given
-        when(orderService.create(orderCreateDTO)).thenReturn(order1);
-
         //When
         OrderDTO savingOrder = orderService.create(orderCreateDTO);
 
         //Then
-        assertEquals(new BigDecimal(60),savingOrder.totalPrice());
+        assertEquals(new BigDecimal("10.00"),savingOrder.totalPrice());
 
 
     }
@@ -133,7 +128,6 @@ public class OrderServiceTest {
     @Test
     void shouldHandleNotFoundExceptionWhenUserIsWrong() {
         // Given
-        when(orderService.create(orderCreateWithWrongUserId)).thenThrow(NotFoundException.class);
 
         // When
         NotFoundException exception = assertThrows(NotFoundException.class,
@@ -148,7 +142,6 @@ public class OrderServiceTest {
     @Test
     void shouldHandleNotFoundExceptionWhenRestaurantIsWrong(){
         //Given
-        when(orderService.create(orderCreateWithWrongRestaurantrId)).thenThrow(NotFoundException.class);
 
         //Whne
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
@@ -161,7 +154,6 @@ public class OrderServiceTest {
     @Test
     void shouldHandleNotFoundExceptionWhenAddressIsWrong(){
         //Given
-        when(orderService.create(orderCreateWithWrongAddressrId)).thenThrow(NotFoundException.class);
 
         //Whne
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
@@ -174,23 +166,18 @@ public class OrderServiceTest {
     @Test
     void shouldFindListOfAllOrders(){
         //Given
-        orders = List.of(order1,order2);
-        when(orderService.list()).thenReturn(orders);
-
         //When
         List<OrderDTO> orderList = orderService.list();
 
         //Then
         assertEquals(2,orderList.size());
-        assertEquals(order1.orderTime(),orderList.get(0).orderTime());
     }
 
     @Test
     void shouldFindOrderById(){
         //Given
-        long orderId = 1L;
-        when(orderService.create(orderCreateDTO)).thenReturn(order1);
-        when(orderService.getOrderById(orderId)).thenReturn(order1);
+        Order save = orderRepository.save(orderNoDto);
+        long orderId = save.getId();
 
         //When
         OrderDTO getById = orderService.getOrderById(orderId);
@@ -211,7 +198,7 @@ public class OrderServiceTest {
         orderService.remove(orderId);
 
         // Then
-        assertTrue(orderRepository.existsById(orderId));
+        assertFalse(orderRepository.existsById(orderId));
 
     }
 

@@ -1,6 +1,7 @@
 package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pl.mapper.AddressMapper;
 import com.pl.model.dto.AddressDTO;
 import com.pl.service.AddressService;
 import org.hibernate.sql.ast.tree.expression.CaseSimpleExpression;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -30,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-//@WithMockUser(roles = "USER")
 public class AddressControllerTest {
     @Autowired
     private MockMvc mockMvc;
