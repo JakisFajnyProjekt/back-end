@@ -1,8 +1,8 @@
 package com.pl.mapper;
 
+import com.pl.auth.Role;
 import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
-import com.pl.auth.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

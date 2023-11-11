@@ -2,10 +2,7 @@ package com.pl.controller;
 
 import com.pl.model.dto.RestaurantDTO;
 import com.pl.service.RestaurantService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +15,7 @@ public class RestaurantController {
         this.restaurantService = restaurantService;
     }
 
-    @GetMapping("")
+    @GetMapping()
     public List<RestaurantDTO> list() {
         return restaurantService.list();
     }
@@ -26,5 +23,10 @@ public class RestaurantController {
     @GetMapping("/{restaurantId}")
     public RestaurantDTO findById(@PathVariable long restaurantId) {
         return restaurantService.findById(restaurantId);
+    }
+
+    @PostMapping()
+    public RestaurantDTO addRestaurant(RestaurantDTO restaurantDTO) {
+        return restaurantService.create(restaurantDTO);
     }
 }

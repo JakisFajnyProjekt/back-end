@@ -1,5 +1,6 @@
 package com.pl.mapper;
 
+import com.pl.model.Category;
 import com.pl.model.Dish;
 import com.pl.model.Restaurant;
 import com.pl.model.dto.DishDTO;
@@ -32,8 +33,8 @@ public class DishMapperTest {
         restaurant = new Restaurant("restaurant");
         Restaurant savedRestaurant = restaurantRepository.save(restaurant);
         dish = new Dish( "Pizza", "This is very good pizza!",new BigDecimal(30),restaurant);
-        dishDto = new DishDTO("Pizza", "This is very good pizza!",new BigDecimal(30),savedRestaurant.getId());
-        expectedDto = new DishDTO("Pizza", "This is very good pizza!",new BigDecimal(30),savedRestaurant.getId());
+        dishDto = new DishDTO("Pizza", "This is very good pizza!",new BigDecimal(30),savedRestaurant.getId(), Category.BREAKFAST);
+        expectedDto = new DishDTO("Pizza", "This is very good pizza!",new BigDecimal(30),savedRestaurant.getId(),Category.APPETIZER);
     }
 
     @Test

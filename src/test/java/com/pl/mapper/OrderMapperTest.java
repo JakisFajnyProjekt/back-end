@@ -1,5 +1,6 @@
 package com.pl.mapper;
 
+import com.pl.auth.Role;
 import com.pl.model.*;
 import com.pl.model.dto.OrderCreateDTO;
 import com.pl.model.dto.OrderDTO;
@@ -7,7 +8,6 @@ import com.pl.repository.AddressRepository;
 import com.pl.repository.DishRepository;
 import com.pl.repository.RestaurantRepository;
 import com.pl.repository.UserRepository;
-import com.pl.auth.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -53,7 +52,7 @@ public class OrderMapperTest {
         dish2 = new Dish("name2", "description2");
         user = new User("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
         order1 = new Order();
-        address = new Address("12", "street", "city", "64-100", Set.of(user), List.of(order1));
+        address = new Address("12", "street", "city", "64-100");
         order1 = new Order(LocalDateTime.now(),
                 BigDecimal.valueOf(100), "CREATED", user, List.of(dish1, dish2), address, restaurant
         );

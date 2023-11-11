@@ -21,6 +21,9 @@ public class Dish {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
     public Dish() {
     }
 
@@ -29,6 +32,14 @@ public class Dish {
         this.description = description;
         this.price = price;
         this.restaurant = restaurant;
+    }
+
+    public Dish(String name, String description, BigDecimal price, Restaurant restaurant, Category category) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.restaurant = restaurant;
+        this.category = category;
     }
 
     public Dish(String name, String description) {
@@ -74,6 +85,14 @@ public class Dish {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override

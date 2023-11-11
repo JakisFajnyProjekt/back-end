@@ -20,21 +20,23 @@ import java.util.stream.Collectors;
 @Service
 public class JwtService {
     @Value("${jwt.security.secret.key}")
-    private  String SECRET_KEY;
+    private String SECRET_KEY;
+
     public String extractUserName(String token) {
-        return extractClaim(token,Claims::getSubject);
+        return extractClaim(token, Claims::getSubject);
     }
-    public <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClams(token);
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(),userDetails);
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
     }
 
     public String generateToken(Map<String, Objects> extraClaims,
-                                UserDetails userDetails){
+                                UserDetails userDetails) {
         String ROLE_PREFIX = "ROLE_";
         int ONE_DAY = 1000 * 60 * 24;
         return Jwts.builder()
@@ -49,7 +51,7 @@ public class JwtService {
                 .compact();
     }
 
-    private Claims extractAllClams(String token){
+    private Claims extractAllClams(String token) {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignInKey())
@@ -63,7 +65,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails){
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
         return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
@@ -73,6 +75,6 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
-        return extractClaim(token,Claims::getExpiration);
+        return extractClaim(token, Claims::getExpiration);
     }
 }

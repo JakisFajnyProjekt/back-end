@@ -1,6 +1,7 @@
 package com.pl.service;
 
 import com.pl.exception.NotFoundException;
+import com.pl.model.Category;
 import com.pl.model.Dish;
 import com.pl.model.Restaurant;
 import com.pl.model.dto.DishDTO;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DishServiceTest {
 
     @Autowired
@@ -48,9 +51,9 @@ public class DishServiceTest {
         dish1 = new Dish("dish1", "descriotion1",new BigDecimal(30),restaurant);
         dish2 = new Dish("dish2", "descriotion2",new BigDecimal(30),restaurant);
         dish3 = new Dish("dish3", "descriotion3",new BigDecimal(30),restaurant);
-        dishDTO = new DishDTO("dish_DTO", "description_DTO",new BigDecimal(30),restaurant.getId());
-        dishDTOWithNull = new DishDTO("dish_DTO", "description_DTO",new BigDecimal(30),3L);
-        modifiedDish = new DishDTO("dish_DTO_modified", "description_DTO_modified",new BigDecimal(30),1L);
+        dishDTO = new DishDTO("dish_DTO", "description_DTO",new BigDecimal(30),restaurant.getId(), Category.APPETIZER);
+        dishDTOWithNull = new DishDTO("dish_DTO", "description_DTO",new BigDecimal(30),3L,Category.APPETIZER);
+        modifiedDish = new DishDTO("dish_DTO_modified", "description_DTO_modified",new BigDecimal(30),1L,Category.APPETIZER);
         dishList = List.of(dish1, dish2, dish3);
     }
 
@@ -128,7 +131,7 @@ public class DishServiceTest {
         Restaurant save = restaurantRepository.save(restaurant);
         dishDTOSave = new DishDTO("dish_DTO",
                 "description_DTO",new BigDecimal(30),
-                save.getId());
+                save.getId(),Category.APPETIZER);
 
         //When
         DishDTO savedDish = dishService.createDish(dishDTOSave);
