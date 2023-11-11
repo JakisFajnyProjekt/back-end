@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableCaching
 public class ApplicationConfig {
 
-
     private final UserRepository userRepository;
 
     public ApplicationConfig(UserRepository userRepository) {
