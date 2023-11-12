@@ -2,6 +2,7 @@ package com.pl.controller;
 
 import com.pl.model.dto.RestaurantDTO;
 import com.pl.service.RestaurantService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class RestaurantController {
         return restaurantService.findById(restaurantId);
     }
 
-    @PostMapping()
-    public RestaurantDTO addRestaurant(RestaurantDTO restaurantDTO) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public RestaurantDTO addRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
         return restaurantService.create(restaurantDTO);
     }
 }
