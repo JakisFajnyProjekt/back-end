@@ -1,7 +1,7 @@
 # Restaurant Controller endpoints
 
 
-* `All addess endpoints are secured, registration are required otherwise you will get status 403 Forbbiden`
+* `All restaurant endpoints are secured, registration are required otherwise you will get status 403 Forbbiden`
 ## 1. Get list of all restaurants
 
 `request url: /api/restaurants`
