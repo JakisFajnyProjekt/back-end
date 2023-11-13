@@ -5,6 +5,7 @@ import com.pl.mapper.AddressMapper;
 import com.pl.model.Address;
 import com.pl.model.dto.AddressDTO;
 import com.pl.repository.AddressRepository;
+import jakarta.persistence.NonUniqueResultException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,12 @@ import java.util.Optional;
 @Service
 public class AddressService extends AbstractService<AddressRepository, Address> {
     private final AddressRepository addressRepository;
+    private final AddressServiceValidation addressServiceValidation;
     private final AddressMapper addressMapper;
 
-    public AddressService(AddressRepository addressRepository, AddressMapper addressMapper) {
+    public AddressService(AddressRepository addressRepository, AddressServiceValidation addressServiceValidation, AddressMapper addressMapper) {
         this.addressRepository = addressRepository;
+        this.addressServiceValidation = addressServiceValidation;
         this.addressMapper = addressMapper;
     }
     @Cacheable(value = "addressesList",key = "#addressId")
@@ -48,13 +51,16 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
     public AddressDTO createAddress(AddressDTO addressDTO) {
         try {
             Address validatedAddressObj = addressCheck(addressDTO);
-            checkIfAddressAlreadyExist(addressDTO.houseNumber(), addressDTO.street());
+            addressServiceValidation.validateAddress(addressDTO.houseNumber(), addressDTO.street());
             Address savedAddress = addressRepository.save(validatedAddressObj);
             LOGGER.info("address saved");
             return addressMapper.mapToDTO(savedAddress);
-        } catch (Exception n) {
+        } catch (NonUniqueResultException n) {
             LOGGER.error(n.getMessage());
-            throw new IllegalArgumentException("house number, city, street, and postal code cannot be empty");
+            throw new NonUniqueResultException();
+        }catch (AddressAlreadyExist e) {
+            LOGGER.error(e.getMessage());
+            throw e;
         }
     }
 
@@ -69,15 +75,6 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
                 .requireNonNull(addressDTO.street(), "street cannot be null");
         LOGGER.info("address checked");
         return addressMapper.mapFromDTO(addressDTO);
-    }
-
-    private void checkIfAddressAlreadyExist(String houseNumber, String street) {
-        Optional<Address> byHouseNumber = addressRepository.findByHouseNumber(houseNumber);
-        Optional<Address> byStreet = addressRepository.findByStreet(street);
-        if (byHouseNumber.isPresent() && byStreet.isPresent()) {
-            LOGGER.info("address exist");
-            throw new AddressAlreadyExist("Address already exist");
-        }
     }
 
     @Transactional
