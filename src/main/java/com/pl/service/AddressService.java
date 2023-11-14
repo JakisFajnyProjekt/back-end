@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class AddressService extends AbstractService<AddressRepository, Address> {
@@ -49,32 +49,21 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
     @Transactional
     @CacheEvict(value = "addressesList", allEntries = true)
     public AddressDTO createAddress(AddressDTO addressDTO) {
-        try {
             Address validatedAddressObj = addressCheck(addressDTO);
-            addressServiceValidation.validateAddress(addressDTO.houseNumber(), addressDTO.street());
             Address savedAddress = addressRepository.save(validatedAddressObj);
             LOGGER.info("address saved");
             return addressMapper.mapToDTO(savedAddress);
-        } catch (NonUniqueResultException n) {
-            LOGGER.error(n.getMessage());
-            throw new NonUniqueResultException();
-        }catch (AddressAlreadyExist e) {
-            LOGGER.error(e.getMessage());
-            throw e;
-        }
+
     }
 
-    private Address addressCheck(AddressDTO addressDTO) {
-        Objects
-                .requireNonNull(addressDTO.houseNumber(), "houseNumber cannot be null");
-        Objects
-                .requireNonNull(addressDTO.city(), "city cannot be null");
-        Objects
-                .requireNonNull(addressDTO.postalCode(), "postal code cannot be null");
-        Objects
-                .requireNonNull(addressDTO.street(), "street cannot be null");
+
+    private Address addressCheck(AddressDTO addressDTO){
+        Stream.of(addressDTO.houseNumber(),addressDTO.city(),addressDTO.postalCode(),addressDTO.street())
+                .forEach(field->Objects.requireNonNull(field,"value cannot be null"));
+        addressServiceValidation.validateAddress(addressDTO.houseNumber(), addressDTO.street());
         LOGGER.info("address checked");
         return addressMapper.mapFromDTO(addressDTO);
+
     }
 
     @Transactional

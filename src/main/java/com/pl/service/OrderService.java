@@ -37,7 +37,7 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
 
     @Transactional
     public OrderDTO create(OrderCreateDTO createOrder) {
-        if (presenceCheck(createOrder)) {
+        if (presenceCheckForOrder(createOrder)) {
             Order order = orderMapper.mapToOrder(createOrder);
             order.setOrderTime(LocalDateTime.now());
             order.setTotalPrice(calculateTotalPrice(createOrder.dishIds()));
@@ -49,8 +49,8 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
             throw new RuntimeException();
         }
     }
-
-    private boolean presenceCheck(OrderCreateDTO createOrder) {
+    @Transactional
+     boolean presenceCheckForOrder(OrderCreateDTO createOrder) {
         userRepository.findById(createOrder.userId())
                 .orElseThrow(() -> new NotFoundException("User Not Found"));
         restaurantRepository.findById(createOrder.restaurantId())
