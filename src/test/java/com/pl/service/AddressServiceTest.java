@@ -84,7 +84,7 @@ public class AddressServiceTest {
         //Given
 
         //When && Then
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> addressService.createAddress(addressDTOWithNull));
     }
 
