@@ -48,25 +48,36 @@ public class DishServiceTest {
     void dataForTests() {
         restaurant = new Restaurant();
         restaurantRepository.save(restaurant);
-        dish1 = new Dish("dish1", "descriotion1",new BigDecimal(30),restaurant);
-        dish2 = new Dish("dish2", "descriotion2",new BigDecimal(30),restaurant);
-        dish3 = new Dish("dish3", "descriotion3",new BigDecimal(30),restaurant);
+        dish1 = new Dish("dish1", "descriotion1",new BigDecimal(30),restaurant,Category.APPETIZER);
+        dish2 = new Dish("dish2", "descriotion2",new BigDecimal(30),restaurant,Category.APPETIZER);
+        dish3 = new Dish("dish3", "descriotion3",new BigDecimal(30),restaurant,Category.APPETIZER);
         dishDTO = new DishDTO("dish_DTO", "description_DTO",new BigDecimal(30),restaurant.getId(), Category.APPETIZER);
         dishDTOWithNull = new DishDTO("dish_DTO", "description_DTO",new BigDecimal(30),3L,Category.APPETIZER);
         modifiedDish = new DishDTO("dish_DTO_modified", "description_DTO_modified",new BigDecimal(30),1L,Category.APPETIZER);
         dishList = List.of(dish1, dish2, dish3);
     }
 
-    @BeforeEach
-    void cleanUpBefore() {
-        dishRepository.deleteAll();
-        restaurantRepository.deleteAll();
-    }
 
     @AfterEach
     void cleanUpAfter() {
         dishRepository.deleteAll();
         restaurantRepository.deleteAll();
+    }
+
+    @Test
+    void shouldFindListOfDishes() {
+        //Give
+        dishList = List.of(dish1, dish2, dish3);
+        dishRepository.saveAll(dishList);
+
+        //When
+        List<DishDTO> dishDTOList = dishService.listDishes();
+
+        //Then
+        assertEquals(3, dishDTOList.size());
+        assertEquals("dish1", dishDTOList.get(0).name());
+        assertEquals("dish2", dishDTOList.get(1).name());
+        assertEquals("dish3", dishDTOList.get(2).name());
     }
 
 
@@ -82,21 +93,6 @@ public class DishServiceTest {
         String expectedName = "dish1";
         assertEquals(DishDTO.class, findDishById.getClass());
         assertEquals(expectedName, findDishById.name());
-    }
-
-    @Test
-    void shouldFindListOfDishes() {
-        //Give
-        dishRepository.saveAll(dishList);
-
-        //When
-        List<DishDTO> dishDTOList = dishService.listDishes();
-
-        //Then
-        assertEquals(3, dishDTOList.size());
-        assertEquals("dish1", dishDTOList.get(0).name());
-        assertEquals("dish2", dishDTOList.get(1).name());
-        assertEquals("dish3", dishDTOList.get(2).name());
     }
 
     @Test

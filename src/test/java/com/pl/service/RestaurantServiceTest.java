@@ -58,8 +58,8 @@ public class RestaurantServiceTest {
 
     @AfterEach
     void afterEachTest(){
-        restaurantRepository.deleteAll();
         addressRepository.deleteAll();
+        restaurantRepository.deleteAll();
     }
 
 

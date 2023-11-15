@@ -4,7 +4,9 @@ import com.pl.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public abstract class AbstractService<R extends JpaRepository<EntityType, Long>, EntityType> {
     protected final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.event.annotation.BeforeTestExecution;
 
 import java.math.BigDecimal;
@@ -63,7 +64,7 @@ public class OrderServiceTest {
         addressRepository.save(address);
         restaurant = new Restaurant("name");
         restaurantRepository.save(restaurant);
-        dish1 = new Dish("dish","desc",new BigDecimal(10),restaurant);
+        dish1 = new Dish("dish","desc",new BigDecimal(10),restaurant,Category.APPETIZER);
         dishListLong = List.of(dish1.getId());
         dishList = List.of(dish1);
         dishRepository.saveAll(dishList);

@@ -32,7 +32,7 @@ public class DishMapperTest {
     void testData() {
         restaurant = new Restaurant("restaurant");
         Restaurant savedRestaurant = restaurantRepository.save(restaurant);
-        dish = new Dish( "Pizza", "This is very good pizza!",new BigDecimal(30),restaurant);
+        dish = new Dish( "Pizza", "This is very good pizza!",new BigDecimal(30),restaurant,Category.APPETIZER);
         dishDto = new DishDTO("Pizza", "This is very good pizza!",new BigDecimal(30),savedRestaurant.getId(), Category.BREAKFAST);
         expectedDto = new DishDTO("Pizza", "This is very good pizza!",new BigDecimal(30),savedRestaurant.getId(),Category.APPETIZER);
     }
@@ -61,9 +61,9 @@ public class DishMapperTest {
     void shouldMapToListDto() {
         //Given
         List<Dish> dishes = List.of(
-                new Dish("Pizza", "This is very good pizza",new BigDecimal(30),restaurant),
-                new Dish("Burger", "Delicious burger",new BigDecimal(30),restaurant),
-                new Dish("Pasta", "Homemade pasta",new BigDecimal(30),restaurant)
+                new Dish("Pizza", "This is very good pizza",new BigDecimal(30),restaurant,Category.APPETIZER),
+                new Dish("Burger", "Delicious burger",new BigDecimal(30),restaurant,Category.APPETIZER),
+                new Dish("Pasta", "Homemade pasta",new BigDecimal(30),restaurant,Category.APPETIZER)
         );
         //When
         List<DishDTO> attemptList = dishMapper.mapToListDto(dishes);

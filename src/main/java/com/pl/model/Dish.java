@@ -27,12 +27,6 @@ public class Dish {
     public Dish() {
     }
 
-    public Dish(String name, String description, BigDecimal price, Restaurant restaurant) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.restaurant = restaurant;
-    }
 
     public Dish(String name, String description, BigDecimal price, Restaurant restaurant, Category category) {
         this.name = name;

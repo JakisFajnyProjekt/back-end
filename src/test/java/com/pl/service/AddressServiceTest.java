@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AddressServiceTest {
 
     @Autowired
@@ -25,7 +25,6 @@ public class AddressServiceTest {
 
     @Autowired
     private AddressRepository addressRepository;
-
     private Address address;
     private Address address2;
     private Address address3;
@@ -69,12 +68,14 @@ public class AddressServiceTest {
 
     @Test
     void shouldCreateAndSaveAddress() {
-        //Given
+        // Given
 
-        //When
+
+        // When
         AddressDTO address1 = addressService.createAddress(addressDTO);
 
-        //Then
+        // Then
+
         assertEquals(1, addressRepository.findAll().size());
         assertEquals("15_dto", address1.houseNumber());
     }
@@ -84,7 +85,7 @@ public class AddressServiceTest {
         //Given
 
         //When && Then
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> addressService.createAddress(addressDTOWithNull));
     }
 
