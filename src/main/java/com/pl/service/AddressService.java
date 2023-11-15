@@ -1,11 +1,9 @@
 package com.pl.service;
 
-import com.pl.exception.AddressAlreadyExist;
 import com.pl.mapper.AddressMapper;
 import com.pl.model.Address;
 import com.pl.model.dto.AddressDTO;
 import com.pl.repository.AddressRepository;
-import jakarta.persistence.NonUniqueResultException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
