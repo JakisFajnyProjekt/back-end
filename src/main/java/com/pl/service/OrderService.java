@@ -50,7 +50,7 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
         }
     }
     @Transactional
-     boolean presenceCheckForOrder(OrderCreateDTO createOrder) {
+    public boolean presenceCheckForOrder(OrderCreateDTO createOrder) {
         userRepository.findById(createOrder.userId())
                 .orElseThrow(() -> new NotFoundException("User Not Found"));
         restaurantRepository.findById(createOrder.restaurantId())
