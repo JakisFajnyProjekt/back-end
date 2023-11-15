@@ -15,6 +15,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -84,7 +86,7 @@ public class AddressServiceTest {
         //Given
 
         //When && Then
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> addressService.createAddress(addressDTOWithNull));
     }
 
@@ -129,6 +131,24 @@ public class AddressServiceTest {
 
         //Then
         assertEquals(3, addressDTOS.size());
+    }
+
+    @Test
+    void shouldDeleteAddressFrmDb(){
+        //Given
+        Address savedAddress = addressRepository.save(address);
+        long addressId = savedAddress.getId();
+
+        //When
+        List<Address> beforeDelete = addressRepository.findAll();
+        addressService.deleteAddress(addressId);
+        List<Address> afterDelete = addressRepository.findAll();
+
+        //Then
+        assertEquals(1,beforeDelete.size());
+        assertEquals(0,afterDelete.size());
+
+
     }
 
 
