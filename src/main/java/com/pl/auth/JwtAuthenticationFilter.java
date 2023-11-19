@@ -58,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } else {
-                throw new NotFoundException("User Not found");
+                throw new NotFoundException("User Not found or not logged in");
             }
         }
         filterChain.doFilter(request, response);

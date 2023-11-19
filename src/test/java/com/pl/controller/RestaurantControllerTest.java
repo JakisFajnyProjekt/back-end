@@ -3,9 +3,7 @@ package com.pl.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.model.Address;
 import com.pl.model.Restaurant;
-import com.pl.model.dto.AddressDTO;
 import com.pl.model.dto.RestaurantDTO;
-import com.pl.repository.AddressRepository;
 import com.pl.repository.RestaurantRepository;
 import com.pl.service.RestaurantService;
 import org.junit.jupiter.api.AfterEach;
@@ -48,7 +46,6 @@ public class RestaurantControllerTest {
     private RestaurantRepository restaurantRepository;
 
 
-
     private Restaurant restaurant;
     private RestaurantDTO restaurantDTO;
     private RestaurantDTO restaurantDTO1;
@@ -56,12 +53,12 @@ public class RestaurantControllerTest {
     private Address address;
 
     @BeforeEach
-    void dataForTests(){
-        address = new Address("15","street","city","postalCode");
-        restaurant = new Restaurant("restaurant",address);
-        restaurantDTO = new RestaurantDTO("restaurant_test_name1",address.getId());
-        restaurantDTO1 = new RestaurantDTO("restaurant_test_name2",address.getId());
-        restaurantDTO2 = new RestaurantDTO("restaurant_test_name3",address.getId());
+    void dataForTests() {
+        address = new Address("15", "street", "city", "postalCode");
+        restaurant = new Restaurant("restaurant", address);
+        restaurantDTO = new RestaurantDTO("restaurant_test_name1", address.getId());
+        restaurantDTO1 = new RestaurantDTO("restaurant_test_name2", address.getId());
+        restaurantDTO2 = new RestaurantDTO("restaurant_test_name3", address.getId());
     }
 
     @BeforeEach
@@ -72,46 +69,46 @@ public class RestaurantControllerTest {
     }
 
     @AfterEach
-    void cleanUpAfter(){
+    void cleanUpAfter() {
         restaurantRepository.deleteAll();
     }
 
     @Test
-    void shouldSaveRestaurant() throws Exception{
+    void shouldSaveRestaurant() throws Exception {
         //Given
         when(restaurantService.create(restaurantDTO)).thenReturn(restaurantDTO);
 
         //When
         mockMvc.perform(post("/api/restaurants")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(restaurantDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(restaurantDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(restaurantDTO.name()))
                 .andExpect(jsonPath("$.restaurantAddress").value(address.getId()));
     }
 
     @Test
-    void shouldFindRestaurantById() throws Exception{
+    void shouldFindRestaurantById() throws Exception {
         //Given
         long restaurantId = 1231231L;
         when(restaurantService.findById(restaurantId)).thenReturn(restaurantDTO);
 
         //When
         mockMvc.perform(get("/api/restaurants/{restaurantId}", restaurantId)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("restaurant_test_name1"))
                 .andExpect(jsonPath("$.restaurantAddress").value(address.getId()));
     }
 
     @Test
-    void shouldFindListOfRestaurants() throws Exception{
+    void shouldFindListOfRestaurants() throws Exception {
         //Given
         List<RestaurantDTO> listOfRestaurants = List.of(restaurantDTO, restaurantDTO1, restaurantDTO2);
         when(restaurantService.list()).thenReturn(listOfRestaurants);
         //When
         mockMvc.perform(get("/api/restaurants")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()").value(listOfRestaurants.size()))
                 .andExpect(jsonPath("$.[0].name").value("restaurant_test_name1"))
                 .andExpect(jsonPath("$.[1].name").value("restaurant_test_name2"))

@@ -39,49 +39,48 @@ public class RestaurantServiceTest {
     private RestaurantDTO restaurantDTOWithWrongId;
 
     @BeforeEach
-    void dataForTests(){
-        address = new Address("123","street","city","postalCode");
-        address2= new Address("123","street","city","postalCode");
-        address3 = new Address("123","street","city","postalCode");
+    void dataForTests() {
+        address = new Address("123", "street", "city", "postalCode");
+        address2 = new Address("123", "street", "city", "postalCode");
+        address3 = new Address("123", "street", "city", "postalCode");
         restaurant = new Restaurant("restaurant");
-        restaurant1 = new Restaurant("restaurant",address);
-        restaurant2 = new Restaurant("restaurant",address2);
-        restaurant3 = new Restaurant("restaurant",address3);
+        restaurant1 = new Restaurant("restaurant", address);
+        restaurant2 = new Restaurant("restaurant", address2);
+        restaurant3 = new Restaurant("restaurant", address3);
 
     }
 
     @BeforeTestExecution
-    public void beforeAllTests(){
+    public void beforeAllTests() {
         restaurantRepository.deleteAll();
         addressRepository.deleteAll();
     }
 
     @AfterEach
-    void afterEachTest(){
+    void afterEachTest() {
         addressRepository.deleteAll();
         restaurantRepository.deleteAll();
     }
 
 
-
     @Test
-    void shouldCreateAndSaveRestaurant(){
+    void shouldCreateAndSaveRestaurant() {
         //Given
         Address savedAddress = addressRepository.save(address);
-        restaurantDTO = new RestaurantDTO("restaurant_dto",savedAddress.getId());
+        restaurantDTO = new RestaurantDTO("restaurant_dto", savedAddress.getId());
 
         //When
         restaurantService.create(restaurantDTO);
 
         //Thne
-        assertEquals(1,restaurantRepository.findAll().size());
+        assertEquals(1, restaurantRepository.findAll().size());
     }
 
     @Test
-    void shouldHandleWrongAddressWhenCreatingRestaurant(){
+    void shouldHandleWrongAddressWhenCreatingRestaurant() {
         //Given
         long wrongIdAddress = 1L;
-        restaurantDTOWithWrongId = new RestaurantDTO("name",wrongIdAddress);
+        restaurantDTOWithWrongId = new RestaurantDTO("name", wrongIdAddress);
 
         //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
@@ -95,7 +94,7 @@ public class RestaurantServiceTest {
 
 
     @Test
-    void shouldFindRestaurantById(){
+    void shouldFindRestaurantById() {
         //Given
         Address savedAddress = addressRepository.save(address);
         restaurant.setAddress(savedAddress);
@@ -106,12 +105,12 @@ public class RestaurantServiceTest {
         RestaurantDTO findRestaurant = restaurantService.findById(savedRestaurants.getId());
 
         //Then
-        assertEquals("restaurant",findRestaurant.name());
+        assertEquals("restaurant", findRestaurant.name());
         assertNotNull(restaurantRepository.findById(findRestaurant.restaurantAddress()));
     }
 
     @Test
-    void shouldFindAllRestaurants(){
+    void shouldFindAllRestaurants() {
         //Given
         addressRepository.save(address);
         addressRepository.save(address2);
@@ -124,7 +123,7 @@ public class RestaurantServiceTest {
         List<RestaurantDTO> list = restaurantService.list();
 
         //Then
-        assertEquals(3,list.size());
+        assertEquals(3, list.size());
     }
 
 

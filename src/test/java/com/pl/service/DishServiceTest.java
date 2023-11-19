@@ -48,12 +48,12 @@ public class DishServiceTest {
     void dataForTests() {
         restaurant = new Restaurant();
         restaurantRepository.save(restaurant);
-        dish1 = new Dish("dish1", "descriotion1",new BigDecimal(30),restaurant,Category.APPETIZER);
-        dish2 = new Dish("dish2", "descriotion2",new BigDecimal(30),restaurant,Category.APPETIZER);
-        dish3 = new Dish("dish3", "descriotion3",new BigDecimal(30),restaurant,Category.APPETIZER);
-        dishDTO = new DishDTO("dish_DTO", "description_DTO",new BigDecimal(30),restaurant.getId(), Category.APPETIZER);
-        dishDTOWithNull = new DishDTO("dish_DTO", "description_DTO",new BigDecimal(30),3L,Category.APPETIZER);
-        modifiedDish = new DishDTO("dish_DTO_modified", "description_DTO_modified",new BigDecimal(30),1L,Category.APPETIZER);
+        dish1 = new Dish("dish1", "descriotion1", new BigDecimal(30), restaurant, Category.APPETIZER);
+        dish2 = new Dish("dish2", "descriotion2", new BigDecimal(30), restaurant, Category.APPETIZER);
+        dish3 = new Dish("dish3", "descriotion3", new BigDecimal(30), restaurant, Category.APPETIZER);
+        dishDTO = new DishDTO("dish_DTO", "description_DTO", new BigDecimal(30), restaurant.getId(), Category.APPETIZER);
+        dishDTOWithNull = new DishDTO("dish_DTO", "description_DTO", new BigDecimal(30), 3L, Category.APPETIZER);
+        modifiedDish = new DishDTO("dish_DTO_modified", "description_DTO_modified", new BigDecimal(30), 1L, Category.APPETIZER);
         dishList = List.of(dish1, dish2, dish3);
     }
 
@@ -112,34 +112,34 @@ public class DishServiceTest {
     @Test
     void shouldReturnEmptyListWhenDishListAreEmpty() {
         //Give
-        int emptyListOfDishes =0;
+        int emptyListOfDishes = 0;
 
         //When
         List<DishDTO> dishDTOList = dishService.listDishes();
 
         //Then
-        assertEquals(emptyListOfDishes,dishDTOList.size());
+        assertEquals(emptyListOfDishes, dishDTOList.size());
     }
 
     @Test
-    void shouldSaveDishToDb(){
+    void shouldSaveDishToDb() {
         //Given
         Restaurant save = restaurantRepository.save(restaurant);
         dishDTOSave = new DishDTO("dish_DTO",
-                "description_DTO",new BigDecimal(30),
-                save.getId(),Category.APPETIZER);
+                "description_DTO", new BigDecimal(30),
+                save.getId(), Category.APPETIZER);
 
         //When
         DishDTO savedDish = dishService.createDish(dishDTOSave);
 
         //Thne
         List<Dish> all = dishRepository.findAll();
-        assertEquals(1,all.size());
-        assertEquals("dish_DTO",savedDish.name());
+        assertEquals(1, all.size());
+        assertEquals("dish_DTO", savedDish.name());
     }
 
     @Test
-    void shouldHandleExceptionWhenRestaurantIdIsNullDuringSave(){
+    void shouldHandleExceptionWhenRestaurantIdIsNullDuringSave() {
         //Given
 
         //Whne
@@ -150,7 +150,7 @@ public class DishServiceTest {
     }
 
     @Test
-    void shouldRemoveDishFromDb(){
+    void shouldRemoveDishFromDb() {
         //Given
         dishRepository.saveAll(dishList);
 
@@ -160,12 +160,12 @@ public class DishServiceTest {
         List<Dish> dishListAfterDelete = dishRepository.findAll();
 
         //Thne
-        assertEquals(3,dishListBeforeDelete.size());
-        assertEquals(2,dishListAfterDelete.size());
+        assertEquals(3, dishListBeforeDelete.size());
+        assertEquals(2, dishListAfterDelete.size());
     }
 
     @Test
-    void shouldHandleNotFoundExceptionWhenIdIsWrongWhenTryToDelete(){
+    void shouldHandleNotFoundExceptionWhenIdIsWrongWhenTryToDelete() {
         //Given
         long wrongId = 9999;
 
@@ -178,7 +178,7 @@ public class DishServiceTest {
     }
 
     @Test
-    void shouldModifyDish(){
+    void shouldModifyDish() {
         //Given
         Dish savedDish = dishRepository.save(dish1);
 
@@ -188,14 +188,14 @@ public class DishServiceTest {
         Optional<Dish> dishAfterModify = dishRepository.findById(savedDish.getId());
 
         //Then
-        String expectedNameBeforeUpdate ="dish1";
+        String expectedNameBeforeUpdate = "dish1";
         String expectedNameAfterUpdate = "dish_DTO_modified";
-        assertEquals(expectedNameBeforeUpdate,dishBeforeModify.get().getName());
-        assertEquals(expectedNameAfterUpdate,dishAfterModify.get().getName());
+        assertEquals(expectedNameBeforeUpdate, dishBeforeModify.get().getName());
+        assertEquals(expectedNameAfterUpdate, dishAfterModify.get().getName());
     }
 
     @Test
-    void shouldHandleDishNotFoundIfIdIsWrongWhenTryToModify(){
+    void shouldHandleDishNotFoundIfIdIsWrongWhenTryToModify() {
         //Given
         long wrongId = 23323;
 
@@ -205,12 +205,9 @@ public class DishServiceTest {
 
         //Then
         String expectedNessage = "Dish Not found";
-        assertEquals(expectedNessage,notFoundException.getMessage());
+        assertEquals(expectedNessage, notFoundException.getMessage());
 
     }
-
-
-
 
 
 }

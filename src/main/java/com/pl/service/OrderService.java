@@ -49,6 +49,7 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
             throw new RuntimeException();
         }
     }
+
     @Transactional
     public boolean presenceCheckForOrder(OrderCreateDTO createOrder) {
         userRepository.findById(createOrder.userId())

@@ -25,7 +25,7 @@ public class AddressController {
         return addressService.createAddress(addressDTO);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
     public List<AddressDTO> list() {
         return addressService.addressesList();

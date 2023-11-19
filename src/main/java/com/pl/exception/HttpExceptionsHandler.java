@@ -47,7 +47,6 @@ public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
     }
 
 
-
     @ExceptionHandler(AddressAlreadyExist.class)
     public ResponseEntity<ApiErrorResponse> handleAddressAlreadyExist(AddressAlreadyExist addressAlreadyExist) {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(addressAlreadyExist.getMessage(),

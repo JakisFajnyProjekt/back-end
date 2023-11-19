@@ -42,7 +42,7 @@ public class UserControllerTest {
     @MockBean
     private TokenRepository tokenRepository;
     @MockBean
-    private  MessagePropertiesConfig message;
+    private MessagePropertiesConfig message;
 
     private User user1;
     private User user2;

@@ -115,7 +115,7 @@ Example :
   * #### all ids must be correct otherwise exception will be thrown for each wrong id
 
 
-* HTTP status `404 Not Found` with wrong order id:
+* HTTP status `404 Not Found` with wrong ids:
   ```
   {
     "message": "Restaurant Not Found",

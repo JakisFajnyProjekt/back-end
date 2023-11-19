@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Table(name = "orders")
 @Entity
@@ -113,5 +114,18 @@ public class Order {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id && Objects.equals(orderTime, order.orderTime) && Objects.equals(totalPrice, order.totalPrice) && Objects.equals(status, order.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, orderTime, totalPrice, status);
     }
 }
