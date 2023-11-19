@@ -19,18 +19,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class UserServiceTest {
 
+    User user2;
+    User user3;
+    User user4;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private UserService userService;
-
     private User user1;
-        User user2;
-        User user3;
-        User user4;
-
-    private UserDTO update;private UserUpdateDTO userUpdateDTO;
+    private UserDTO update;
+    private UserUpdateDTO userUpdateDTO;
     private UserUpdateDTO userUpdateDTOWithNull;
     private List<User> userList;
 
@@ -52,13 +50,14 @@ public class UserServiceTest {
                 "lastNameDto", "email@gmail.com", "123456789Qwerty", Role.USER);
         userUpdateDTO = new UserUpdateDTO("firstNameDto",
                 "lastNameDto", "email@gmail.com", "123456789Qwerty");
-        userUpdateDTOWithNull = new UserUpdateDTO(null,null,"newEmail@gmail.com", null);
+        userUpdateDTOWithNull = new UserUpdateDTO(null, null, "newEmail@gmail.com", null);
     }
 
     @AfterEach
     void cleanUpafter() {
         userRepository.deleteAll();
     }
+
     @BeforeEach
     void cleanUpaBefore() {
         userRepository.deleteAll();
@@ -145,7 +144,7 @@ public class UserServiceTest {
         //When
         NotFoundException userNotFound = assertThrows(
                 NotFoundException.class,
-                ()->userService.remove(nonExistingUserId)
+                () -> userService.remove(nonExistingUserId)
         );
         String expectedMessage = "Not found with given id " + nonExistingUserId; //need to change message
         String messageFromException = userNotFound.getMessage();

@@ -33,12 +33,14 @@ public class DishService extends AbstractService<DishRepository, Dish> {
         this.dishMapper = dishMapper;
         this.restaurantRepository = restaurantRepository;
     }
-    @Cacheable(cacheNames = "dishesList",key = "#dishId")
+
+    @Cacheable(cacheNames = "dishesList", key = "#dishId")
     public DishDTO getDishById(Long dishId) {
         Dish dish = findEntity(dishRepository, dishId);
         LOGGER.info("Dish found with id" + dishId);
         return dishMapper.mapToDishDto(dish);
     }
+
     @Cacheable(cacheNames = "dishesList")
     public List<DishDTO> listDishes() {
         List<Dish> dishList = dishRepository.findAll();
@@ -50,7 +52,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
     }
 
     @Transactional
-    @CacheEvict(value = "dishesList",allEntries = true)
+    @CacheEvict(value = "dishesList", allEntries = true)
     public void removeDish(Long dishId) {
         Dish userById = findEntity(dishRepository, dishId);
         dishRepository.delete(userById);
@@ -58,7 +60,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
     }
 
     @Transactional
-    @CachePut(value = "dishesList",key = "#dishId")
+    @CachePut(value = "dishesList", key = "#dishId")
     public void editDish(long dishId, DishDTO dishDTO) {
         dishRepository.findById(dishId)
                 .map(existingUser -> {
@@ -76,7 +78,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
     }
 
     @Transactional
-    @CacheEvict(value = "dishesList",allEntries = true)
+    @CacheEvict(value = "dishesList", allEntries = true)
     public DishDTO createDish(DishDTO dishDTO) {
         if (dishDTO == null) {
             throw new InvalidValuesException("The dish DTO cannot be null.");

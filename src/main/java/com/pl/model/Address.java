@@ -14,18 +14,14 @@ public class Address {
     private long id;
     private String houseNumber;
     private String street;
-
     private String city;
-
     private String postalCode;
     @ManyToMany(mappedBy = "deliveryAddresses")
     private Set<User> user;
     @OneToMany(mappedBy = "deliveryAddress")
     private List<Order> orders;
 
-
     public Address() {
-
     }
 
     public Address(String houseNumber, String street, String city, String postalCode) {

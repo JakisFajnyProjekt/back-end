@@ -25,7 +25,8 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
         this.addressServiceValidation = addressServiceValidation;
         this.addressMapper = addressMapper;
     }
-    @Cacheable(value = "addressesList",key = "#addressId")
+
+    @Cacheable(value = "addressesList", key = "#addressId")
     public AddressDTO getAddressById(Long addressId) {
         Address findAddress = findEntity(addressRepository, addressId);
         LOGGER.info("address found with id " + findAddress.getId());
@@ -47,17 +48,17 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
     @Transactional
     @CacheEvict(value = "addressesList", allEntries = true)
     public AddressDTO createAddress(AddressDTO addressDTO) {
-            Address validatedAddressObj = addressCheck(addressDTO);
-            Address savedAddress = addressRepository.save(validatedAddressObj);
-            LOGGER.info("address saved");
-            return addressMapper.mapToDTO(savedAddress);
+        Address validatedAddressObj = addressCheck(addressDTO);
+        Address savedAddress = addressRepository.save(validatedAddressObj);
+        LOGGER.info("address saved");
+        return addressMapper.mapToDTO(savedAddress);
 
     }
 
 
-    private Address addressCheck(AddressDTO addressDTO){
-        Stream.of(addressDTO.houseNumber(),addressDTO.city(),addressDTO.postalCode(),addressDTO.street())
-                .forEach(field->Objects.requireNonNull(field,"value cannot be null"));
+    private Address addressCheck(AddressDTO addressDTO) {
+        Stream.of(addressDTO.houseNumber(), addressDTO.city(), addressDTO.postalCode(), addressDTO.street())
+                .forEach(field -> Objects.requireNonNull(field, "value cannot be null"));
         addressServiceValidation.validateAddress(addressDTO.houseNumber(), addressDTO.street());
         LOGGER.info("address checked");
         return addressMapper.mapFromDTO(addressDTO);
@@ -65,7 +66,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
     }
 
     @Transactional
-    @CacheEvict(value = "addressesList",allEntries = true)
+    @CacheEvict(value = "addressesList", allEntries = true)
     public void deleteAddress(long addressId) {
         Address address = findEntity(addressRepository, addressId);
         addressRepository.delete(address);

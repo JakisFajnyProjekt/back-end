@@ -43,8 +43,6 @@ public class AddressControllerTest {
     private AddressDTO addressDTO2;
 
 
-
-
     @Test
     void mockCheck() {
         assertNotNull(mockMvc);
@@ -58,10 +56,10 @@ public class AddressControllerTest {
     }
 
     @BeforeEach
-    void dataForTests(){
-        addressDTO = new AddressDTO("15","street","city","postalCode");
-        addressDTO1 = new AddressDTO("151","street1","city1","postalCode1");
-        addressDTO2 = new AddressDTO("152","street2","city2","postalCode2");
+    void dataForTests() {
+        addressDTO = new AddressDTO("15", "street", "city", "postalCode");
+        addressDTO1 = new AddressDTO("151", "street1", "city1", "postalCode1");
+        addressDTO2 = new AddressDTO("152", "street2", "city2", "postalCode2");
     }
 
     @Test
@@ -71,9 +69,9 @@ public class AddressControllerTest {
 
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/addresses")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(addressDTO)))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(addressDTO)))
                 .andExpect(jsonPath("$.houseNumber").value("15"))
                 .andExpect(jsonPath("$.street").value("street"))
                 .andExpect(jsonPath("$.city").value("city"))
@@ -81,13 +79,13 @@ public class AddressControllerTest {
     }
 
     @Test
-    void shouldRetrieveAddressById() throws Exception{
+    void shouldRetrieveAddressById() throws Exception {
         //Given
         long addresId = 12L;
         when(addressService.getAddressById(addresId)).thenReturn(addressDTO);
 
         //When && Then
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/addresses/{addressId}" , addresId)
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/addresses/{addressId}", addresId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.houseNumber").value("15"))
                 .andExpect(jsonPath("$.street").value("street"))
@@ -96,23 +94,23 @@ public class AddressControllerTest {
     }
 
     @Test
-    void shouldRetrieveListOfAddresses() throws Exception{
+    void shouldRetrieveListOfAddresses() throws Exception {
         //Given
-        when(addressService.addressesList()).thenReturn(List.of(addressDTO,addressDTO1,addressDTO2));
+        when(addressService.addressesList()).thenReturn(List.of(addressDTO, addressDTO1, addressDTO2));
 
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/addresses/all")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()").value(3));
     }
 
     @Test
-    void shouldRemoveAddress() throws Exception{
+    void shouldRemoveAddress() throws Exception {
         //Given
         long addressId = 12L;
 
         //When
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/addresses/{addressId}",addressId))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/addresses/{addressId}", addressId))
                 .andExpect(status().isAccepted());
 
         //Then

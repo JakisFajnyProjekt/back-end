@@ -68,18 +68,18 @@ public class OrderControllerTest {
 
 
     @BeforeEach
-    void dataForTests(){
-        address = new Address("15","street","city","postalCode");
-        restaurant = new Restaurant("restaurant",address);
+    void dataForTests() {
+        address = new Address("15", "street", "city", "postalCode");
+        restaurant = new Restaurant("restaurant", address);
         user = new User("firstname1", "lastname", "password", "email@email.com", Role.USER);
         userRepository.save(user);
         dish1 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
         dish2 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
         dish3 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
-        orderCreateDTO = new OrderCreateDTO(user.getId(), List.of(dish1.getId(),dish2.getId()),address.getId(),restaurant.getId());
-        orderDTO = new OrderDTO(LocalDateTime.now(),new BigDecimal(90),user.getId(), List.of(dish1.getId(),dish2.getId(),dish3.getId()),address.getId(),restaurant.getId());
-        orderDTO1 = new OrderDTO(LocalDateTime.now(),new BigDecimal(90),user.getId(), List.of(dish1.getId(),dish2.getId(),dish3.getId()),address.getId(),restaurant.getId());
-        orderDTO2 = new OrderDTO(LocalDateTime.now(),new BigDecimal(90),user.getId(), List.of(dish1.getId(),dish2.getId(),dish3.getId()),address.getId(),restaurant.getId());
+        orderCreateDTO = new OrderCreateDTO(user.getId(), List.of(dish1.getId(), dish2.getId()), address.getId(), restaurant.getId());
+        orderDTO = new OrderDTO(LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
+        orderDTO1 = new OrderDTO(LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
+        orderDTO2 = new OrderDTO(LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
     }
 
     @BeforeEach
@@ -90,7 +90,7 @@ public class OrderControllerTest {
     }
 
     @AfterEach
-    void cleanUpAfter(){
+    void cleanUpAfter() {
         orderRepository.deleteAll();
         userRepository.deleteAll();
         dishRepository.deleteAll();
@@ -99,23 +99,23 @@ public class OrderControllerTest {
     }
 
     @Test
-    void shouldCreateOrder() throws Exception{
+    void shouldCreateOrder() throws Exception {
         //Given
         when(orderService.create(orderCreateDTO)).thenReturn(orderDTO);
 
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/orders")
                         .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(orderCreateDTO)))
+                        .content(objectMapper.writeValueAsString(orderCreateDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(user.getId()))
                 .andExpect(jsonPath("$.totalPrice").value(new BigDecimal(90)));
     }
 
     @Test
-    void shouldFindListOFOrders() throws Exception{
+    void shouldFindListOFOrders() throws Exception {
         //Given
-        when(orderService.list()).thenReturn(List.of(orderDTO,orderDTO1,orderDTO2));
+        when(orderService.list()).thenReturn(List.of(orderDTO, orderDTO1, orderDTO2));
 
         //Given
         mockMvc.perform(MockMvcRequestBuilders.get("/api/orders")
@@ -126,20 +126,20 @@ public class OrderControllerTest {
     }
 
     @Test
-    void shouldFindOrderByGIvenId() throws Exception{
+    void shouldFindOrderByGIvenId() throws Exception {
         //Give
         long orderId = 1L;
         when(orderService.getOrderById(orderId)).thenReturn(orderDTO);
 
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/api/orders/{orderId}", orderId)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.totalPrice").value(new BigDecimal(90)));
 
     }
 
     @Test
-    void shouldRemoveOrder()throws  Exception{
+    void shouldRemoveOrder() throws Exception {
         //Given
         long orderId = 123L;
 
@@ -153,8 +153,7 @@ public class OrderControllerTest {
         assertNull(findOrder);
 
 
-        }
-
+    }
 
 
 }

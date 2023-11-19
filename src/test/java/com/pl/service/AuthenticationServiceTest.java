@@ -51,9 +51,10 @@ public class AuthenticationServiceTest {
     private AuthenticationManager authenticationManager;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
+
     @AfterEach
     void cleanUp() {
         userRepository.deleteAll();
@@ -87,6 +88,7 @@ public class AuthenticationServiceTest {
         assertThat(registerUser).isNotNull();
         assertThat(registerUser.getToken()).isEqualTo("jwtToken");
     }
+
     @Test
     void shouldThrowExceptionWhenEmailIsTaken() {
         // Given
@@ -103,6 +105,7 @@ public class AuthenticationServiceTest {
         assertThatThrownBy(() -> authenticationService.register(request))
                 .isInstanceOf(UserEmailTakenException.class);
     }
+
     @Test
     void shouldAuthenticateUser() {
         // Given
@@ -147,7 +150,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void shouldHandleExceptionWhenUserPasswordIsWrong(){
+    void shouldHandleExceptionWhenUserPasswordIsWrong() {
         //Given
         LoginRequest request = new LoginRequest();
         request.setEmail("test@example.com");
@@ -164,8 +167,8 @@ public class AuthenticationServiceTest {
         String exceptedMessage = message.getInvalidPassword();
         AuthenticationErrorException notFoundException = assertThrows(AuthenticationErrorException.class,
                 () -> authenticationService.login(request));
-        assertEquals(exceptedMessage,notFoundException.getMessage());
-        assertThatThrownBy(()-> authenticationService.login(request))
+        assertEquals(exceptedMessage, notFoundException.getMessage());
+        assertThatThrownBy(() -> authenticationService.login(request))
                 .isInstanceOf(AuthenticationErrorException.class);
 
 

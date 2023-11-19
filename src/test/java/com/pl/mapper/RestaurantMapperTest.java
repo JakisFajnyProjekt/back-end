@@ -23,9 +23,9 @@ public class RestaurantMapperTest {
 
     @BeforeEach
     void testData() {
-        restaurant = new Restaurant("Luigi",new Address());
-        restaurantDto = new RestaurantDTO("Luigi",1L);
-        expectedDto = new RestaurantDTO("Luigi",1L);
+        restaurant = new Restaurant("Luigi", new Address());
+        restaurantDto = new RestaurantDTO("Luigi", 1L);
+        expectedDto = new RestaurantDTO("Luigi", 1L);
 
     }
 

@@ -53,8 +53,8 @@ public class DishControllerTest {
     void testData() {
         dish1 = new Dish("dishName1", "description1");
         dishDTO1 = new DishDTO("nameDto", "descriptionDTO", new BigDecimal(30), 1L, Category.APPETIZER);
-        dishDTO2 = new DishDTO("nameDto2", "descriptionDTO2", new BigDecimal(12), 1L,Category.APPETIZER);
-        dishDTOForUpdateName = new DishDTO("nameUpdate", "descriptionDTO", new BigDecimal(30), 1L,Category.APPETIZER);
+        dishDTO2 = new DishDTO("nameDto2", "descriptionDTO2", new BigDecimal(12), 1L, Category.APPETIZER);
+        dishDTOForUpdateName = new DishDTO("nameUpdate", "descriptionDTO", new BigDecimal(30), 1L, Category.APPETIZER);
         dishList = List.of(dishDTO1, dishDTO2);
 
     }

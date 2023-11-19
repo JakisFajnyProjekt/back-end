@@ -27,12 +27,6 @@ public class Dish {
     public Dish() {
     }
 
-    public Dish(String name, String description, BigDecimal price, Restaurant restaurant) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.restaurant = restaurant;
-    }
 
     public Dish(String name, String description, BigDecimal price, Restaurant restaurant, Category category) {
         this.name = name;
@@ -106,14 +100,5 @@ public class Dish {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description);
-    }
-
-    @Override
-    public String toString() {
-        return "Dish{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description +
-                '}';
     }
 }

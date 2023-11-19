@@ -42,7 +42,7 @@ public class UserControllerTest {
     @MockBean
     private TokenRepository tokenRepository;
     @MockBean
-    private  MessagePropertiesConfig message;
+    private MessagePropertiesConfig message;
 
     private User user1;
     private User user2;
@@ -91,7 +91,7 @@ public class UserControllerTest {
         when(userService.list()).thenReturn(listOfUsers);
 
         //Then
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(UserDTO.class)))
                 .andExpect(status().isOk())

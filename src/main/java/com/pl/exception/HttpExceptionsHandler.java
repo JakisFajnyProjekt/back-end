@@ -1,6 +1,5 @@
 package com.pl.exception;
 
-import jakarta.persistence.NonUniqueResultException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -47,13 +46,6 @@ public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
-    @ExceptionHandler(NonUniqueResultException.class)
-    public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(NonUniqueResultException nonUniqueResultException) {
-            ApiErrorResponse apiErrorResponse = new ApiErrorResponse(nonUniqueResultException.getMessage(),
-                HttpStatus.BAD_REQUEST.toString(),
-                LocalDate.now());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
-    }
 
     @ExceptionHandler(AddressAlreadyExist.class)
     public ResponseEntity<ApiErrorResponse> handleAddressAlreadyExist(AddressAlreadyExist addressAlreadyExist) {

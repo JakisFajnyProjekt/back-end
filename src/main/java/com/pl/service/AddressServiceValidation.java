@@ -11,8 +11,8 @@ import java.util.Optional;
 
 @Service
 public class AddressServiceValidation {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddressServiceValidation.class);
     private final AddressRepository addressRepository;
-    private static  final Logger LOGGER = LoggerFactory.getLogger(AddressServiceValidation.class);
 
     public AddressServiceValidation(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
@@ -21,7 +21,7 @@ public class AddressServiceValidation {
     public void validateAddress(String houseNumber, String street) {
         Optional<Address> byStreetAndHouseNumber = addressRepository
                 .findByStreetAndHouseNumber(street, houseNumber);
-        if (byStreetAndHouseNumber.isPresent()){
+        if (byStreetAndHouseNumber.isPresent()) {
             LOGGER.error("address exist in DB");
             throw new AddressAlreadyExist("address already exist");
         }

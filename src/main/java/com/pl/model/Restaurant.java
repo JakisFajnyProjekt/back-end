@@ -13,11 +13,9 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Dish> dish;
-//    @OneToOne()
-//    @JoinColumn(name = "order_id")
-//    private Order order;
+
 
     @OneToOne
     @JoinTable(name = "restaurant_address",
@@ -68,14 +66,6 @@ public class Restaurant {
     public void setDish(List<Dish> dish) {
         this.dish = dish;
     }
-
-//    public Order getOrder() {
-//        return order;
-//    }
-//
-//    public void setOrder(Order order) {
-//        this.order = order;
-//    }
 
     @Override
     public boolean equals(Object o) {
