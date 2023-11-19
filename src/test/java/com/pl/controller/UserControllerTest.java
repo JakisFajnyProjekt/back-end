@@ -91,7 +91,7 @@ public class UserControllerTest {
         when(userService.list()).thenReturn(listOfUsers);
 
         //Then
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(UserDTO.class)))
                 .andExpect(status().isOk())
