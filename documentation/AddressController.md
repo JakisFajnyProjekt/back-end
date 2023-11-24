@@ -5,9 +5,10 @@
 ## 1. Get list of all restaurants
 
 `request url: /api/addresses/all`
-### HTTP Request:
-`GET: /api/addresses/all`
 
+### HTTP Request:
+
+`GET: /api/addresses/all`
 
 * ### Request Body:
   empty
@@ -16,9 +17,11 @@
   empty
 
 ### Expect:
+
 **JSON** with array of all addresses with `200 OK` status
 
 Example :
+
 * HTTP status 200 OK with restaurants
   ```
   [
@@ -42,14 +45,13 @@ Example :
    []
   ```
 
-
 ## 2. Get address By ID
 
 `request url: /api/addresses/{{addressId}}`
 
 ### HTTP Request:
-`GET: /api/addresses/{{addressId}`
 
+`GET: /api/addresses/{{addressId}`
 
 * ### Request Body:
   empty
@@ -58,9 +60,11 @@ Example :
   address ID required
 
 ### Expect:
+
 **JSON**  address with `200 OK` status
 
 Example :
+
 * HTTP status 200 OK with correct address id
   ```
   [
@@ -81,9 +85,11 @@ Example :
   "localDate": "2023-11-12"
   }
   ```
+
 ## 3. Create and add Address
 
 `request url: /api/addresses`
+
 ### HTTP Request:
 
 `POST: /api/addresses`
@@ -102,9 +108,11 @@ Example :
   empty
 
 ### Expect:
+
 **JSON** with status `200` and will return te body
 
 Example :
+
 * HTTP status 200 OK
   ```
   {
@@ -114,7 +122,7 @@ Example :
   "postalCode": "string"
   } 
   ```
-  * HTTP status 400 BAD_REQUEST if address is already exist
+    * HTTP status 400 BAD_REQUEST if address is already exist
 
   ```
   {
@@ -123,7 +131,7 @@ Example :
     "localDate": "2023-11-13"
    }
   ```
-  * HTTP status 400 BAD_REQUEST if one of the value are empty
+    * HTTP status 400 BAD_REQUEST if one of the value are empty
 
   ```
   {
@@ -155,8 +163,8 @@ Example :
 `request url: /api/addresses/{{addressId}}`
 
 ### HTTP Request:
-`DELETE: /api/addresses/{{addressId}`
 
+`DELETE: /api/addresses/{{addressId}`
 
 * ### Request Body:
   empty
@@ -165,9 +173,11 @@ Example :
   address ID required
 
 ### Expect:
+
 **JSON**  address with `202 Accepted` status
 
 Example :
+
 * HTTP status 202 Accepted with correct address id
   ```
   1

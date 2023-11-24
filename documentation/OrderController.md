@@ -1,13 +1,14 @@
 # Order Controller endpoints
 
-
 * `All order endpoints are secured, registration are required otherwise you will get status 403 Forbbiden`
+
 ## 1. Get list of all orders
 
 `request url: /api/orders`
-### HTTP Request:
-`GET: /api/orders`
 
+### HTTP Request:
+
+`GET: /api/orders`
 
 * ### Request Body:
   empty
@@ -16,9 +17,11 @@
   empty
 
 ### Expect:
+
 **JSON** with array of all orders with `200 OK` status
 
 Example :
+
 * HTTP status 200 OK with orders
   ```
   [
@@ -50,14 +53,13 @@ Example :
    []
   ```
 
-
 ## 2. Get order By ID
 
 `request url: /api/orders/{{orderId}}`
 
 ### HTTP Request:
-`GET: /api/orders/{{orderId}}`
 
+`GET: /api/orders/{{orderId}}`
 
 * ### Request Body:
   empty
@@ -66,9 +68,11 @@ Example :
   orderId ID required
 
 ### Expect:
+
 **JSON**  order with `200 OK` status
 
 Example :
+
 * HTTP status 200 OK with correct order id
   ```
   [
@@ -93,13 +97,14 @@ Example :
   "localDate": "2023-11-12"
   }
   ```
+
 ## 3. Create and add order
 
 `request url: /api/orders`
 
 ### HTTP Request:
-`POST: /api/orders`
 
+`POST: /api/orders`
 
 * ### Request Body:
   ```
@@ -112,7 +117,7 @@ Example :
   "restaurantId": 1
    }  
   ```
-  * #### all ids must be correct otherwise exception will be thrown for each wrong id
+    * #### all ids must be correct otherwise exception will be thrown for each wrong id
 
 
 * HTTP status `404 Not Found` with wrong ids:
@@ -147,9 +152,11 @@ Example :
   empty
 
 ### Expect:
+
 **JSON** with status `200` and will return te body
 
 Example :
+
 * HTTP status 200 OK with correct restaurantAddress id
   ```
   {
@@ -170,8 +177,8 @@ Example :
 `request url: /api/orders/{{addressId}}`
 
 ### HTTP Request:
-`DELETE: /api/orders/{{orderId}`
 
+`DELETE: /api/orders/{{orderId}`
 
 * ### Request Body:
   empty
@@ -180,9 +187,11 @@ Example :
   order ID required
 
 ### Expect:
+
 **JSON**  order with `202 Accepted` status
 
 Example :
+
 * HTTP status `202 Accepted` with correct order id
   ```
   1

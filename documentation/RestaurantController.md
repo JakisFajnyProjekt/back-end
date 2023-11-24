@@ -1,13 +1,14 @@
 # Restaurant Controller endpoints
 
-
 * `All restaurant endpoints are secured, registration are required otherwise you will get status 403 Forbbiden`
+
 ## 1. Get list of all restaurants
 
 `request url: /api/restaurants`
-### HTTP Request:
-`GET: /api/restaurants`
 
+### HTTP Request:
+
+`GET: /api/restaurants`
 
 * ### Request Body:
   empty
@@ -16,9 +17,11 @@
   empty
 
 ### Expect:
+
 **JSON** with array of all restaurants with `200 OK` status
 
 Example :
+
 * HTTP status 200 OK with restaurants
   ```
   [
@@ -46,14 +49,13 @@ Example :
    []
   ```
 
-
 ## 2. Get restaurant By ID
 
 `request url: /api/restaurants/{{restaurantId}}`
 
 ### HTTP Request:
-`GET: /api/restaurants/{{restaurantId}}`
 
+`GET: /api/restaurants/{{restaurantId}}`
 
 * ### Request Body:
   empty
@@ -62,9 +64,11 @@ Example :
   restaurant ID required
 
 ### Expect:
+
 **JSON**  restaurants with `200 OK` status
 
 Example :
+
 * HTTP status 200 OK with correct restaurant id
   ```
   [
@@ -83,12 +87,14 @@ Example :
   "localDate": "2023-11-12"
   }
   ```
+
 ## 3. Create and add restaurant
 
 `request url: /api/restaurants`
-### HTTP Request:
-`POST: /api/restaurants`
 
+### HTTP Request:
+
+`POST: /api/restaurants`
 
 * ### Request Body:
   ```
@@ -102,9 +108,11 @@ Example :
   empty
 
 ### Expect:
+
 **JSON** with status `200` and will return te body
 
 Example :
+
 * HTTP status 200 OK with correct restaurantAddress id
   ```
   {
@@ -121,6 +129,61 @@ Example :
     "localDate": "2023-11-12"
   }
   ```
+
+## 4. Find order for Restaurant
+
+`request url: /api/restaurants/orders/{restaurantid}`
+
+### HTTP Request:
+
+`GET: /api/restaurants/orders/{restaurantid}`
+
+* ### Request Body:
+  empty
+
+* ### Patch Variable:
+  restaurantId
+
+### Expect:
+
+**JSON** with status `200` and will return te body
+
+Example :
+
+* HTTP status 200 OK with correct restaurantAddress id
+  ```
+  [
+    {
+        "orderTime": "2023-11-24T19:26:49.011",
+        "totalPrice": 121,
+        "userId": 4,
+        "dishIds": [
+            1
+        ],
+        "deliveryAddressId": 1
+    },
+  {
+        "orderTime": "2023-11-24T19:26:49.011",
+        "totalPrice": 121,
+        "userId": 4,
+        "dishIds": [
+            1
+        ],
+        "deliveryAddressId": 1
+    },{
+        "orderTime": "2023-11-24T19:26:49.011",
+        "totalPrice": 121,
+        "userId": 4,
+        "dishIds": [
+            1
+        ],
+        "deliveryAddressId": 1
+    }
+  ]
+  ```
+* HTTP status 404 Not Found if restaurant ID doesn't exist
+
+  
 
 
 

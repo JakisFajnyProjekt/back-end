@@ -1,5 +1,4 @@
-
-# Authentication Controller endpoints       
+# Authentication Controller endpoints
 
 ## 1. Register user
 
@@ -24,11 +23,12 @@
   empty
 
 ### Expect:
+
 **JSON** with JWT token with `200 OK` status
 
 Example :
 
-* HTTP status 200 OK 
+* HTTP status 200 OK
 
   ```
   {
@@ -38,7 +38,7 @@ Example :
   pd8pAyZ3QMhjrJbvbpuuthS58kBVK7vKhU0w"
   }
   ```
- 
+
 * Http `400 Bad Request` for each condition not meet for email taken `409 CONFLICT`
 
    ```
@@ -65,7 +65,6 @@ Example :
        }
    ```
 
-
 ## 2. Login user
 
 `request url: /api/auth/login`
@@ -88,6 +87,7 @@ Example :
   empty
 
 ### Expect:
+
 **JSON** with JWT token with `200 OK` status
 
 Example :
@@ -123,7 +123,8 @@ Example :
     }
   }
    ```
- ##  3. Logout user
+
+## 3. Logout user
 
 `request url: /api/auth/logout`
 
@@ -139,6 +140,7 @@ Example :
   empty
 
 ### Expect:
+
 **JSON**  with `200 OK` status
 
 

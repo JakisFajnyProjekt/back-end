@@ -4,19 +4,19 @@ package com.pl.service;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.RestaurantMapper;
 import com.pl.model.Address;
+import com.pl.model.Order;
 import com.pl.model.Restaurant;
+import com.pl.model.dto.OrderByRestaurantDTO;
 import com.pl.model.dto.RestaurantDTO;
 import com.pl.repository.AddressRepository;
 import com.pl.repository.RestaurantRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RestaurantService extends AbstractService<RestaurantRepository, Restaurant> {
@@ -65,6 +65,8 @@ public class RestaurantService extends AbstractService<RestaurantRepository, Res
     }
 
     private void restaurantObjCheck(RestaurantDTO restaurantDTO, Restaurant restaurant) {
+        String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
         String name = Objects.requireNonNull(restaurantDTO.name(),
                 "restaurant name cannot be null");
         Optional<Address> address = Objects.requireNonNull(addressRepository.findById(restaurantDTO.restaurantAddress()),
@@ -72,7 +74,28 @@ public class RestaurantService extends AbstractService<RestaurantRepository, Res
         if (address.isPresent()) {
             restaurant.setName(name);
             restaurant.setAddress(address.get());
+            restaurant.setOwnerEmail(authenticatedUserEmail);
         }
     }
+
+    public List<OrderByRestaurantDTO> findOrders(long restaurantId) {
+        String authenticatedRestaurantId = SecurityContextHolder.getContext().getAuthentication().getName();
+        Restaurant restaurant = findEntity(restaurantRepository,restaurantId);
+
+        if ( restaurant.getOwnerEmail().equals(authenticatedRestaurantId)) {
+        LOGGER.info("Authenticated Restaurant ID: " + authenticatedRestaurantId);
+        List<Order> allOrdersById = restaurantRepository.findAllOrdersByRestaurantAndOwner(restaurantId);
+        LOGGER.info("Number of Orders found: " + allOrdersById.size());
+        return restaurantMapper.mapToDtoForOrderList(allOrdersById);
+        }else{
+            throw new NotFoundException("Fail to find restaurant");
+        }
+    }
+
+
+
+
+
+
 
 }

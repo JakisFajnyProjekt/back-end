@@ -1,13 +1,16 @@
 package com.pl.mapper;
 
-import com.pl.model.Address;
-import com.pl.model.Restaurant;
+import com.pl.auth.Role;
+import com.pl.model.*;
+import com.pl.model.dto.OrderByRestaurantDTO;
 import com.pl.model.dto.RestaurantDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,5 +65,36 @@ public class RestaurantMapperTest {
         //Then
         assertEquals(1, attemptList.size());
         assertEquals(RestaurantDTO.class, attemptList.get(0).getClass());
+    }
+
+    @Test
+    void shouldMapToDtoForOrderList(){
+        //Given
+        restaurant = new Restaurant("name");
+        Dish dish1 = new Dish("name1", "description1");
+        Dish dish2 = new Dish("name2", "description2");
+        User user = new User("Jan", "Kowalski", "bartosz@gmail.com", "zaq1@WSX", Role.USER);
+
+        Address address = new Address("12", "street", "city", "64-100");
+        Order order1 = new Order(LocalDateTime.now(),
+                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1, dish2), address, restaurant
+        );
+       Order order2 = new Order(LocalDateTime.now(),
+                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1, dish2), address, restaurant
+        );
+        Order order3 = new Order(LocalDateTime.now(),
+                BigDecimal.valueOf(100), "CREATED", user, List.of(dish1, dish2), address, restaurant
+        );
+
+        List<Order> orders = List.of(order1, order2, order3);
+
+
+        //When
+        List<OrderByRestaurantDTO> orderByRestaurantDTOS = restaurantMapper.mapToDtoForOrderList(orders);
+
+        //Then
+        assertEquals(OrderByRestaurantDTO.class,orderByRestaurantDTOS.get(0).getClass());
+        assertEquals(OrderByRestaurantDTO.class,orderByRestaurantDTOS.get(1).getClass());
+        assertEquals(OrderByRestaurantDTO.class,orderByRestaurantDTOS.get(2).getClass());
     }
 }

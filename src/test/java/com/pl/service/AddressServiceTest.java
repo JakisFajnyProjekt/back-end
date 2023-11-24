@@ -15,8 +15,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -135,7 +133,7 @@ public class AddressServiceTest {
     }
 
     @Test
-    void shouldDeleteAddressFrmDb(){
+    void shouldDeleteAddressFrmDb() {
         //Given
         Address savedAddress = addressRepository.save(address);
         long addressId = savedAddress.getId();
@@ -146,8 +144,8 @@ public class AddressServiceTest {
         List<Address> afterDelete = addressRepository.findAll();
 
         //Then
-        assertEquals(1,beforeDelete.size());
-        assertEquals(0,afterDelete.size());
+        assertEquals(1, beforeDelete.size());
+        assertEquals(0, afterDelete.size());
 
 
     }
