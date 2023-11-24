@@ -1,10 +1,14 @@
 package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pl.model.Address;
-import com.pl.model.Restaurant;
+import com.pl.auth.Role;
+import com.pl.model.*;
+import com.pl.model.dto.OrderByRestaurantDTO;
+import com.pl.model.dto.OrderCreateDTO;
+import com.pl.model.dto.OrderDTO;
 import com.pl.model.dto.RestaurantDTO;
 import com.pl.repository.RestaurantRepository;
+import com.pl.repository.UserRepository;
 import com.pl.service.RestaurantService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +22,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -45,12 +51,16 @@ public class RestaurantControllerTest {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     private Restaurant restaurant;
     private RestaurantDTO restaurantDTO;
     private RestaurantDTO restaurantDTO1;
     private RestaurantDTO restaurantDTO2;
     private Address address;
+    private OrderByRestaurantDTO orderDTO;
 
     @BeforeEach
     void dataForTests() {
@@ -59,6 +69,16 @@ public class RestaurantControllerTest {
         restaurantDTO = new RestaurantDTO("restaurant_test_name1", address.getId());
         restaurantDTO1 = new RestaurantDTO("restaurant_test_name2", address.getId());
         restaurantDTO2 = new RestaurantDTO("restaurant_test_name3", address.getId());
+        address = new Address("15", "street", "city", "postalCode");
+        restaurant = new Restaurant("restaurant", address);
+        User user = new User("firstname1", "lastname", "password", "email@email.com", Role.USER);
+        userRepository.save(user);
+        Dish dish1 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
+        Dish dish2 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
+        Dish dish3 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
+        orderDTO = new OrderByRestaurantDTO(LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId());
+
+
     }
 
     @BeforeEach
@@ -114,6 +134,19 @@ public class RestaurantControllerTest {
                 .andExpect(jsonPath("$.[1].name").value("restaurant_test_name2"))
                 .andExpect(jsonPath("$.[2].name").value("restaurant_test_name3"));
 
+    }
+
+    @Test
+    void shouldFindOrdersForGivenRestaurant() throws Exception{
+        //Given
+
+        long restaurantId = 123L;
+        when(restaurantService.findOrders(restaurantId)).thenReturn(List.of(orderDTO));
+
+        //When
+        mockMvc.perform(get("/api/restaurants/orders/{restaurantId}", restaurantId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()").value(1));
     }
 
 }
