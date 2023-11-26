@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -71,14 +72,18 @@ public class RestaurantControllerTest {
         restaurantDTO2 = new RestaurantDTO("restaurant_test_name3", address.getId());
         address = new Address("15", "street", "city", "postalCode");
         restaurant = new Restaurant("restaurant", address);
-        User user = new User("firstname1", "lastname", "password", "email@email.com", Role.USER);
+        User user = new User("firstname1", "lastname", "Password1", "email@email.com", Role.USER);
         userRepository.save(user);
         Dish dish1 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
         Dish dish2 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
         Dish dish3 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
         orderDTO = new OrderByRestaurantDTO(LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId());
+    }
 
-
+    @BeforeTestExecution
+    void cleanBeforeTests(){
+        userRepository.deleteAll();
+        restaurantRepository.deleteAll();
     }
 
     @BeforeEach
@@ -90,6 +95,7 @@ public class RestaurantControllerTest {
 
     @AfterEach
     void cleanUpAfter() {
+        userRepository.deleteAll();
         restaurantRepository.deleteAll();
     }
 
