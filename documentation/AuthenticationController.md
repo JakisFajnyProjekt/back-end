@@ -1,4 +1,5 @@
-# Authentication Controller endpoints
+
+# Authentication Controller endpoints       
 
 ## 1. Register user
 
@@ -139,10 +140,6 @@ Example :
 
 ### Expect:
 **JSON**  with `200 OK` status
-
-Example :
-
-* HTTP status 200 OK 
 
 
 

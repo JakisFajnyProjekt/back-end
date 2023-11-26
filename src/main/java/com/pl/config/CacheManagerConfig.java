@@ -10,25 +10,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class CacheManagerConfig {
 
-    @Bean
-    public Cache cacheAddress() {
-        return new ConcurrentMapCache("addressesList");
-    }
-
-    @Bean
-    public Cache cacheDish() {
-        return new ConcurrentMapCache("dishesList");
-    }
 
     @Bean
     public CacheManager cacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
-        cacheManager.setCaches(Arrays.asList(cacheAddress(), cacheDish()));
+        List<Cache> caches = new ArrayList<>();
+        caches.add(new ConcurrentMapCache("addressesList"));
+        caches.add(new ConcurrentMapCache("orderList"));
+        caches.add(new ConcurrentMapCache("dishesList"));
+        caches.add(new ConcurrentMapCache("restaurantsList"));
+        cacheManager.setCaches(caches);
         return cacheManager;
     }
 
