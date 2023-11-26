@@ -13,8 +13,12 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Dish> dish;
+
+    @Column(name = "owner_email")
+    private String ownerEmail;
+
 
 
     @OneToOne
@@ -65,6 +69,14 @@ public class Restaurant {
 
     public void setDish(List<Dish> dish) {
         this.dish = dish;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 
     @Override

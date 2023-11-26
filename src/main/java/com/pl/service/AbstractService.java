@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public abstract class AbstractService<R extends JpaRepository<EntityType, Long>, EntityType> {
+abstract class AbstractService<R extends JpaRepository<EntityType, Long>, EntityType> {
     protected final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     protected EntityType findEntity(R repository, long id) {

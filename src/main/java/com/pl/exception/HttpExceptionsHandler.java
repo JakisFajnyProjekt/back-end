@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.time.LocalDate;
 
 @ControllerAdvice
-public class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
+class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleFoundException(NotFoundException notFoundException) {

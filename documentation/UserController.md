@@ -1,8 +1,9 @@
 # User Controller endpoints
 
-
 * `All user endpoints are secured, registration are required otherwise you will get status 403 Forbbiden`
+
 ## 1. Get list of all users
+
 `request url: /api/users`
 
 ### HTTP Request:
@@ -16,9 +17,11 @@
   empty
 
 ### Expect:
+
 **JSON** with array of all users with `200 OK` status
 
 Example :
+
 * HTTP status 200 OK with orders
   ```
   [
@@ -51,14 +54,13 @@ Example :
    []
   ```
 
-
 ## 2. Get order By ID
 
 `request url: /api/users/{{userId}}`
 
 ### HTTP Request:
-`GET: /api/users/{{userId}}`
 
+`GET: /api/users/{{userId}}`
 
 * ### Request Body:
   empty
@@ -67,9 +69,11 @@ Example :
   user ID required
 
 ### Expect:
+
 **JSON**  user with `200 OK` status
 
 Example :
+
 * HTTP status 200 OK with correct user id
   ```
   [
@@ -97,8 +101,8 @@ Example :
 `request url: /api/users/{{userId}}`
 
 ### HTTP Request:
-`DELETE: /api/users/{{userId}`
 
+`DELETE: /api/users/{{userId}`
 
 * ### Request Body:
   empty
@@ -107,9 +111,11 @@ Example :
   user ID required
 
 ### Expect:
+
 **JSON**  order with `202 Accepted` status
 
 Example :
+
 * HTTP status `202 Accepted` with correct user id
   ```
   1
@@ -127,6 +133,7 @@ Example :
 ## 4. Modify and add user
 
 `request url: /api/users`
+
 ### HTTP Request:
 
 `PUT: /api/users`
@@ -146,9 +153,11 @@ Example :
   user ID required
 
 ### Expect:
+
 **JSON** with status `202 Accepted` and will return te body
 
 Example :
+
 * HTTP status 202 Accepted
   ```
   {

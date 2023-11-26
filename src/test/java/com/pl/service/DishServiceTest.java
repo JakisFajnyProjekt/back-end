@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.event.annotation.BeforeTestExecution;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -57,6 +59,12 @@ public class DishServiceTest {
         dishList = List.of(dish1, dish2, dish3);
     }
 
+    @BeforeTestExecution
+    void cleanUpBefore() {
+        dishRepository.deleteAll();
+        restaurantRepository.deleteAll();
+    }
+
 
     @AfterEach
     void cleanUpAfter() {
@@ -65,6 +73,7 @@ public class DishServiceTest {
     }
 
     @Test
+    @Transactional
     void shouldFindListOfDishes() {
         //Give
         dishList = List.of(dish1, dish2, dish3);
@@ -89,7 +98,7 @@ public class DishServiceTest {
         //When
         DishDTO findDishById = dishService.getDishById(savedDish.getId());
 
-        //Thne
+        //Then
         String expectedName = "dish1";
         assertEquals(DishDTO.class, findDishById.getClass());
         assertEquals(expectedName, findDishById.name());
@@ -132,7 +141,7 @@ public class DishServiceTest {
         //When
         DishDTO savedDish = dishService.createDish(dishDTOSave);
 
-        //Thne
+        //Then
         List<Dish> all = dishRepository.findAll();
         assertEquals(1, all.size());
         assertEquals("dish_DTO", savedDish.name());
@@ -142,7 +151,7 @@ public class DishServiceTest {
     void shouldHandleExceptionWhenRestaurantIdIsNullDuringSave() {
         //Given
 
-        //Whne
+        //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> dishService.createDish(dishDTOWithNull));
 
@@ -150,6 +159,7 @@ public class DishServiceTest {
     }
 
     @Test
+    @Transactional
     void shouldRemoveDishFromDb() {
         //Given
         dishRepository.saveAll(dishList);
@@ -159,7 +169,7 @@ public class DishServiceTest {
         dishService.removeDish(dish1.getId());
         List<Dish> dishListAfterDelete = dishRepository.findAll();
 
-        //Thne
+        //Then
         assertEquals(3, dishListBeforeDelete.size());
         assertEquals(2, dishListAfterDelete.size());
     }
@@ -172,7 +182,7 @@ public class DishServiceTest {
         //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> dishService.removeDish(wrongId));
-        //Thne
+        //Then
         String expectedMessage = "Not found with given id " + wrongId; //<-- need to change this message
         assertTrue(notFoundException.getMessage().contains(expectedMessage));
     }

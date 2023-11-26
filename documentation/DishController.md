@@ -1,13 +1,14 @@
 # Dish Controller endpoints
 
-
 * `All dish endpoints are secured, registration are required otherwise you will get status 403 Forbbiden`
+
 ## 1. Get list of all dishes
 
 `request url: /api/dishes`
-### HTTP Request:
-`GET: /api/dishes`
 
+### HTTP Request:
+
+`GET: /api/dishes`
 
 * ### Request Body:
   empty
@@ -16,13 +17,15 @@
   empty
 
 ### Expect:
+
 **JSON** with array of all dishes with `200 OK` status
 
 Example :
+
 * HTTP status 200 OK with dishes
 
+`"category"` are selected from enum list
 
-  `"category"` are selected from enum list
   ```
   [
   {
@@ -48,21 +51,20 @@ Example :
   },
   ]
   ```
-  
+
 * HTTP status 200 OK with empty list
 
   ```
    []
   ```
 
-
 ## 2. Get dish By ID
 
 `request url: /api/dishes/{{dish}}`
 
 ### HTTP Request:
-`GET: /api/dishes/{{dishId}}`
 
+`GET: /api/dishes/{{dishId}}`
 
 * ### Request Body:
   empty
@@ -71,9 +73,11 @@ Example :
   dish ID required
 
 ### Expect:
+
 **JSON**  dish with `200 OK` status
 
 Example :
+
 * HTTP status 200 OK with correct dish id
   ```
   [
@@ -95,9 +99,11 @@ Example :
   "localDate": "2023-11-12"
   }
   ```
+
 ## 3. Create and add dish
 
 `request url: /api/dishes`
+
 ### HTTP Request:
 
 `POST: /api/dishes`
@@ -117,9 +123,11 @@ Example :
   empty
 
 ### Expect:
+
 **JSON** with status `200` and will return te body
 
 Example :
+
 * HTTP status 200 OK with correct restaurant id
   ```
   {
@@ -141,6 +149,7 @@ Example :
 ## 4. Modify and add dish
 
 `request url: /api/dishes`
+
 ### HTTP Request:
 
 `PUT: /api/dishes`
@@ -161,9 +170,11 @@ Example :
   dish ID required
 
 ### Expect:
+
 **JSON** with status `200` and will return te body
 
 Example :
+
 * HTTP status 200 OK
   ```
   {

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService extends AbstractService<UserRepository, User> {
@@ -50,18 +51,15 @@ public class UserService extends AbstractService<UserRepository, User> {
     public UserDTO edit(long userId, final UserUpdateDTO update) {
         return userRepository.findById(userId)
                 .map(existingUser -> {
-                    if (update.firstName() != null) {
-                        existingUser.setFirstName(update.firstName());
-                    }
-                    if (update.lastName() != null) {
-                        existingUser.setLastName(update.lastName());
-                    }
-                    if (update.email() != null) {
-                        existingUser.setEmail(update.email());
-                    }
-                    if (update.password() != null) {
-                        existingUser.setPassword(passwordEncoder.encode(update.password()));
-                    }
+                    Optional.ofNullable(update.firstName())
+                            .ifPresent(existingUser::setFirstName);
+                    Optional.ofNullable(update.lastName())
+                            .ifPresent(existingUser::setLastName);
+                    Optional.ofNullable(update.email())
+                            .ifPresent(existingUser::setEmail);
+                    Optional.ofNullable(update.password())
+                            .map(passwordEncoder::encode)
+                            .ifPresent(existingUser::setPassword);
                     User savedUser = userRepository.save(existingUser);
                     LOGGER.info("Changes are accepted");
                     return userMapper.mapToUserDto(savedUser);
