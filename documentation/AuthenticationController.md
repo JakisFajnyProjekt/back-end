@@ -13,7 +13,7 @@
   ```
   {
     "firstName":"firstName",
-    "lastName": "firstName",
+    "lastName": "lastName",
     "password":"password",
     "email":"email@email.com"
   }
