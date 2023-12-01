@@ -2,6 +2,7 @@ package com.pl.mapper;
 
 import com.pl.model.Dish;
 import com.pl.model.Restaurant;
+import com.pl.model.dto.DishCreateDTO;
 import com.pl.model.dto.DishDTO;
 import com.pl.repository.RestaurantRepository;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,7 @@ public class DishMapper {
         this.restaurantRepository = restaurantRepository;
     }
 
-    public Dish mapToDish(DishDTO dishDto) {
+    public Dish mapToDish(DishCreateDTO dishDto) {
         Dish dish = new Dish();
         dish.setName(dishDto.name());
         dish.setDescription(dishDto.description());

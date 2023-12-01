@@ -2,6 +2,7 @@ package com.pl.service;
 
 import com.pl.exception.NotFoundException;
 import com.pl.model.Address;
+import com.pl.model.dto.AddressCreateDTO;
 import com.pl.model.dto.AddressDTO;
 import com.pl.repository.AddressRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -28,8 +29,8 @@ public class AddressServiceTest {
     private Address address;
     private Address address2;
     private Address address3;
-    private AddressDTO addressDTO;
-    private AddressDTO addressDTOWithNull;
+    private AddressCreateDTO addressDTO;
+    private AddressCreateDTO addressDTOWithNull;
 
 
     @BeforeEach
@@ -37,8 +38,8 @@ public class AddressServiceTest {
         address = new Address("15", "street", "city", "postalCode");
         address2 = new Address("16", "street", "city", "postalCode");
         address3 = new Address("16", "street", "city", "postalCode");
-        addressDTO = new AddressDTO(1L,"15_dto", "street_dto", "city_dto", "postalCode_dto");
-        addressDTOWithNull = new AddressDTO(2L, null,"street_dto", "city_dto", "postalCode_dto");
+        addressDTO = new AddressCreateDTO("15_dto", "street_dto", "city_dto", "postalCode_dto");
+        addressDTOWithNull = new AddressCreateDTO( null,"street_dto", "city_dto", "postalCode_dto");
 
     }
 

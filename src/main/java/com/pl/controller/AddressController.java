@@ -1,5 +1,6 @@
 package com.pl.controller;
 
+import com.pl.model.dto.AddressCreateDTO;
 import com.pl.model.dto.AddressDTO;
 import com.pl.service.AddressService;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class AddressController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public AddressDTO addAddress(@RequestBody AddressDTO addressDTO) {
+    public AddressDTO addAddress(@RequestBody AddressCreateDTO addressDTO) {
         return addressService.createAddress(addressDTO);
     }
 

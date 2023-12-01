@@ -2,6 +2,7 @@ package com.pl.service;
 
 import com.pl.mapper.AddressMapper;
 import com.pl.model.Address;
+import com.pl.model.dto.AddressCreateDTO;
 import com.pl.model.dto.AddressDTO;
 import com.pl.repository.AddressRepository;
 import org.springframework.cache.annotation.CacheEvict;
@@ -47,7 +48,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
 
     @Transactional
     @CacheEvict(value = "addressesList", allEntries = true)
-    public AddressDTO createAddress(AddressDTO addressDTO) {
+    public AddressDTO createAddress(AddressCreateDTO addressDTO) {
         Address validatedAddressObj = addressCheck(addressDTO);
         Address savedAddress = addressRepository.save(validatedAddressObj);
         LOGGER.info("address saved");
@@ -56,7 +57,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
     }
 
 
-    private Address addressCheck(AddressDTO addressDTO) {
+    private Address addressCheck(AddressCreateDTO addressDTO) {
         Stream.of(addressDTO.houseNumber(), addressDTO.city(), addressDTO.postalCode(), addressDTO.street())
                 .forEach(field -> Objects.requireNonNull(field, "value cannot be null"));
         addressServiceValidation.validateAddress(addressDTO.houseNumber(), addressDTO.street());

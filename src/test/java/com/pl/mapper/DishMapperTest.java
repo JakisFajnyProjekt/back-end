@@ -3,6 +3,7 @@ package com.pl.mapper;
 import com.pl.model.Category;
 import com.pl.model.Dish;
 import com.pl.model.Restaurant;
+import com.pl.model.dto.DishCreateDTO;
 import com.pl.model.dto.DishDTO;
 import com.pl.repository.RestaurantRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DishMapperTest {
 
     private Dish dish;
-    private DishDTO dishDto;
+    private DishCreateDTO dishDto;
     private DishDTO expectedDto;
     private Restaurant restaurant;
     @Autowired
@@ -33,7 +34,7 @@ public class DishMapperTest {
         restaurant = new Restaurant("restaurant");
         Restaurant savedRestaurant = restaurantRepository.save(restaurant);
         dish = new Dish("Pizza", "This is very good pizza!", new BigDecimal(30), restaurant, Category.APPETIZER);
-        dishDto = new DishDTO(1L,"Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Category.BREAKFAST);
+        dishDto = new DishCreateDTO("Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Category.BREAKFAST);
         expectedDto = new DishDTO(2L,"Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Category.APPETIZER);
     }
 

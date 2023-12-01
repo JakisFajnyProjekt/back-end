@@ -1,6 +1,7 @@
 package com.pl.mapper;
 
 import com.pl.model.Address;
+import com.pl.model.dto.AddressCreateDTO;
 import com.pl.model.dto.AddressDTO;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +19,11 @@ public class AddressMapper {
     }
 
 
-    public Address mapFromDTO(AddressDTO addressDTO) {
-        return new Address(addressDTO.houseNumber(),
-                addressDTO.street(),
-                addressDTO.city(),
-                addressDTO.postalCode());
+    public Address mapFromDTO(AddressCreateDTO addressCreateDTO) {
+        return new Address(addressCreateDTO.houseNumber(),
+                addressCreateDTO.street(),
+                addressCreateDTO.city(),
+                addressCreateDTO.postalCode());
     }
 
 

@@ -1,6 +1,7 @@
 package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pl.model.dto.AddressCreateDTO;
 import com.pl.model.dto.AddressDTO;
 import com.pl.service.AddressService;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,7 @@ public class AddressControllerTest {
     @Autowired
     private AddressController addressController;
 
-    private AddressDTO addressDTO;
+    private AddressCreateDTO addressDTO;
     private AddressDTO addressDTO1;
     private AddressDTO addressDTO2;
 
@@ -57,7 +58,7 @@ public class AddressControllerTest {
 
     @BeforeEach
     void dataForTests() {
-        addressDTO = new AddressDTO(1L,"15", "street", "city", "postalCode");
+        addressDTO = new AddressCreateDTO("15", "street", "city", "postalCode");
         addressDTO1 = new AddressDTO(2L,"151", "street1", "city1", "postalCode1");
         addressDTO2 = new AddressDTO(3L,"152", "street2", "city2", "postalCode2");
     }
@@ -65,43 +66,43 @@ public class AddressControllerTest {
     @Test
     void shouldCreateAddress() throws Exception {
         //Given
-        when(addressService.createAddress(addressDTO)).thenReturn(addressDTO);
+        when(addressService.createAddress(addressDTO)).thenReturn(addressDTO1);
 
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/addresses")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(addressDTO)))
-                .andExpect(jsonPath("$.houseNumber").value("15"))
-                .andExpect(jsonPath("$.street").value("street"))
-                .andExpect(jsonPath("$.city").value("city"))
-                .andExpect(jsonPath("$.postalCode").value("postalCode"));
+                .andExpect(jsonPath("$.houseNumber").value("151"))
+                .andExpect(jsonPath("$.street").value("street1"))
+                .andExpect(jsonPath("$.city").value("city1"))
+                .andExpect(jsonPath("$.postalCode").value("postalCode1"));
     }
 
     @Test
     void shouldRetrieveAddressById() throws Exception {
         //Given
         long addresId = 12L;
-        when(addressService.getAddressById(addresId)).thenReturn(addressDTO);
+        when(addressService.getAddressById(addresId)).thenReturn(addressDTO1);
 
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/addresses/{addressId}", addresId)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.houseNumber").value("15"))
-                .andExpect(jsonPath("$.street").value("street"))
-                .andExpect(jsonPath("$.city").value("city"))
-                .andExpect(jsonPath("$.postalCode").value("postalCode"));
+                .andExpect(jsonPath("$.houseNumber").value("151"))
+                .andExpect(jsonPath("$.street").value("street1"))
+                .andExpect(jsonPath("$.city").value("city1"))
+                .andExpect(jsonPath("$.postalCode").value("postalCode1"));
     }
 
     @Test
     void shouldRetrieveListOfAddresses() throws Exception {
         //Given
-        when(addressService.addressesList()).thenReturn(List.of(addressDTO, addressDTO1, addressDTO2));
+        when(addressService.addressesList()).thenReturn(List.of( addressDTO1, addressDTO2));
 
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/addresses/all")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()").value(3));
+                .andExpect(jsonPath("$.size()").value(2));
     }
 
     @Test
