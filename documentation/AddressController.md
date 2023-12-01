@@ -25,18 +25,27 @@ Example :
 * HTTP status 200 OK with restaurants
   ```
   [
-    {
-        "houseNumber": "1",
-        "street": "street1",
-        "city": "city",
-        "postalCode": "1234"
-    },
-    {
-        "houseNumber": "2",
-        "street": "street2",
-        "city": "city",
-        "postalCode": "123231"
-    }
+  {
+    "id": 0,
+    "houseNumber": "string",
+    "street": "string",
+    "city": "string",
+    "postalCode": "string"
+  },
+  {
+    "id": 1,
+    "houseNumber": "string",
+    "street": "string",
+    "city": "string",
+    "postalCode": "string"
+  },
+  {
+    "id": 2,
+    "houseNumber": "string",
+    "street": "string",
+    "city": "string",
+    "postalCode": "string"
+  }
   ]
   ```
 * HTTP status 200 OK with empty list
@@ -67,14 +76,13 @@ Example :
 
 * HTTP status 200 OK with correct address id
   ```
-  [
   {
-        "houseNumber": "2",
-        "street": "street2",
-        "city": "city",
-        "postalCode": "123231"
+    "id": 3,
+    "houseNumber": "string",
+    "street": "string",
+    "city": "string",
+    "postalCode": "string"
   }
-  ]
   ```
 * HTTP status 404 Not Found with wrong address id
 

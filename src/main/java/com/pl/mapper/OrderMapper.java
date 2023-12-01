@@ -43,6 +43,7 @@ public class OrderMapper {
 
     public OrderDTO mapToOrderDto(Order order) {
         return new OrderDTO(
+                order.getId(),
                 order.getOrderTime(),
                 order.getTotalPrice(),
                 order.getUser().getId(),

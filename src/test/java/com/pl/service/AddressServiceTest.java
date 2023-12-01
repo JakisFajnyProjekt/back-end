@@ -37,8 +37,8 @@ public class AddressServiceTest {
         address = new Address("15", "street", "city", "postalCode");
         address2 = new Address("16", "street", "city", "postalCode");
         address3 = new Address("16", "street", "city", "postalCode");
-        addressDTO = new AddressDTO("15_dto", "street_dto", "city_dto", "postalCode_dto");
-        addressDTOWithNull = new AddressDTO(null, "street_dto", "city_dto", "postalCode_dto");
+        addressDTO = new AddressDTO(1L,"15_dto", "street_dto", "city_dto", "postalCode_dto");
+        addressDTOWithNull = new AddressDTO(2L, null,"street_dto", "city_dto", "postalCode_dto");
 
     }
 

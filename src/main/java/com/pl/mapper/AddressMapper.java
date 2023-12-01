@@ -10,7 +10,8 @@ import java.util.List;
 public class AddressMapper {
 
     public AddressDTO mapToDTO(Address address) {
-        return new AddressDTO(address.getHouseNumber(),
+        return new AddressDTO(address.getId(),
+                address.getHouseNumber(),
                 address.getStreet(),
                 address.getCity(),
                 address.getPostalCode());

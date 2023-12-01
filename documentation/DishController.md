@@ -29,6 +29,7 @@ Example :
   ```
   [
   {
+    "dishId": 0,
     "name": "string",
     "description": "string",
     "price": 0,
@@ -36,6 +37,7 @@ Example :
     "category": "APPETIZER"
   },
   {
+    "dishId": 1,
     "name": "string",
     "description": "string",
     "price": 0,
@@ -43,12 +45,13 @@ Example :
     "category": "APPETIZER"
   },
   {
+    "dishId": 2,
     "name": "string",
     "description": "string",
     "price": 0,
     "restaurantId": 0,
-    "category": "APPETIZER" 
-  },
+    "category": "APPETIZER"
+  }
   ]
   ```
 
@@ -82,11 +85,12 @@ Example :
   ```
   [
   {
-  "name": "string",
-  "description": "string",
-  "price": 0,
-  "restaurantId": 0,
-  "category": "APPETIZER"
+    "dishId": 2,
+    "name": "string",
+    "description": "string",
+    "price": 0,
+    "restaurantId": 0,
+    "category": "APPETIZER"
   }
   ]
   ```

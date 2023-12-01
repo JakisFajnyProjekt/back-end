@@ -83,7 +83,7 @@ public class RestaurantServiceTest {
 
         Address savedAddress = addressRepository.save(address);
         long addressId = savedAddress.getId();
-        restaurantDTO = new RestaurantDTO("restaurant_dto",addressId);
+        restaurantDTO = new RestaurantDTO(1L,"restaurant_dto",addressId);
 
 
         //When
@@ -98,7 +98,7 @@ public class RestaurantServiceTest {
     void shouldHandleWrongAddressWhenCreatingRestaurant() {
         //Given
         long wrongIdAddress = 1L;
-        restaurantDTOWithWrongId = new RestaurantDTO("name", wrongIdAddress);
+        restaurantDTOWithWrongId = new RestaurantDTO(2L,"name", wrongIdAddress);
 
         //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,

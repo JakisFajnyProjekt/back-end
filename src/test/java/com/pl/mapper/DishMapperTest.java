@@ -33,8 +33,8 @@ public class DishMapperTest {
         restaurant = new Restaurant("restaurant");
         Restaurant savedRestaurant = restaurantRepository.save(restaurant);
         dish = new Dish("Pizza", "This is very good pizza!", new BigDecimal(30), restaurant, Category.APPETIZER);
-        dishDto = new DishDTO("Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Category.BREAKFAST);
-        expectedDto = new DishDTO("Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Category.APPETIZER);
+        dishDto = new DishDTO(1L,"Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Category.BREAKFAST);
+        expectedDto = new DishDTO(2L,"Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Category.APPETIZER);
     }
 
     @Test

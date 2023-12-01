@@ -30,9 +30,9 @@ public class AddressMapperTest {
         address = new Address("15", "street", "city", "postalCode");
         address1 = new Address("151", "street1", "city1", "postalCode1");
         address2 = new Address("152", "street2", "city2", "postalCode2");
-        addressDTO = new AddressDTO("15_dto", "street_dto", "city_dto", "postalCode_dto");
-        addressDTO1 = new AddressDTO("151_dto", "street1_dto", "city1_dto", "postalCode1_dto");
-        addressDTO2 = new AddressDTO("152_dto", "street2_dto", "city2+dto", "postalCode2_dto");
+        addressDTO = new AddressDTO(2L,"15_dto", "street_dto", "city_dto", "postalCode_dto");
+        addressDTO1 = new AddressDTO(3L,"151_dto", "street1_dto", "city1_dto", "postalCode1_dto");
+        addressDTO2 = new AddressDTO(4L,"152_dto", "street2_dto", "city2+dto", "postalCode2_dto");
     }
 
     @Test

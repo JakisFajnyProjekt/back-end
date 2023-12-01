@@ -77,9 +77,9 @@ public class OrderControllerTest {
         dish2 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
         dish3 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
         orderCreateDTO = new OrderCreateDTO(user.getId(), List.of(dish1.getId(), dish2.getId()), address.getId(), restaurant.getId());
-        orderDTO = new OrderDTO(LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
-        orderDTO1 = new OrderDTO(LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
-        orderDTO2 = new OrderDTO(LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
+        orderDTO = new OrderDTO(1L,LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
+        orderDTO1 = new OrderDTO(2L,LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
+        orderDTO2 = new OrderDTO(3L,LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
     }
 
     @BeforeEach

@@ -18,7 +18,9 @@ public class RestaurantMapper {
     }
 
     public RestaurantDTO mapToRestaurantDto(Restaurant restaurant) {
-        return new RestaurantDTO(restaurant.getName(),
+        return new RestaurantDTO(
+                restaurant.getId(),
+                restaurant.getName(),
                 restaurant.getAddress().getId());
     }
 

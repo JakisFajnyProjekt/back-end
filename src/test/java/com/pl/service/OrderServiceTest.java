@@ -70,8 +70,8 @@ public class OrderServiceTest {
         dishList = List.of(dish1);
         dishRepository.saveAll(dishList);
         orderCreateDTO = new OrderCreateDTO(user1.getId(), List.of(dish1.getId()), address.getId(), restaurant.getId());
-        order1DTO = new OrderDTO(LocalDateTime.now(), new BigDecimal(60), user1.getId(), dishListLong, address.getId(), restaurant.getId());
-        order2DTO = new OrderDTO(LocalDateTime.now(), new BigDecimal(60), user1.getId(), dishListLong, address.getId(), restaurant.getId());
+        order1DTO = new OrderDTO(1L,LocalDateTime.now(), new BigDecimal(60), user1.getId(), dishListLong, address.getId(), restaurant.getId());
+        order2DTO = new OrderDTO(2L,LocalDateTime.now(), new BigDecimal(60), user1.getId(), dishListLong, address.getId(), restaurant.getId());
         orderNoDto = new Order(LocalDateTime.now(), new BigDecimal(60), "status", user1, dishList, address, restaurant);
         orderNoDto2 = new Order(LocalDateTime.now(), new BigDecimal(60), "status", user1, dishList, address, restaurant);
         orderRepository.save(orderNoDto);

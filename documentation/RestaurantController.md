@@ -26,18 +26,22 @@ Example :
   ```
   [
   {
+    "restaurantId": 0,
     "name": "The Savory Bistro",
     "restaurantAddress": 1
   },
   {
+    "restaurantId": 1,
     "name": "Rustic Flavor Grill",
     "restaurantAddress": 2
   },
   {
+    "restaurantId": 3,
     "name": "Oceanview Seafood House",
     "restaurantAddress": 3
   },
   {
+    "restaurantId": 6,
     "name": "Fireside Steakhouse & Bar",
     "restaurantAddress": 4
   },
@@ -73,6 +77,7 @@ Example :
   ```
   [
   {
+    "restaurantId": 1,
     "name": "The Savory Bistro",
     "restaurantAddress": 1
   }
@@ -154,6 +159,7 @@ Example :
   ```
   [
     {
+        "orderId": 0,
         "orderTime": "2023-11-24T19:26:49.011",
         "totalPrice": 121,
         "userId": 4,
@@ -163,6 +169,7 @@ Example :
         "deliveryAddressId": 1
     },
   {
+        "orderId": 1,
         "orderTime": "2023-11-24T19:26:49.011",
         "totalPrice": 121,
         "userId": 4,
@@ -170,7 +177,9 @@ Example :
             1
         ],
         "deliveryAddressId": 1
-    },{
+    },
+  {
+       "orderId": 3,
         "orderTime": "2023-11-24T19:26:49.011",
         "totalPrice": 121,
         "userId": 4,

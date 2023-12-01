@@ -26,6 +26,7 @@ Example :
   ```
   [
   {
+    "orderId": 0,
     "orderTime": "2023-11-15T15:18:39.755Z",
     "totalPrice": 78,
     "userId": 1,
@@ -36,6 +37,7 @@ Example :
     "restaurantId": 1
   },
   {
+    "orderId": 1,
     "orderTime": "2023-11-15T15:18:39.755Z",
     "totalPrice": 99,
     "userId": 1,
@@ -77,6 +79,7 @@ Example :
   ```
   [
   {
+    "orderId": 0,
     "orderTime": "2023-11-15T15:18:39.755Z",
     "totalPrice": 78,
     "userId": 1,

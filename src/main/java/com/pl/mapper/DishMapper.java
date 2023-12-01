@@ -32,6 +32,7 @@ public class DishMapper {
 
     public DishDTO mapToDishDto(Dish dish) {
         return new DishDTO(
+                dish.getId(),
                 dish.getName(),
                 dish.getDescription(),
                 dish.getPrice(),

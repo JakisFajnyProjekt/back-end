@@ -53,9 +53,9 @@ public class DishServiceTest {
         dish1 = new Dish("dish1", "descriotion1", new BigDecimal(30), restaurant, Category.APPETIZER);
         dish2 = new Dish("dish2", "descriotion2", new BigDecimal(30), restaurant, Category.APPETIZER);
         dish3 = new Dish("dish3", "descriotion3", new BigDecimal(30), restaurant, Category.APPETIZER);
-        dishDTO = new DishDTO("dish_DTO", "description_DTO", new BigDecimal(30), restaurant.getId(), Category.APPETIZER);
-        dishDTOWithNull = new DishDTO("dish_DTO", "description_DTO", new BigDecimal(30), 3L, Category.APPETIZER);
-        modifiedDish = new DishDTO("dish_DTO_modified", "description_DTO_modified", new BigDecimal(30), 1L, Category.APPETIZER);
+        dishDTO = new DishDTO(1L,"dish_DTO", "description_DTO", new BigDecimal(30), restaurant.getId(), Category.APPETIZER);
+        dishDTOWithNull = new DishDTO(2L,"dish_DTO", "description_DTO", new BigDecimal(30), 3L, Category.APPETIZER);
+        modifiedDish = new DishDTO(3L,"dish_DTO_modified", "description_DTO_modified", new BigDecimal(30), 1L, Category.APPETIZER);
         dishList = List.of(dish1, dish2, dish3);
     }
 
@@ -134,7 +134,7 @@ public class DishServiceTest {
     void shouldSaveDishToDb() {
         //Given
         Restaurant save = restaurantRepository.save(restaurant);
-        dishDTOSave = new DishDTO("dish_DTO",
+        dishDTOSave = new DishDTO(1L,"dish_DTO",
                 "description_DTO", new BigDecimal(30),
                 save.getId(), Category.APPETIZER);
 

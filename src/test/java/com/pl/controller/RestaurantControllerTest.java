@@ -67,9 +67,9 @@ public class RestaurantControllerTest {
     void dataForTests() {
         address = new Address("15", "street", "city", "postalCode");
         restaurant = new Restaurant("restaurant", address);
-        restaurantDTO = new RestaurantDTO("restaurant_test_name1", address.getId());
-        restaurantDTO1 = new RestaurantDTO("restaurant_test_name2", address.getId());
-        restaurantDTO2 = new RestaurantDTO("restaurant_test_name3", address.getId());
+        restaurantDTO = new RestaurantDTO(1L,"restaurant_test_name1", address.getId());
+        restaurantDTO1 = new RestaurantDTO(2L,"restaurant_test_name2", address.getId());
+        restaurantDTO2 = new RestaurantDTO(3L,"restaurant_test_name3", address.getId());
         address = new Address("15", "street", "city", "postalCode");
         restaurant = new Restaurant("restaurant", address);
         User user = new User("firstname1", "lastname", "Password1", "email@email.com", Role.USER);

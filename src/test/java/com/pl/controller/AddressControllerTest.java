@@ -57,9 +57,9 @@ public class AddressControllerTest {
 
     @BeforeEach
     void dataForTests() {
-        addressDTO = new AddressDTO("15", "street", "city", "postalCode");
-        addressDTO1 = new AddressDTO("151", "street1", "city1", "postalCode1");
-        addressDTO2 = new AddressDTO("152", "street2", "city2", "postalCode2");
+        addressDTO = new AddressDTO(1L,"15", "street", "city", "postalCode");
+        addressDTO1 = new AddressDTO(2L,"151", "street1", "city1", "postalCode1");
+        addressDTO2 = new AddressDTO(3L,"152", "street2", "city2", "postalCode2");
     }
 
     @Test
