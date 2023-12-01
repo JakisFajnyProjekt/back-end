@@ -86,6 +86,7 @@ public class OrderServiceTest {
     @BeforeTestExecution
     void cleanUpBefore() {
         userRepository.deleteAll();
+        restaurantRepository.deleteAll();
         addressRepository.deleteAll();
         orderRepository.deleteAll();
     }
@@ -94,6 +95,7 @@ public class OrderServiceTest {
     @AfterEach
     void cleanUpBeforeEach() {
         userRepository.deleteAll();
+        restaurantRepository.deleteAll();
         addressRepository.deleteAll();
         orderRepository.deleteAll();
     }
