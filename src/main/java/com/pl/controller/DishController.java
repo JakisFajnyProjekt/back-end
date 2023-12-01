@@ -1,5 +1,6 @@
 package com.pl.controller;
 
+import com.pl.model.dto.DishCreateDTO;
 import com.pl.model.dto.DishDTO;
 import com.pl.service.DishService;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class DishController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public DishDTO create(@RequestBody DishDTO dish) {
+    public DishDTO create(@RequestBody DishCreateDTO dish) {
         return dishService.createDish(dish);
     }
 

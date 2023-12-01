@@ -4,6 +4,7 @@ import com.pl.auth.Role;
 import com.pl.exception.NotFoundException;
 import com.pl.model.*;
 import com.pl.model.dto.OrderByRestaurantDTO;
+import com.pl.model.dto.RestaurantCreateDTO;
 import com.pl.model.dto.RestaurantDTO;
 import com.pl.repository.*;
 import org.junit.jupiter.api.AfterEach;
@@ -41,7 +42,7 @@ public class RestaurantServiceTest {
     private Restaurant restaurant1;
     private Restaurant restaurant2;
     private Restaurant restaurant3;
-    private RestaurantDTO restaurantDTO;
+    private RestaurantCreateDTO restaurantDTO;
     private Address address;
     private Address address2;
     private Address address3;
@@ -63,16 +64,16 @@ public class RestaurantServiceTest {
     public void beforeAllTests() {
         restaurantRepository.deleteAll();
         orderRepository.deleteAll();
-        addressRepository.deleteAll();
         userRepository.deleteAll();
+        addressRepository.deleteAll();
     }
 
     @AfterEach
     void afterEachTest() {
         restaurantRepository.deleteAll();
         orderRepository.deleteAll();
-        addressRepository.deleteAll();
         userRepository.deleteAll();
+        addressRepository.deleteAll();
     }
 
 
@@ -83,7 +84,7 @@ public class RestaurantServiceTest {
 
         Address savedAddress = addressRepository.save(address);
         long addressId = savedAddress.getId();
-        restaurantDTO = new RestaurantDTO(1L,"restaurant_dto",addressId);
+        restaurantDTO = new RestaurantCreateDTO("restaurant_dto",addressId);
 
 
         //When

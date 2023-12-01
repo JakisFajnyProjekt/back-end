@@ -3,17 +3,22 @@ package com.pl.mapper;
 import com.pl.auth.Role;
 import com.pl.model.*;
 import com.pl.model.dto.OrderByRestaurantDTO;
+import com.pl.model.dto.RestaurantCreateDTO;
 import com.pl.model.dto.RestaurantDTO;
+import com.pl.repository.AddressRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class RestaurantMapperTest {
@@ -21,13 +26,13 @@ public class RestaurantMapperTest {
     @Autowired
     private RestaurantMapper restaurantMapper;
     private Restaurant restaurant;
-    private RestaurantDTO restaurantDto;
+    private RestaurantCreateDTO restaurantDto;
     private RestaurantDTO expectedDto;
 
     @BeforeEach
     void testData() {
         restaurant = new Restaurant("Luigi", new Address());
-        restaurantDto = new RestaurantDTO(1L,"Luigi", 1L);
+        restaurantDto = new RestaurantCreateDTO("Luigi", 1L);
         expectedDto = new RestaurantDTO(2L,"Luigi", 1L);
 
     }
@@ -36,9 +41,9 @@ public class RestaurantMapperTest {
     void shouldMapToDto() {
         //Given
         //When
-        RestaurantDTO attemptRestaurantDto = restaurantMapper.mapToRestaurantDto(restaurant);
+        RestaurantCreateDTO attemptRestaurantDto = restaurantMapper.mapToRestaurantCreateDto(restaurant);
         //Then
-        assertEquals(RestaurantDTO.class, attemptRestaurantDto.getClass());
+        assertEquals(RestaurantCreateDTO.class, attemptRestaurantDto.getClass());
         assertEquals(expectedDto.name(), attemptRestaurantDto.name());
 
     }
@@ -46,6 +51,7 @@ public class RestaurantMapperTest {
     @Test
     void shouldMapFromDto() {
         //Given
+
         //When
         Restaurant attemptRestaurant = restaurantMapper.mapToRestaurant(restaurantDto);
         //Then

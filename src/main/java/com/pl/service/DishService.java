@@ -6,6 +6,7 @@ import com.pl.mapper.DishMapper;
 import com.pl.model.Category;
 import com.pl.model.Dish;
 import com.pl.model.Restaurant;
+import com.pl.model.dto.DishCreateDTO;
 import com.pl.model.dto.DishDTO;
 import com.pl.repository.DishRepository;
 import com.pl.repository.RestaurantRepository;
@@ -79,7 +80,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
 
     @Transactional
    // @CacheEvict(value = "dishesList", allEntries = true)
-    public DishDTO createDish(DishDTO dishDTO) {
+    public DishDTO createDish(DishCreateDTO dishDTO) {
         if (dishDTO == null) {
             throw new InvalidValuesException("The dish DTO cannot be null.");
         }
@@ -100,7 +101,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
         }
     }
 
-    private Dish createDishObject(DishDTO dishDTO) {
+    private Dish createDishObject(DishCreateDTO dishDTO) {
         Dish newDish = new Dish();
         try {
             String name = Objects

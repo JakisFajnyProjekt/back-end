@@ -4,6 +4,7 @@ import com.pl.exception.NotFoundException;
 import com.pl.model.Category;
 import com.pl.model.Dish;
 import com.pl.model.Restaurant;
+import com.pl.model.dto.DishCreateDTO;
 import com.pl.model.dto.DishDTO;
 import com.pl.repository.DishRepository;
 import com.pl.repository.RestaurantRepository;
@@ -40,8 +41,8 @@ public class DishServiceTest {
     private Dish dish3;
     private Restaurant restaurant;
     private DishDTO dishDTO;
-    private DishDTO dishDTOWithNull;
-    private DishDTO dishDTOSave;
+    private DishCreateDTO dishDTOWithNull;
+    private DishCreateDTO dishDTOSave;
     private DishDTO modifiedDish;
     private List<Dish> dishList;
 
@@ -54,7 +55,7 @@ public class DishServiceTest {
         dish2 = new Dish("dish2", "descriotion2", new BigDecimal(30), restaurant, Category.APPETIZER);
         dish3 = new Dish("dish3", "descriotion3", new BigDecimal(30), restaurant, Category.APPETIZER);
         dishDTO = new DishDTO(1L,"dish_DTO", "description_DTO", new BigDecimal(30), restaurant.getId(), Category.APPETIZER);
-        dishDTOWithNull = new DishDTO(2L,"dish_DTO", "description_DTO", new BigDecimal(30), 3L, Category.APPETIZER);
+        dishDTOWithNull = new DishCreateDTO("dish_DTO", "description_DTO", new BigDecimal(30), 3L, Category.APPETIZER);
         modifiedDish = new DishDTO(3L,"dish_DTO_modified", "description_DTO_modified", new BigDecimal(30), 1L, Category.APPETIZER);
         dishList = List.of(dish1, dish2, dish3);
     }
@@ -134,7 +135,7 @@ public class DishServiceTest {
     void shouldSaveDishToDb() {
         //Given
         Restaurant save = restaurantRepository.save(restaurant);
-        dishDTOSave = new DishDTO(1L,"dish_DTO",
+        dishDTOSave = new DishCreateDTO("dish_DTO",
                 "description_DTO", new BigDecimal(30),
                 save.getId(), Category.APPETIZER);
 

@@ -2,6 +2,7 @@ package com.pl.controller;
 
 import com.pl.model.dto.OrderByRestaurantDTO;
 import com.pl.model.dto.OrderDTO;
+import com.pl.model.dto.RestaurantCreateDTO;
 import com.pl.model.dto.RestaurantDTO;
 import com.pl.service.RestaurantService;
 import org.springframework.http.MediaType;
@@ -31,7 +32,7 @@ public class RestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public RestaurantDTO addRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
+    public RestaurantCreateDTO addRestaurant(@RequestBody RestaurantCreateDTO restaurantDTO) {
         return restaurantService.create(restaurantDTO);
     }
 

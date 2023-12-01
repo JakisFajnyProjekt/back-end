@@ -7,6 +7,7 @@ import com.pl.model.Address;
 import com.pl.model.Order;
 import com.pl.model.Restaurant;
 import com.pl.model.dto.OrderByRestaurantDTO;
+import com.pl.model.dto.RestaurantCreateDTO;
 import com.pl.model.dto.RestaurantDTO;
 import com.pl.repository.AddressRepository;
 import com.pl.repository.RestaurantRepository;
@@ -51,20 +52,20 @@ public class RestaurantService extends AbstractService<RestaurantRepository, Res
 
     @Transactional
     @CacheEvict(value = "restaurantsList", allEntries = true)
-    public RestaurantDTO create(RestaurantDTO restaurantDTO) {
+    public RestaurantCreateDTO create(RestaurantCreateDTO restaurantDTO) {
         Restaurant restaurant = new Restaurant();
         try {
             restaurantObjCheck(restaurantDTO, restaurant);
             Restaurant save = restaurantRepository.save(restaurant);
             LOGGER.info("Restaurant successfully created with id " + restaurantDTO.restaurantAddress());
-            return restaurantMapper.mapToRestaurantDto(save);
+            return restaurantMapper.mapToRestaurantCreateDto(save);
         } catch (Exception n) {
             LOGGER.error("wrong address id");
             throw new NotFoundException("Address not found");
         }
     }
 
-    private void restaurantObjCheck(RestaurantDTO restaurantDTO, Restaurant restaurant) {
+    private void restaurantObjCheck(RestaurantCreateDTO restaurantDTO, Restaurant restaurant) {
         String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 
         String name = Objects.requireNonNull(restaurantDTO.name(),

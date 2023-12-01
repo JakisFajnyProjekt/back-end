@@ -4,17 +4,33 @@ import com.pl.model.Dish;
 import com.pl.model.Order;
 import com.pl.model.Restaurant;
 import com.pl.model.dto.OrderByRestaurantDTO;
-import com.pl.model.dto.OrderDTO;
+import com.pl.model.dto.RestaurantCreateDTO;
 import com.pl.model.dto.RestaurantDTO;
-import org.aspectj.weaver.ast.Or;
+import com.pl.repository.AddressRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class RestaurantMapper {
-    public Restaurant mapToRestaurant(RestaurantDTO restaurantDto) {
-        return new Restaurant(restaurantDto.name());
+
+    private final AddressRepository addressRepository;
+
+    public RestaurantMapper(AddressRepository addressRepository) {
+        this.addressRepository = addressRepository;
+    }
+
+    public Restaurant mapToRestaurant(RestaurantCreateDTO restaurantDto) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.setName(restaurantDto.name());
+        restaurant.setAddress(addressRepository.findById(restaurantDto.restaurantAddress()).orElse(null));
+        return restaurant;
+    }
+
+    public RestaurantCreateDTO mapToRestaurantCreateDto(Restaurant restaurant) {
+        return new RestaurantCreateDTO(
+                restaurant.getName(),
+                restaurant.getAddress().getId());
     }
 
     public RestaurantDTO mapToRestaurantDto(Restaurant restaurant) {
@@ -23,6 +39,8 @@ public class RestaurantMapper {
                 restaurant.getName(),
                 restaurant.getAddress().getId());
     }
+
+
 
 
     public List<OrderByRestaurantDTO> mapToDtoForOrderList(final List<Order> orders){

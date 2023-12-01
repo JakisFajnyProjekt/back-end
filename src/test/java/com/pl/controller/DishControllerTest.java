@@ -3,6 +3,7 @@ package com.pl.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.model.Category;
 import com.pl.model.Dish;
+import com.pl.model.dto.DishCreateDTO;
 import com.pl.model.dto.DishDTO;
 import com.pl.service.DishService;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +44,7 @@ public class DishControllerTest {
     @Autowired
     private DishController dishController;
     private Dish dish1;
-    private DishDTO dishDTO1;
+    private DishCreateDTO dishDTO1;
     private DishDTO dishDTO2;
     private DishDTO dishDTOForUpdateName;
     private List<DishDTO> dishList;
@@ -52,10 +53,10 @@ public class DishControllerTest {
     @BeforeEach
     void testData() {
         dish1 = new Dish("dishName1", "description1");
-        dishDTO1 = new DishDTO(1L,"nameDto", "descriptionDTO", new BigDecimal(30), 1L, Category.APPETIZER);
+        dishDTO1 = new DishCreateDTO("nameDto", "descriptionDTO", new BigDecimal(30), 1L, Category.APPETIZER);
         dishDTO2 = new DishDTO(2L,"nameDto2", "descriptionDTO2", new BigDecimal(12), 1L, Category.APPETIZER);
-        dishDTOForUpdateName = new DishDTO(3L,"nameUpdate", "descriptionDTO", new BigDecimal(30), 1L, Category.APPETIZER);
-        dishList = List.of(dishDTO1, dishDTO2);
+        dishDTOForUpdateName = new DishDTO(3L,"nameUpdate2", "descriptionDTO2", new BigDecimal(30), 1L, Category.APPETIZER);
+        dishList = List.of(dishDTO2);
 
     }
 
@@ -74,7 +75,7 @@ public class DishControllerTest {
     @Test
     void shouldCreateDish() throws Exception {
         // Given
-        when(dishService.createDish(any(DishDTO.class))).thenReturn(dishDTO1);
+        when(dishService.createDish(any(DishCreateDTO.class))).thenReturn(dishDTO2);
 
         // When && Then
         this.mockMvc.perform(MockMvcRequestBuilders.post("/api/dishes")
@@ -82,9 +83,9 @@ public class DishControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dishDTO1)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("nameDto"))
-                .andExpect(jsonPath("$.description").value("descriptionDTO"))
-                .andExpect(jsonPath("$.price").value(30))
+                .andExpect(jsonPath("$.name").value("nameDto2"))
+                .andExpect(jsonPath("$.description").value("descriptionDTO2"))
+                .andExpect(jsonPath("$.price").value(12))
                 .andExpect(jsonPath("$.restaurantId").value(1L));
     }
 
@@ -94,15 +95,15 @@ public class DishControllerTest {
         long dishId = 1L;
 
         // When
-        when(dishService.getDishById(dishId)).thenReturn(dishDTO1);
+        when(dishService.getDishById(dishId)).thenReturn(dishDTO2);
 
         //Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/dishes/{dishId}", dishId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("nameDto"))
-                .andExpect(jsonPath("$.description").value("descriptionDTO"))
-                .andExpect(jsonPath("$.price").value(30))
+                .andExpect(jsonPath("$.name").value("nameDto2"))
+                .andExpect(jsonPath("$.description").value("descriptionDTO2"))
+                .andExpect(jsonPath("$.price").value(12))
                 .andExpect(jsonPath("$.restaurantId").value(1L));
     }
 
@@ -116,9 +117,8 @@ public class DishControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/dishes")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(2))
-                .andExpect(jsonPath("$.[0].name").value("nameDto"))
-                .andExpect(jsonPath("$.[1].name").value("nameDto2"));
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$.[0].name").value("nameDto2"));
 
     }
 
@@ -143,7 +143,7 @@ public class DishControllerTest {
     void shouldModifyDish() throws Exception {
         //Given
         long dishId = 12L;
-        when(dishService.createDish(dishDTO1)).thenReturn(dishDTO1);
+        when(dishService.createDish(dishDTO1)).thenReturn(dishDTO2);
         doNothing().when(dishService).editDish(dishId, dishDTOForUpdateName);
 
 

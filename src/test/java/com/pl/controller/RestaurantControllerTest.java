@@ -3,10 +3,7 @@ package com.pl.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.auth.Role;
 import com.pl.model.*;
-import com.pl.model.dto.OrderByRestaurantDTO;
-import com.pl.model.dto.OrderCreateDTO;
-import com.pl.model.dto.OrderDTO;
-import com.pl.model.dto.RestaurantDTO;
+import com.pl.model.dto.*;
 import com.pl.repository.RestaurantRepository;
 import com.pl.repository.UserRepository;
 import com.pl.service.RestaurantService;
@@ -57,7 +54,7 @@ public class RestaurantControllerTest {
 
 
     private Restaurant restaurant;
-    private RestaurantDTO restaurantDTO;
+    private RestaurantCreateDTO restaurantDTO;
     private RestaurantDTO restaurantDTO1;
     private RestaurantDTO restaurantDTO2;
     private Address address;
@@ -67,7 +64,7 @@ public class RestaurantControllerTest {
     void dataForTests() {
         address = new Address("15", "street", "city", "postalCode");
         restaurant = new Restaurant("restaurant", address);
-        restaurantDTO = new RestaurantDTO(1L,"restaurant_test_name1", address.getId());
+        restaurantDTO = new RestaurantCreateDTO("restaurant_test_name1", address.getId());
         restaurantDTO1 = new RestaurantDTO(2L,"restaurant_test_name2", address.getId());
         restaurantDTO2 = new RestaurantDTO(3L,"restaurant_test_name3", address.getId());
         address = new Address("15", "street", "city", "postalCode");
@@ -117,28 +114,27 @@ public class RestaurantControllerTest {
     void shouldFindRestaurantById() throws Exception {
         //Given
         long restaurantId = 1231231L;
-        when(restaurantService.findById(restaurantId)).thenReturn(restaurantDTO);
+        when(restaurantService.findById(restaurantId)).thenReturn(restaurantDTO1);
 
         //When
         mockMvc.perform(get("/api/restaurants/{restaurantId}", restaurantId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("restaurant_test_name1"))
+                .andExpect(jsonPath("$.name").value("restaurant_test_name2"))
                 .andExpect(jsonPath("$.restaurantAddress").value(address.getId()));
     }
 
     @Test
     void shouldFindListOfRestaurants() throws Exception {
         //Given
-        List<RestaurantDTO> listOfRestaurants = List.of(restaurantDTO, restaurantDTO1, restaurantDTO2);
+        List<RestaurantDTO> listOfRestaurants = List.of(restaurantDTO1, restaurantDTO2);
         when(restaurantService.list()).thenReturn(listOfRestaurants);
         //When
         mockMvc.perform(get("/api/restaurants")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()").value(listOfRestaurants.size()))
-                .andExpect(jsonPath("$.[0].name").value("restaurant_test_name1"))
-                .andExpect(jsonPath("$.[1].name").value("restaurant_test_name2"))
-                .andExpect(jsonPath("$.[2].name").value("restaurant_test_name3"));
+                .andExpect(jsonPath("$.[0].name").value("restaurant_test_name2"))
+                .andExpect(jsonPath("$.[1].name").value("restaurant_test_name3"));
 
     }
 
