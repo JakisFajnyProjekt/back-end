@@ -73,9 +73,9 @@ public class OrderControllerTest {
         restaurant = new Restaurant("restaurant", address);
         user = new User("firstname1", "lastname", "password", "email@email.com", Role.USER);
         userRepository.save(user);
-        dish1 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
-        dish2 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
-        dish3 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
+        dish1 = new Dish("name", "description", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
+        dish2 = new Dish("name", "description", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
+        dish3 = new Dish("name", "description", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
         orderCreateDTO = new OrderCreateDTO(user.getId(), List.of(dish1.getId(), dish2.getId()), address.getId(), restaurant.getId());
         orderDTO = new OrderDTO(1L,LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
         orderDTO1 = new OrderDTO(2L,LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());

@@ -1,6 +1,6 @@
 package com.pl.model.dto;
 
-import com.pl.model.Category;
+import com.pl.model.Dish;
 
 import java.math.BigDecimal;
 
@@ -10,6 +10,6 @@ public record DishDTO(
         String description,
         BigDecimal price,
         Long restaurantId,
-        Category category
+        Dish.Category category
 ) {
 }

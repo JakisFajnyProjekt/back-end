@@ -3,6 +3,7 @@ package com.pl.controller;
 import com.pl.model.dto.DishCreateDTO;
 import com.pl.model.dto.DishDTO;
 import com.pl.service.DishService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class DishController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public DishDTO create(@RequestBody DishCreateDTO dish) {
+    public DishDTO create(@RequestBody @Valid DishCreateDTO dish) {
         return dishService.createDish(dish);
     }
 

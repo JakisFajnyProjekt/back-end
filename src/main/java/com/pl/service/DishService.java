@@ -3,7 +3,6 @@ package com.pl.service;
 import com.pl.exception.InvalidValuesException;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.DishMapper;
-import com.pl.model.Category;
 import com.pl.model.Dish;
 import com.pl.model.Restaurant;
 import com.pl.model.dto.DishCreateDTO;
@@ -17,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DishService extends AbstractService<DishRepository, Dish> {
@@ -111,7 +107,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
             BigDecimal price = Objects
                     .requireNonNull(dishDTO.price());
             Optional<Restaurant> restaurantOptional = restaurantRepository.findById(dishDTO.restaurantId());
-            Category category = Objects.requireNonNull(dishDTO.category(), "category required");
+            Dish.Category category = Objects.requireNonNull(dishDTO.category(), "category required");
             if (restaurantOptional.isEmpty()) {
                 throw new NotFoundException("Restaurant Not Found");
             }

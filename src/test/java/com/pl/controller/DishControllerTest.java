@@ -1,7 +1,6 @@
 package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pl.model.Category;
 import com.pl.model.Dish;
 import com.pl.model.dto.DishCreateDTO;
 import com.pl.model.dto.DishDTO;
@@ -53,9 +52,9 @@ public class DishControllerTest {
     @BeforeEach
     void testData() {
         dish1 = new Dish("dishName1", "description1");
-        dishDTO1 = new DishCreateDTO("nameDto", "descriptionDTO", new BigDecimal(30), 1L, Category.APPETIZER);
-        dishDTO2 = new DishDTO(2L,"nameDto2", "descriptionDTO2", new BigDecimal(12), 1L, Category.APPETIZER);
-        dishDTOForUpdateName = new DishDTO(3L,"nameUpdate2", "descriptionDTO2", new BigDecimal(30), 1L, Category.APPETIZER);
+        dishDTO1 = new DishCreateDTO("nameDto", "descriptionDTO", new BigDecimal(30), 1L, Dish.Category.APPETIZER);
+        dishDTO2 = new DishDTO(2L,"nameDto2", "descriptionDTO2", new BigDecimal(12), 1L, Dish.Category.APPETIZER);
+        dishDTOForUpdateName = new DishDTO(3L,"nameUpdate2", "descriptionDTO2", new BigDecimal(30), 1L, Dish.Category.APPETIZER);
         dishList = List.of(dishDTO2);
 
     }
