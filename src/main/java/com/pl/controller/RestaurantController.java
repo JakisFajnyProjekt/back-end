@@ -1,12 +1,10 @@
 package com.pl.controller;
 
 import com.pl.model.dto.OrderByRestaurantDTO;
-import com.pl.model.dto.OrderDTO;
 import com.pl.model.dto.RestaurantCreateDTO;
 import com.pl.model.dto.RestaurantDTO;
 import com.pl.service.RestaurantService;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -3,7 +3,9 @@ package com.pl.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.auth.Role;
 import com.pl.model.*;
-import com.pl.model.dto.*;
+import com.pl.model.dto.OrderByRestaurantDTO;
+import com.pl.model.dto.RestaurantCreateDTO;
+import com.pl.model.dto.RestaurantDTO;
 import com.pl.repository.RestaurantRepository;
 import com.pl.repository.UserRepository;
 import com.pl.service.RestaurantService;
@@ -71,9 +73,9 @@ public class RestaurantControllerTest {
         restaurant = new Restaurant("restaurant", address);
         User user = new User("firstname1", "lastname", "Password1", "email@email.com", Role.USER);
         userRepository.save(user);
-        Dish dish1 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
-        Dish dish2 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
-        Dish dish3 = new Dish("name", "description", new BigDecimal(30), restaurant, Category.APPETIZER);
+        Dish dish1 = new Dish("name", "description", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
+        Dish dish2 = new Dish("name", "description", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
+        Dish dish3 = new Dish("name", "description", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
         orderDTO = new OrderByRestaurantDTO(LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId());
     }
 

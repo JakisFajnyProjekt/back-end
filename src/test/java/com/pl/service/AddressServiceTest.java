@@ -12,18 +12,18 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.event.annotation.BeforeTestExecution;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AddressServiceTest {
 
     @Autowired
     private AddressService addressService;
-
     @Autowired
     private AddressRepository addressRepository;
     private Address address;
@@ -45,6 +45,11 @@ public class AddressServiceTest {
 
     @AfterEach
     void cleanUp() {
+        addressRepository.deleteAll();
+    }
+
+    @BeforeTestExecution
+    void cleanUpBefore() {
         addressRepository.deleteAll();
     }
 

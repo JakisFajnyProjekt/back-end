@@ -4,7 +4,6 @@ import com.pl.exception.NotFoundException;
 import com.pl.mapper.OrderMapper;
 import com.pl.model.Dish;
 import com.pl.model.Order;
-import com.pl.model.dto.OrderByRestaurantDTO;
 import com.pl.model.dto.OrderCreateDTO;
 import com.pl.model.dto.OrderDTO;
 import com.pl.repository.*;

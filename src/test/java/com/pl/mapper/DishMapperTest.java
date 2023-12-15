@@ -1,6 +1,5 @@
 package com.pl.mapper;
 
-import com.pl.model.Category;
 import com.pl.model.Dish;
 import com.pl.model.Restaurant;
 import com.pl.model.dto.DishCreateDTO;
@@ -33,9 +32,9 @@ public class DishMapperTest {
     void testData() {
         restaurant = new Restaurant("restaurant");
         Restaurant savedRestaurant = restaurantRepository.save(restaurant);
-        dish = new Dish("Pizza", "This is very good pizza!", new BigDecimal(30), restaurant, Category.APPETIZER);
-        dishDto = new DishCreateDTO("Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Category.BREAKFAST);
-        expectedDto = new DishDTO(2L,"Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Category.APPETIZER);
+        dish = new Dish("Pizza", "This is very good pizza!", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
+        dishDto = new DishCreateDTO("Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Dish.Category.BREAKFAST);
+        expectedDto = new DishDTO(2L,"Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Dish.Category.APPETIZER);
     }
 
     @Test
@@ -62,9 +61,9 @@ public class DishMapperTest {
     void shouldMapToListDto() {
         //Given
         List<Dish> dishes = List.of(
-                new Dish("Pizza", "This is very good pizza", new BigDecimal(30), restaurant, Category.APPETIZER),
-                new Dish("Burger", "Delicious burger", new BigDecimal(30), restaurant, Category.APPETIZER),
-                new Dish("Pasta", "Homemade pasta", new BigDecimal(30), restaurant, Category.APPETIZER)
+                new Dish("Pizza", "This is very good pizza", new BigDecimal(30), restaurant, Dish.Category.APPETIZER),
+                new Dish("Burger", "Delicious burger", new BigDecimal(30), restaurant, Dish.Category.APPETIZER),
+                new Dish("Pasta", "Homemade pasta", new BigDecimal(30), restaurant, Dish.Category.APPETIZER)
         );
         //When
         List<DishDTO> attemptList = dishMapper.mapToListDto(dishes);

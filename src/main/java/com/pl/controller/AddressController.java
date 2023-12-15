@@ -3,10 +3,10 @@ package com.pl.controller;
 import com.pl.model.dto.AddressCreateDTO;
 import com.pl.model.dto.AddressDTO;
 import com.pl.service.AddressService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +23,10 @@ public class AddressController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public AddressDTO addAddress(@RequestBody AddressCreateDTO addressDTO) {
+    public AddressDTO addAddress(@RequestBody @Valid AddressCreateDTO addressDTO) {
         return addressService.createAddress(addressDTO);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
     public List<AddressDTO> list() {
         return addressService.addressesList();

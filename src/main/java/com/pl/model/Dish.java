@@ -41,6 +41,16 @@ public class Dish {
         this.description = description;
     }
 
+    public enum Category {
+        APPETIZER,
+        MAIN_COURSE,
+        SOUPS,
+        SALADS,
+        BREAKFAST,
+        DESSERT,
+
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
