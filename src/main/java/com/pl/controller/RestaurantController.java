@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/restaurants")
-@CrossOrigin("*")
 public class RestaurantController {
     private final RestaurantService restaurantService;
 
@@ -35,7 +34,7 @@ public class RestaurantController {
     }
 
     @GetMapping("orders/{restaurantId}")
-public List<OrderByRestaurantDTO> findOrders(@PathVariable long restaurantId) {
-    return restaurantService.findOrders(restaurantId);
-}
+    public List<OrderByRestaurantDTO> findOrders(@PathVariable long restaurantId) {
+        return restaurantService.findOrders(restaurantId);
+    }
 }
