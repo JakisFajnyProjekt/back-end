@@ -35,7 +35,6 @@ public class AddressControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private AddressService addressService;
-
     @Autowired
     private AddressController addressController;
 

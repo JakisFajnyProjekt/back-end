@@ -85,7 +85,6 @@ public class RestaurantService extends AbstractService<RestaurantRepository, Res
     public List<OrderByRestaurantDTO> findOrders(long restaurantId) {
         String authenticatedRestaurantId = SecurityContextHolder.getContext().getAuthentication().getName();
         Restaurant restaurant = findEntity(restaurantRepository,restaurantId);
-
         if ( restaurant.getOwnerEmail().equals(authenticatedRestaurantId)) {
         LOGGER.info("Authenticated Restaurant ID: " + authenticatedRestaurantId);
         List<Order> allOrdersById = restaurantRepository.findAllOrdersByRestaurantAndOwner(restaurantId);

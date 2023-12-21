@@ -3,10 +3,13 @@ package com.pl.exception;
 import com.pl.config.MessagePropertiesConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDate;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,4 +38,6 @@ public class AuthenticationErrorExceptionHandler {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
+
+
 }

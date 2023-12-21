@@ -1,11 +1,15 @@
 package com.pl.service;
 
+import com.pl.exception.AuthenticationError;
+import com.pl.exception.AuthenticationErrorException;
 import com.pl.exception.NotFoundException;
 import com.pl.mapper.UserMapper;
 import com.pl.model.User;
 import com.pl.model.dto.UserDTO;
 import com.pl.model.dto.UserUpdateDTO;
 import com.pl.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,8 +47,21 @@ public class UserService extends AbstractService<UserRepository, User> {
 
     @Transactional
     public void remove(long userId) {
-        userRepository.delete(findEntity(userRepository, userId));
-        LOGGER.info("User with id " + userId + " deleted");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String name = authentication.getName();
+            User userFromDB = findEntity(userRepository, userId);
+
+            if (userFromDB != null && name.equals(userFromDB.getEmail())) {
+                userRepository.delete(userFromDB);
+                LOGGER.info("User with id " + userId + " deleted");
+            } else {
+                LOGGER.warn("Unauthorized attempt to delete user with id " + userId);
+                throw new AuthenticationErrorException(AuthenticationError.AUTHENTICATION_ERROR,"Unauthorized attempt");
+            }
+        } else {
+            LOGGER.warn("Unauthorized attempt to access delete user functionality");
+        }
     }
 
     @Transactional

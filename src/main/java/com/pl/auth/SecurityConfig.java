@@ -55,19 +55,20 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers(corsConfiguration)
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/auth/**")
                 .permitAll()
+                .requestMatchers(corsConfiguration)
+                .hasAuthority(Role.USER.name())
 
 //                    .requestMatchers("/api/**")
 //                    .permitAll() <--- for tests
 
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/auth/**")
-                .permitAll()
 
                 .requestMatchers("/api/users/all")
                 .hasAuthority(Role.ADMIN.name())
 
-                .requestMatchers("/api/users/**", "/api/orders/**", "/api/addresses/**", "api/dishes/**", "/api/restaurants/**")
+                .requestMatchers("/api/users/**", "/api/orders/**", "/api/addresses/**",
+                        "api/dishes/**", "/api/restaurants/**")
                 .hasAuthority(Role.USER.name())
 
                 .requestMatchers("/**")
@@ -101,6 +102,7 @@ public class SecurityConfig {
         source.registerCorsConfiguration(corsConfiguration, configuration);
         return source;
     }
+
 
 
 }
