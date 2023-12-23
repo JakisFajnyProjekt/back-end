@@ -19,6 +19,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@WithMockUser(roles = "ADMIN")
+
 public class UserServiceTest {
 
     User user2;
@@ -41,7 +43,7 @@ public class UserServiceTest {
 
         userList = List.of(
                 user2 = new User("firstNameUser",
-                        "lastNameUser", "email_user2@gmail.com", "123456789Qwerty_user2", Role.USER),
+                        "lastNameUser", "email_user2@gmail.com", "123456789Qwerty_user2", Role.ADMIN),
                 user3 = new User("firstNameUser",
                         "lastNameUser", "email_user3@gmail.com", "123456789Qwerty_user3", Role.USER),
                 user4 = new User("firstNameUser",
@@ -121,10 +123,11 @@ public class UserServiceTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", password = "admin", authorities = "ADMIN")
     void shouldDeleteUserFromDb() {
         //Given
         List<User> userSavingList = userRepository.saveAll(userList);
-        Long idOfUserForDelete = userSavingList.get(2).getId();
+        Long idOfUserForDelete = userSavingList.get(1).getId();
 
         //When
         int expectedSizeBeforeDelete = 3;

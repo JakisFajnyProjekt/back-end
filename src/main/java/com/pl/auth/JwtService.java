@@ -38,7 +38,7 @@ public class JwtService {
     public String generateToken(Map<String, Objects> extraClaims,
                                 UserDetails userDetails) {
         String ROLE_PREFIX = "ROLE_";
-        int ONE_DAY = 1000 * 60 * 24;
+        int ONE_DAY = 10000 * 60 * 24;
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())

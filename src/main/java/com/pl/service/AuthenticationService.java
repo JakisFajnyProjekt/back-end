@@ -54,7 +54,7 @@ public class AuthenticationService {
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.USER);
+        user.setRole(Role.ADMIN);
         var savedUser = userRepository.save(user);
         LOGGER.info("User successfully created with id " + user.getId());
         var jwtToken = jwtService.generateToken(user);
