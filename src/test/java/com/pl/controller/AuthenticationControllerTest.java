@@ -21,13 +21,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AuthenticationControllerTest {
-
     @Mock
     private AuthenticationService authenticationService;
-
     @InjectMocks
     private AuthenticationController authenticationController;
-
     private MockMvc mockMvc;
 
     @BeforeEach
@@ -41,7 +38,6 @@ public class AuthenticationControllerTest {
         return objectMapper.writeValueAsString(obj);
     }
 
-
     @Test
     public void shouldRegisterUserSuccessfully() throws Exception {
         // given
@@ -54,9 +50,7 @@ public class AuthenticationControllerTest {
         LoginResponse loginResponse = new LoginResponse
                 ("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
 
-
         when(authenticationService.register(registerRequest)).thenReturn(loginResponse);
-
         // when
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -77,7 +71,6 @@ public class AuthenticationControllerTest {
                 "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
 
         when(authenticationService.login(loginRequest)).thenReturn(loginResponse);
-
         // when
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)

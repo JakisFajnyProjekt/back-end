@@ -43,7 +43,6 @@ public class UserControllerTest {
     private TokenRepository tokenRepository;
     @MockBean
     private MessagePropertiesConfig message;
-
     private User user1;
     private User user2;
     private User user3;
@@ -68,10 +67,8 @@ public class UserControllerTest {
     void shouldFindUserById() throws Exception {
         //Given
         long userId = 1L;
-
         //When
         when(userService.getUserById(userId)).thenReturn(userDTO1);
-
         //Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/{userId}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -79,17 +76,14 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value(userDTO1.firstName()))
                 .andExpect(jsonPath("$.lastName").value(userDTO1.lastName()));
-
     }
 
     @Test
     @WithMockUser(roles = "USER")
     void shouldFindListOFUsersFromDb() throws Exception {
         //Given
-
         //When
         when(userService.list()).thenReturn(listOfUsers);
-
         //Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/all")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -99,13 +93,11 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.[0].firstName").value(userDTO1.firstName()));
     }
 
-
     @Test
     @WithMockUser(roles = "USER")
     void shouldDeleteUserWithJwtToken() throws Exception {
         // Given
         long userId = 1L;
-
         // When
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/{userId}", userId)
 //                        .with(SecurityMockMvcRequestPostProcessors.user(user1)) <- option 2
@@ -115,23 +107,19 @@ public class UserControllerTest {
         verify(userService, times(1)).remove(userId);
     }
 
-
     @Test
     @WithMockUser(roles = "USER")
     public void shouldModifyUser() throws Exception {
         // Given
         long userId = 1L;
         UserUpdateDTO userUpdateDTO = new UserUpdateDTO("differentFirstName", "newLastName", "email@gmail.com", "Password123");
-
         // When
         mockMvc.perform(MockMvcRequestBuilders.put("/api/users/{userId}", userId)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userUpdateDTO)))
                 .andExpect(status().isAccepted());
-
+        //Then
         verify(userService).edit(userId, userUpdateDTO);
     }
-
-
 }

@@ -25,16 +25,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DishServiceTest {
-
     @Autowired
     private DishRepository dishRepository;
-
     @Autowired
     private RestaurantRepository restaurantRepository;
     @Autowired
     private DishService dishService;
-
-
     private Dish dish1;
     private Dish dish2;
     private Dish dish3;
@@ -45,7 +41,6 @@ public class DishServiceTest {
     private DishDTO modifiedDish;
     private List<Dish> dishList;
 
-
     @BeforeEach
     void dataForTests() {
         restaurant = new Restaurant();
@@ -53,9 +48,9 @@ public class DishServiceTest {
         dish1 = new Dish("dish1", "descriotion1", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
         dish2 = new Dish("dish2", "descriotion2", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
         dish3 = new Dish("dish3", "descriotion3", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
-        dishDTO = new DishDTO(1L,"dish_DTO", "description_DTO", new BigDecimal(30), restaurant.getId(), Dish.Category.APPETIZER);
+        dishDTO = new DishDTO(1L, "dish_DTO", "description_DTO", new BigDecimal(30), restaurant.getId(), Dish.Category.APPETIZER);
         dishDTOWithNull = new DishCreateDTO("dish_DTO", "description_DTO", new BigDecimal(30), 3L, Dish.Category.APPETIZER);
-        modifiedDish = new DishDTO(3L,"dish_DTO_modified", "description_DTO_modified", new BigDecimal(30), 1L, Dish.Category.APPETIZER);
+        modifiedDish = new DishDTO(3L, "dish_DTO_modified", "description_DTO_modified", new BigDecimal(30), 1L, Dish.Category.APPETIZER);
         dishList = List.of(dish1, dish2, dish3);
     }
 
@@ -64,7 +59,6 @@ public class DishServiceTest {
         dishRepository.deleteAll();
         restaurantRepository.deleteAll();
     }
-
 
     @AfterEach
     void cleanUpAfter() {
@@ -78,10 +72,8 @@ public class DishServiceTest {
         //Give
         dishList = List.of(dish1, dish2, dish3);
         dishRepository.saveAll(dishList);
-
         //When
         List<DishDTO> dishDTOList = dishService.listDishes();
-
         //Then
         assertEquals(3, dishDTOList.size());
         assertEquals("dish1", dishDTOList.get(0).name());
@@ -89,15 +81,12 @@ public class DishServiceTest {
         assertEquals("dish3", dishDTOList.get(2).name());
     }
 
-
     @Test
     void shouldFindUserFromDB() {
         //Give
         Dish savedDish = dishRepository.save(dish1);
-
         //When
         DishDTO findDishById = dishService.getDishById(savedDish.getId());
-
         //Then
         String expectedName = "dish1";
         assertEquals(DishDTO.class, findDishById.getClass());
@@ -108,11 +97,9 @@ public class DishServiceTest {
     void shouldHandleExceptionWhenDishIdIsWrong() {
         //Given
         long wrongDishID = 1231;
-
         //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> dishService.getDishById(wrongDishID));
-
         //Thne
         String expectedMessage = "Not found with given id " + wrongDishID;
         assertEquals(expectedMessage, notFoundException.getMessage());
@@ -122,10 +109,8 @@ public class DishServiceTest {
     void shouldReturnEmptyListWhenDishListAreEmpty() {
         //Give
         int emptyListOfDishes = 0;
-
         //When
         List<DishDTO> dishDTOList = dishService.listDishes();
-
         //Then
         assertEquals(emptyListOfDishes, dishDTOList.size());
     }
@@ -137,10 +122,8 @@ public class DishServiceTest {
         dishDTOSave = new DishCreateDTO("dish_DTO",
                 "description_DTO", new BigDecimal(30),
                 save.getId(), Dish.Category.APPETIZER);
-
         //When
         DishDTO savedDish = dishService.createDish(dishDTOSave);
-
         //Then
         List<Dish> all = dishRepository.findAll();
         assertEquals(1, all.size());
@@ -150,7 +133,6 @@ public class DishServiceTest {
     @Test
     void shouldHandleExceptionWhenRestaurantIdIsNullDuringSave() {
         //Given
-
         //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> dishService.createDish(dishDTOWithNull));
@@ -163,12 +145,10 @@ public class DishServiceTest {
     void shouldRemoveDishFromDb() {
         //Given
         dishRepository.saveAll(dishList);
-
         //When
         List<Dish> dishListBeforeDelete = dishRepository.findAll();
         dishService.removeDish(dish1.getId());
         List<Dish> dishListAfterDelete = dishRepository.findAll();
-
         //Then
         assertEquals(3, dishListBeforeDelete.size());
         assertEquals(2, dishListAfterDelete.size());
@@ -178,7 +158,6 @@ public class DishServiceTest {
     void shouldHandleNotFoundExceptionWhenIdIsWrongWhenTryToDelete() {
         //Given
         long wrongId = 9999;
-
         //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> dishService.removeDish(wrongId));
@@ -191,12 +170,10 @@ public class DishServiceTest {
     void shouldModifyDish() {
         //Given
         Dish savedDish = dishRepository.save(dish1);
-
         //When
         Optional<Dish> dishBeforeModify = dishRepository.findById(savedDish.getId());
         dishService.editDish(savedDish.getId(), modifiedDish);
         Optional<Dish> dishAfterModify = dishRepository.findById(savedDish.getId());
-
         //Then
         String expectedNameBeforeUpdate = "dish1";
         String expectedNameAfterUpdate = "dish_DTO_modified";
@@ -208,16 +185,11 @@ public class DishServiceTest {
     void shouldHandleDishNotFoundIfIdIsWrongWhenTryToModify() {
         //Given
         long wrongId = 23323;
-
         //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> dishService.editDish(wrongId, modifiedDish));
-
         //Then
         String expectedNessage = "Dish Not found";
         assertEquals(expectedNessage, notFoundException.getMessage());
-
     }
-
-
 }

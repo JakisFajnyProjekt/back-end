@@ -44,7 +44,6 @@ public class OrderMapperTest {
     private Address address;
     private Restaurant restaurant;
 
-
     @BeforeEach
     void testData() {
         restaurant = new Restaurant("name");
@@ -86,17 +85,14 @@ public class OrderMapperTest {
         when(dishRepository.findById(2L)).thenReturn(Optional.of(mockDish2));
         when(addressRepository.findById(1L)).thenReturn(Optional.of(mockAddress));
         when(restaurantRepository.findById(1L)).thenReturn(Optional.of(mockRestaurant));
-
         //When
         Order mappedOrder = orderMapper.mapToOrder(orderDTOtest);
-
         //Then
         assertEquals(mockUser, mappedOrder.getUser());
         assertEquals(2, mappedOrder.getDishes().size());
         assertEquals(mockAddress, mappedOrder.getDeliveryAddress());
         assertEquals(mockRestaurant, mappedOrder.getRestaurant());
     }
-
 
     @Test
     void shouldMapToDto() {
@@ -105,7 +101,6 @@ public class OrderMapperTest {
         OrderDTO attemptOrderDto = orderMapper.mapToOrderDto(order1);
         //Then
         assertEquals(OrderDTO.class, attemptOrderDto.getClass());
-
     }
 
     @Test

@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserMapperTest {
     @Autowired
     private UserMapper userMapper;
-
     private User user;
     private UserDTO userDto;
     private UserDTO expectedDto;

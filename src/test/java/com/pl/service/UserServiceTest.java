@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @WithMockUser(roles = "ADMIN")
 
 public class UserServiceTest {
-
     User user2;
     User user3;
     User user4;
@@ -58,7 +56,7 @@ public class UserServiceTest {
     }
 
     @AfterEach
-    void cleanUpafter() {
+    void cleanUpAfter() {
         userRepository.deleteAll();
     }
 
@@ -71,10 +69,8 @@ public class UserServiceTest {
     void shouldFindUserByGivenId() {
         //Given --> testData
         User saveUser = userRepository.save(user1);
-
         //When
         UserDTO userById = userService.getUserById(saveUser.getId());
-
         //Then
         assertEquals("firstNameUser", userById.firstName());
         assertEquals("lastNameUser", userById.lastName());
@@ -84,13 +80,11 @@ public class UserServiceTest {
     void shouldHandleExceptionUserNotFoundTryingRetriveUserById() {
         //Given --> testData
         long nonExistingUserId = 100L;
-
         //When
         NotFoundException notFoundException = assertThrows(
                 NotFoundException.class,
                 () -> userService.getUserById(nonExistingUserId)
         );
-
         //Then
         String expectedMessage = "Not found with given id " + nonExistingUserId;
         String actualMessage = notFoundException.getMessage();
@@ -101,10 +95,8 @@ public class UserServiceTest {
     void shouldFindAllUsersFromDb() {
         //Given
         userRepository.saveAll(userList);
-
         //When
         List<UserDTO> listOfAllUsers = userService.list();
-
         //Then
         int expectedSizeOfList = 3;
         assertEquals(expectedSizeOfList, listOfAllUsers.size());
@@ -114,10 +106,8 @@ public class UserServiceTest {
     void shouldReturnEmptyListIfNoUsersInDb() {
         //Given
         int expectedSize = 0;
-
         //When
         List<UserDTO> listOfAllUsers = userService.list();
-
         //Then
         assertEquals(expectedSize, listOfAllUsers.size());
     }
@@ -128,14 +118,12 @@ public class UserServiceTest {
         //Given
         List<User> userSavingList = userRepository.saveAll(userList);
         Long idOfUserForDelete = userSavingList.get(1).getId();
-
         //When
         int expectedSizeBeforeDelete = 3;
         int expectedSizeAfterDelete = 2;
         int sizeBeforeDeletingUser = userRepository.findAll().size();
         userService.remove(idOfUserForDelete);
         int sizeAfterDeletingUser = userRepository.findAll().size();
-
         //Then
         assertEquals(expectedSizeBeforeDelete, sizeBeforeDeletingUser);
         assertEquals(expectedSizeAfterDelete, sizeAfterDeletingUser);
@@ -145,7 +133,6 @@ public class UserServiceTest {
     void shouldHandleNotFoundExceptionWhileTryingToDeleteByWrongId() {
         //Given
         long nonExistingUserId = 100L;
-
         //When
         NotFoundException userNotFound = assertThrows(
                 NotFoundException.class,
@@ -153,7 +140,7 @@ public class UserServiceTest {
         );
         String expectedMessage = "Not found with given id " + nonExistingUserId; //need to change message
         String messageFromException = userNotFound.getMessage();
-
+        //Then
         assertTrue(messageFromException.contains(expectedMessage));
     }
 
@@ -162,27 +149,22 @@ public class UserServiceTest {
         // Given
         User savedUser = userRepository.save(user1);
         Long idOfUserInDb = savedUser.getId();
-
         // When
         UserDTO modifyUser = userService.edit(idOfUserInDb, userUpdateDTO);
-
         // Then
         assertEquals("firstNameDto", modifyUser.firstName());
         assertEquals("lastNameDto", modifyUser.lastName());
-
     }
 
     @Test
     void shouldHandleExceptionWhileTryingToFindUserForUpdate() {
         //Given
         long nonExistingId = 12;
-
         //When
         String expectedMessage = "User Not found";
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> userService.edit(nonExistingId, userUpdateDTO));
         String notFoundExceptionMessage = notFoundException.getMessage();
-
         //Then
         assertTrue(notFoundExceptionMessage.contains(expectedMessage));
     }
@@ -194,12 +176,9 @@ public class UserServiceTest {
         Long savedUserId = savedUser.getId();
         //When
         UserDTO updateWithNulls = userService.edit(savedUserId, userUpdateDTOWithNull);
-
         //Then
         assertEquals("firstNameUser", updateWithNulls.firstName());
         assertEquals("lastNameUser", updateWithNulls.lastName());
         assertEquals("newEmail@gmail.com", updateWithNulls.email());
     }
-
-
 }

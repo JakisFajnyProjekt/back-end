@@ -22,10 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class OrderServiceTest {
-
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -34,10 +32,8 @@ public class OrderServiceTest {
     private AddressRepository addressRepository;
     @Autowired
     private RestaurantRepository restaurantRepository;
-
     @Autowired
     private DishRepository dishRepository;
-
     private Address address;
     private User user1;
     private Dish dish1;
@@ -47,14 +43,12 @@ public class OrderServiceTest {
     private Order orderNoDto2;
     private OrderDTO order1DTO;
     private OrderDTO order2DTO;
-
     private OrderCreateDTO orderCreateWithWrongUserId;
     private OrderCreateDTO orderCreateWithWrongRestaurantrId;
     private OrderCreateDTO orderCreateWithWrongAddressrId;
     private List<Long> dishListLong;
     private List<Dish> dishList;
     private List<Order> orders;
-
 
     @BeforeEach
     void dataForTest() {
@@ -69,8 +63,8 @@ public class OrderServiceTest {
         dishList = List.of(dish1);
         dishRepository.saveAll(dishList);
         orderCreateDTO = new OrderCreateDTO(user1.getId(), List.of(dish1.getId()), address.getId(), restaurant.getId());
-        order1DTO = new OrderDTO(1L,LocalDateTime.now(), new BigDecimal(60), user1.getId(), dishListLong, address.getId(), restaurant.getId());
-        order2DTO = new OrderDTO(2L,LocalDateTime.now(), new BigDecimal(60), user1.getId(), dishListLong, address.getId(), restaurant.getId());
+        order1DTO = new OrderDTO(1L, LocalDateTime.now(), new BigDecimal(60), user1.getId(), dishListLong, address.getId(), restaurant.getId());
+        order2DTO = new OrderDTO(2L, LocalDateTime.now(), new BigDecimal(60), user1.getId(), dishListLong, address.getId(), restaurant.getId());
         orderNoDto = new Order(LocalDateTime.now(), new BigDecimal(60), "status", user1, dishList, address, restaurant);
         orderNoDto2 = new Order(LocalDateTime.now(), new BigDecimal(60), "status", user1, dishList, address, restaurant);
         orderRepository.save(orderNoDto);
@@ -81,7 +75,6 @@ public class OrderServiceTest {
         orderCreateWithWrongAddressrId = new OrderCreateDTO(user1.getId(), dishListLong, 13123L, restaurant.getId());
     }
 
-
     @BeforeTestExecution
     void cleanUpBefore() {
         userRepository.deleteAll();
@@ -89,7 +82,6 @@ public class OrderServiceTest {
         addressRepository.deleteAll();
         orderRepository.deleteAll();
     }
-
 
     @AfterEach
     void cleanUpBeforeEach() {
@@ -99,11 +91,9 @@ public class OrderServiceTest {
         orderRepository.deleteAll();
     }
 
-
     @Test
     void shouldCreateAndSaveOrder() {
         //Given
-
         //When
         OrderDTO savingOrder = orderService.create(orderCreateDTO);
 
@@ -123,42 +113,34 @@ public class OrderServiceTest {
 
     }
 
-
     @Test
     void shouldHandleNotFoundExceptionWhenUserIsWrong() {
         // Given
-
         // When
         NotFoundException exception = assertThrows(NotFoundException.class,
                 () -> orderService.create(orderCreateWithWrongUserId));
-
         // Then
         assertNotNull(exception);
-
     }
 
 
     @Test
     void shouldHandleNotFoundExceptionWhenRestaurantIsWrong() {
         //Given
-
-        //Whne
+        //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> orderService.create(orderCreateWithWrongRestaurantrId));
-
-        //Thne
+        //Then
         assertNotNull(notFoundException);
     }
 
     @Test
     void shouldHandleNotFoundExceptionWhenAddressIsWrong() {
         //Given
-
-        //Whne
+        //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> orderService.create(orderCreateWithWrongAddressrId));
-
-        //Thne
+        //Then
         assertNotNull(notFoundException);
     }
 
@@ -167,7 +149,6 @@ public class OrderServiceTest {
         //Given
         //When
         List<OrderDTO> orderList = orderService.list();
-
         //Then
         assertEquals(2, orderList.size());
     }
@@ -177,10 +158,8 @@ public class OrderServiceTest {
         //Given
         Order save = orderRepository.save(orderNoDto);
         long orderId = save.getId();
-
         //When
         OrderDTO getById = orderService.getOrderById(orderId);
-
         //Then
         assertEquals(user1.getId(), getById.userId());
         assertEquals(address.getId(), getById.deliveryAddressId());
@@ -191,15 +170,9 @@ public class OrderServiceTest {
         // Given
         Order orderToBeDeleted = orderRepository.save(orderNoDto);
         long orderId = orderToBeDeleted.getId();
-
-
         // When
         orderService.remove(orderId);
-
         // Then
         assertFalse(orderRepository.existsById(orderId));
-
     }
-
-
 }

@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AddressServiceTest {
-
     @Autowired
     private AddressService addressService;
     @Autowired
@@ -32,14 +31,13 @@ public class AddressServiceTest {
     private AddressCreateDTO addressDTO;
     private AddressCreateDTO addressDTOWithNull;
 
-
     @BeforeEach
     void dataForTests() {
         address = new Address("15", "street", "city", "postalCode");
         address2 = new Address("16", "street", "city", "postalCode");
         address3 = new Address("16", "street", "city", "postalCode");
         addressDTO = new AddressCreateDTO("15_dto", "street_dto", "city_dto", "postalCode_dto");
-        addressDTOWithNull = new AddressCreateDTO( null,"street_dto", "city_dto", "postalCode_dto");
+        addressDTOWithNull = new AddressCreateDTO(null, "street_dto", "city_dto", "postalCode_dto");
 
     }
 
@@ -58,30 +56,21 @@ public class AddressServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-
     @Test
     void shouldReturnEmptyListIfIsNoAddressesInDb() {
         //Given
-
         //When
         List<AddressDTO> listOfAddresses = addressService.addressesList();
-
         //Then
         assertEquals(0, listOfAddresses.size());
-
     }
-
 
     @Test
     void shouldCreateAndSaveAddress() {
         // Given
-
-
         // When
         AddressDTO address1 = addressService.createAddress(addressDTO);
-
         // Then
-
         assertEquals(1, addressRepository.findAll().size());
         assertEquals("15_dto", address1.houseNumber());
     }
@@ -89,7 +78,6 @@ public class AddressServiceTest {
     @Test
     void shouldHandleExceptionIfTryTOSaveWithNull() {
         //Given
-
         //When && Then
         assertThrows(NullPointerException.class,
                 () -> addressService.createAddress(addressDTOWithNull));
@@ -100,10 +88,8 @@ public class AddressServiceTest {
         // Given
         Address savedAddress = addressRepository.save(address);
         long addressId = savedAddress.getId();
-
         // When
         AddressDTO result = addressService.getAddressById(addressId);
-
         // Then
         assertNotNull(result);
         assertEquals("15", result.houseNumber());
@@ -115,11 +101,9 @@ public class AddressServiceTest {
     void shouldHandleWrongIdWhileRetrieveById() {
         //Given
         long wrongId = 123L;
-
         //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> addressService.getAddressById(wrongId));
-
         //Then
         String expectedMessage = "Not found with given id " + wrongId;
         assertTrue(notFoundException.getMessage().contains(expectedMessage));
@@ -130,10 +114,8 @@ public class AddressServiceTest {
         //Given
         List<Address> addresses = List.of(address, address2, address3);
         addressRepository.saveAll(addresses);
-
         //When
         List<AddressDTO> addressDTOS = addressService.addressesList();
-
         //Then
         assertEquals(3, addressDTOS.size());
     }
@@ -143,18 +125,12 @@ public class AddressServiceTest {
         //Given
         Address savedAddress = addressRepository.save(address);
         long addressId = savedAddress.getId();
-
         //When
         List<Address> beforeDelete = addressRepository.findAll();
         addressService.deleteAddress(addressId);
         List<Address> afterDelete = addressRepository.findAll();
-
         //Then
         assertEquals(1, beforeDelete.size());
         assertEquals(0, afterDelete.size());
-
-
     }
-
-
 }

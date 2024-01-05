@@ -6,19 +6,19 @@ import com.pl.model.dto.AddressDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class AddressMapperTest {
-
-    @Mock
+@Autowired
     private AddressMapper addressMapper;
-
     private Address address;
     private Address address1;
     private Address address2;
@@ -32,53 +32,39 @@ public class AddressMapperTest {
         address1 = new Address("151", "street1", "city1", "postalCode1");
         address2 = new Address("152", "street2", "city2", "postalCode2");
         addressDTO = new AddressCreateDTO("15_dto", "street_dto", "city_dto", "postalCode_dto");
-        addressDTO1 = new AddressDTO(3L,"151_dto", "street1_dto", "city1_dto", "postalCode1_dto");
-        addressDTO2 = new AddressDTO(4L,"152_dto", "street2_dto", "city2+dto", "postalCode2_dto");
+        addressDTO1 = new AddressDTO(3L, "151_dto", "street1_dto", "city1_dto", "postalCode1_dto");
+        addressDTO2 = new AddressDTO(4L, "152_dto", "street2_dto", "city2+dto", "postalCode2_dto");
     }
 
     @Test
     void shouldMapToAddressDTO() {
         //Given
-        when(addressMapper.mapToDTO(address)).thenReturn(addressDTO1);
-
         //When
         AddressDTO toDto = addressMapper.mapToDTO(address);
-
         //Then
+        assertNotNull(toDto);
         assertEquals(AddressDTO.class, toDto.getClass());
-        assertEquals("151_dto", toDto.houseNumber());
-        assertEquals("street1_dto", toDto.street());
-        assertEquals("city1_dto", toDto.city());
     }
 
     @Test
     void shouldMapToAddressFromDTO() {
         //Given
-        when(addressMapper.mapFromDTO(addressDTO)).thenReturn(address);
-
         //When
         Address fromDTO = addressMapper.mapFromDTO(addressDTO);
-
         //Then
-        assertEquals(address.getClass(), fromDTO.getClass());
-        assertEquals("15", fromDTO.getHouseNumber());
-        assertEquals("street", fromDTO.getStreet());
-        assertEquals("city", fromDTO.getCity());
+        assertEquals(Address.class, fromDTO.getClass());
     }
 
     @Test
     void shouldMapListDTO() {
         //Given
         List<Address> addressesList = List.of(address, address1, address2);
-        List<AddressDTO> expectedList = List.of(addressDTO1, addressDTO2);
-        when(addressMapper.mapToList(addressesList)).thenReturn(expectedList);
-
         //When
         List<AddressDTO> addressesListDTO = addressMapper.mapToList(addressesList);
-
         //Then
-        assertEquals(2, addressesListDTO.size());
+        assertEquals(3, addressesListDTO.size());
+        assertEquals(AddressDTO.class,addressesListDTO.get(0).getClass());
+        assertEquals(AddressDTO.class,addressesListDTO.get(1).getClass());
+        assertEquals(AddressDTO.class,addressesListDTO.get(2).getClass());
     }
-
-
 }

@@ -17,14 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class DishMapperTest {
-
     private Dish dish;
     private DishCreateDTO dishDto;
     private DishDTO expectedDto;
     private Restaurant restaurant;
     @Autowired
     private DishMapper dishMapper;
-
     @Autowired
     private RestaurantRepository restaurantRepository;
 
@@ -34,7 +32,7 @@ public class DishMapperTest {
         Restaurant savedRestaurant = restaurantRepository.save(restaurant);
         dish = new Dish("Pizza", "This is very good pizza!", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
         dishDto = new DishCreateDTO("Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Dish.Category.BREAKFAST);
-        expectedDto = new DishDTO(2L,"Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Dish.Category.APPETIZER);
+        expectedDto = new DishDTO(2L, "Pizza", "This is very good pizza!", new BigDecimal(30), savedRestaurant.getId(), Dish.Category.APPETIZER);
     }
 
     @Test

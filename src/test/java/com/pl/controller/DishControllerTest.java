@@ -48,15 +48,13 @@ public class DishControllerTest {
     private DishDTO dishDTOForUpdateName;
     private List<DishDTO> dishList;
 
-
     @BeforeEach
     void testData() {
         dish1 = new Dish("dishName1", "description1");
         dishDTO1 = new DishCreateDTO("nameDto", "descriptionDTO", new BigDecimal(30), 1L, Dish.Category.APPETIZER);
-        dishDTO2 = new DishDTO(2L,"nameDto2", "descriptionDTO2", new BigDecimal(12), 1L, Dish.Category.APPETIZER);
-        dishDTOForUpdateName = new DishDTO(3L,"nameUpdate2", "descriptionDTO2", new BigDecimal(30), 1L, Dish.Category.APPETIZER);
+        dishDTO2 = new DishDTO(2L, "nameDto2", "descriptionDTO2", new BigDecimal(12), 1L, Dish.Category.APPETIZER);
+        dishDTOForUpdateName = new DishDTO(3L, "nameUpdate2", "descriptionDTO2", new BigDecimal(30), 1L, Dish.Category.APPETIZER);
         dishList = List.of(dishDTO2);
-
     }
 
     @BeforeEach
@@ -75,7 +73,6 @@ public class DishControllerTest {
     void shouldCreateDish() throws Exception {
         // Given
         when(dishService.createDish(any(DishCreateDTO.class))).thenReturn(dishDTO2);
-
         // When && Then
         this.mockMvc.perform(MockMvcRequestBuilders.post("/api/dishes")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -92,10 +89,8 @@ public class DishControllerTest {
     void shouldFindDishById() throws Exception {
         // Given
         long dishId = 1L;
-
         // When
         when(dishService.getDishById(dishId)).thenReturn(dishDTO2);
-
         //Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/dishes/{dishId}", dishId)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -110,27 +105,22 @@ public class DishControllerTest {
     void shouldFindListOfAllDishes() throws Exception {
         //Given
         when(dishService.listDishes()).thenReturn(dishList);
-
-
         //When & Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/dishes")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1))
                 .andExpect(jsonPath("$.[0].name").value("nameDto2"));
-
     }
 
     @Test
     void shouldDeleteDishWithGivenId() throws Exception {
         // Given
         long dishId = 1L;
-
         // When
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/dishes/" + dishId))
                 .andDo(print())
                 .andExpect(status().isOk());
-
         // Then
         verify(dishService).removeDish(dishId);
 
@@ -144,14 +134,10 @@ public class DishControllerTest {
         long dishId = 12L;
         when(dishService.createDish(dishDTO1)).thenReturn(dishDTO2);
         doNothing().when(dishService).editDish(dishId, dishDTOForUpdateName);
-
-
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.put("/api/dishes/" + dishId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dishDTOForUpdateName)))
                 .andExpect(status().isAccepted());
     }
-
-
 }

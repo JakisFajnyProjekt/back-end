@@ -41,9 +41,7 @@ public class RestaurantMapper {
     }
 
 
-
-
-    public List<OrderByRestaurantDTO> mapToDtoForOrderList(final List<Order> orders){
+    public List<OrderByRestaurantDTO> mapToDtoForOrderList(final List<Order> orders) {
         return orders.stream()
                 .map(order -> new OrderByRestaurantDTO(
                         order.getOrderTime(),

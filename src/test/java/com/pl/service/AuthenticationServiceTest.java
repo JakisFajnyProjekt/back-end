@@ -31,22 +31,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class AuthenticationServiceTest {
-
     @InjectMocks
     private AuthenticationService authenticationService;
     @Mock
     private MessagePropertiesConfig message;
-
     @Mock
     private UserRepository userRepository;
     @Mock
     private JwtService jwtService;
     @Mock
     private PasswordEncoder passwordEncoder;
-
     @Mock
     private TokenRepository tokenRepository;
-
     @Mock
     private AuthenticationManager authenticationManager;
 
@@ -60,7 +56,6 @@ public class AuthenticationServiceTest {
         userRepository.deleteAll();
         Mockito.reset(userRepository, jwtService, passwordEncoder);
     }
-
 
     @Test
     void shouldRegisterUser() {
@@ -80,7 +75,6 @@ public class AuthenticationServiceTest {
 
         when(userRepository.save(user)).thenReturn(user);
         when(jwtService.generateToken(user)).thenReturn("jwtToken");
-
         // When
         var registerUser = authenticationService.register(request);
 
@@ -100,7 +94,6 @@ public class AuthenticationServiceTest {
 
         when(userRepository.findByEmail(request.getEmail()))
                 .thenReturn(Optional.of(new User()));
-
         //When & Then
         assertThatThrownBy(() -> authenticationService.register(request))
                 .isInstanceOf(UserEmailTakenException.class);
@@ -120,10 +113,8 @@ public class AuthenticationServiceTest {
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(request.getPassword(), user.getPassword())).thenReturn(true);
         when(jwtService.generateToken(user)).thenReturn("jwtToken");
-
         // When
         LoginResponse loginResponse = authenticationService.login(request);
-
         // Then
         assertEquals("jwtToken", loginResponse.getToken());
     }
@@ -170,7 +161,5 @@ public class AuthenticationServiceTest {
         assertEquals(exceptedMessage, notFoundException.getMessage());
         assertThatThrownBy(() -> authenticationService.login(request))
                 .isInstanceOf(AuthenticationErrorException.class);
-
-
     }
 }

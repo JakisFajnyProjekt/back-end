@@ -23,10 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class RestaurantServiceTest {
-
     @Autowired
     private RestaurantService restaurantService;
-
     @Autowired
     private RestaurantRepository restaurantRepository;
     @Autowired
@@ -37,7 +35,6 @@ public class RestaurantServiceTest {
     private DishRepository dishRepository;
     @Autowired
     private UserRepository userRepository;
-
     private Restaurant restaurant;
     private Restaurant restaurant1;
     private Restaurant restaurant2;
@@ -57,7 +54,6 @@ public class RestaurantServiceTest {
         restaurant1 = new Restaurant("restaurant", address);
         restaurant2 = new Restaurant("restaurant", address2);
         restaurant3 = new Restaurant("restaurant", address3);
-
     }
 
     @BeforeTestExecution
@@ -76,41 +72,31 @@ public class RestaurantServiceTest {
         addressRepository.deleteAll();
     }
 
-
     @Test
     @WithMockUser(username = "testuser", password = "testtest", roles = "USER")
     void shouldCreateAndSaveRestaurant() {
         //Given
-
         Address savedAddress = addressRepository.save(address);
         long addressId = savedAddress.getId();
-        restaurantDTO = new RestaurantCreateDTO("restaurant_dto",addressId);
-
-
+        restaurantDTO = new RestaurantCreateDTO("restaurant_dto", addressId);
         //When
         restaurantService.create(restaurantDTO);
-
         //Then
         assertEquals(1, restaurantRepository.findAll().size());
-
     }
 
     @Test
     void shouldHandleWrongAddressWhenCreatingRestaurant() {
         //Given
         long wrongIdAddress = 1L;
-        restaurantDTOWithWrongId = new RestaurantDTO(2L,"name", wrongIdAddress);
-
+        restaurantDTOWithWrongId = new RestaurantDTO(2L, "name", wrongIdAddress);
         //When
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> restaurantService.create(restaurantDTO));
-
-        //Thne
+        //Then
         assertNotNull(notFoundException);
         assertTrue(notFoundException.getMessage().contains("Address not found"));
-
     }
-
 
     @Test
     void shouldFindRestaurantById() {
@@ -118,11 +104,8 @@ public class RestaurantServiceTest {
         Address savedAddress = addressRepository.save(address);
         restaurant.setAddress(savedAddress);
         Restaurant savedRestaurants = restaurantRepository.save(restaurant);
-
-
         //When
         RestaurantDTO findRestaurant = restaurantService.findById(savedRestaurants.getId());
-
         //Then
         assertEquals("restaurant", findRestaurant.name());
         assertNotNull(restaurantRepository.findById(findRestaurant.restaurantAddress()));
@@ -136,18 +119,15 @@ public class RestaurantServiceTest {
         addressRepository.save(address3);
         List<Restaurant> restaurants = List.of(restaurant1, restaurant2, restaurant3);
         restaurantRepository.saveAll(restaurants);
-
-
         //When
         List<RestaurantDTO> list = restaurantService.list();
-
         //Then
         assertEquals(3, list.size());
     }
 
     @Test
     @WithMockUser(username = "testuser@test.com", password = "testtest", roles = "USER")
-    void shouldFindOrdersForLoggedRestaurant(){
+    void shouldFindOrdersForLoggedRestaurant() {
         //Given
         Address savedAddress = addressRepository.save(address);
         restaurant = new Restaurant("name");
@@ -174,11 +154,7 @@ public class RestaurantServiceTest {
         orderRepository.saveAll(orders);
         //When
         List<OrderByRestaurantDTO> listForRestaurant = restaurantService.findOrders(savedRestaurant.getId());
-
         //Then
-        assertEquals(3,listForRestaurant.size());
-
+        assertEquals(3, listForRestaurant.size());
     }
-
-
 }

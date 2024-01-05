@@ -37,11 +37,9 @@ public class AddressControllerTest {
     private AddressService addressService;
     @Autowired
     private AddressController addressController;
-
     private AddressCreateDTO addressDTO;
     private AddressDTO addressDTO1;
     private AddressDTO addressDTO2;
-
 
     @Test
     void mockCheck() {
@@ -58,15 +56,14 @@ public class AddressControllerTest {
     @BeforeEach
     void dataForTests() {
         addressDTO = new AddressCreateDTO("15", "street", "city", "postalCode");
-        addressDTO1 = new AddressDTO(2L,"151", "street1", "city1", "postalCode1");
-        addressDTO2 = new AddressDTO(3L,"152", "street2", "city2", "postalCode2");
+        addressDTO1 = new AddressDTO(2L, "151", "street1", "city1", "postalCode1");
+        addressDTO2 = new AddressDTO(3L, "152", "street2", "city2", "postalCode2");
     }
 
     @Test
     void shouldCreateAddress() throws Exception {
         //Given
         when(addressService.createAddress(addressDTO)).thenReturn(addressDTO1);
-
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/addresses")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -83,7 +80,6 @@ public class AddressControllerTest {
         //Given
         long addresId = 12L;
         when(addressService.getAddressById(addresId)).thenReturn(addressDTO1);
-
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/addresses/{addressId}", addresId)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -96,8 +92,7 @@ public class AddressControllerTest {
     @Test
     void shouldRetrieveListOfAddresses() throws Exception {
         //Given
-        when(addressService.addressesList()).thenReturn(List.of( addressDTO1, addressDTO2));
-
+        when(addressService.addressesList()).thenReturn(List.of(addressDTO1, addressDTO2));
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/addresses/all")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -108,18 +103,12 @@ public class AddressControllerTest {
     void shouldRemoveAddress() throws Exception {
         //Given
         long addressId = 12L;
-
         //When
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/addresses/{addressId}", addressId))
                 .andExpect(status().isAccepted());
-
         //Then
         verify(addressService).deleteAddress(addressId);
         AddressDTO addressById = addressService.getAddressById(addressId);
         assertNull(addressById);
-
-
     }
-
-
 }

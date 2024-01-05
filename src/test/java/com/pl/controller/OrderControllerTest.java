@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class OrderControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -52,7 +51,6 @@ public class OrderControllerTest {
     private DishRepository dishRepository;
     @Autowired
     private RestaurantRepository restaurantRepository;
-
     private Address address;
     private Restaurant restaurant;
     private User user;
@@ -65,7 +63,6 @@ public class OrderControllerTest {
     private OrderDTO orderDTO2;
     private Order order;
 
-
     @BeforeEach
     void dataForTests() {
         address = new Address("15", "street", "city", "postalCode");
@@ -76,9 +73,9 @@ public class OrderControllerTest {
         dish2 = new Dish("name", "description", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
         dish3 = new Dish("name", "description", new BigDecimal(30), restaurant, Dish.Category.APPETIZER);
         orderCreateDTO = new OrderCreateDTO(user.getId(), List.of(dish1.getId(), dish2.getId()), address.getId(), restaurant.getId());
-        orderDTO = new OrderDTO(1L,LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
-        orderDTO1 = new OrderDTO(2L,LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
-        orderDTO2 = new OrderDTO(3L,LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
+        orderDTO = new OrderDTO(1L, LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
+        orderDTO1 = new OrderDTO(2L, LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
+        orderDTO2 = new OrderDTO(3L, LocalDateTime.now(), new BigDecimal(90), user.getId(), List.of(dish1.getId(), dish2.getId(), dish3.getId()), address.getId(), restaurant.getId());
     }
 
     @BeforeEach
@@ -101,7 +98,6 @@ public class OrderControllerTest {
     void shouldCreateOrder() throws Exception {
         //Given
         when(orderService.create(orderCreateDTO)).thenReturn(orderDTO);
-
         //When && Then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/orders")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,7 +111,6 @@ public class OrderControllerTest {
     void shouldFindListOFOrders() throws Exception {
         //Given
         when(orderService.list()).thenReturn(List.of(orderDTO, orderDTO1, orderDTO2));
-
         //Given
         mockMvc.perform(MockMvcRequestBuilders.get("/api/orders")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -129,30 +124,22 @@ public class OrderControllerTest {
         //Give
         long orderId = 1L;
         when(orderService.getOrderById(orderId)).thenReturn(orderDTO);
-
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/api/orders/{orderId}", orderId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.totalPrice").value(new BigDecimal(90)));
-
     }
 
     @Test
     void shouldRemoveOrder() throws Exception {
         //Given
         long orderId = 123L;
-
         //When
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/orders/{orderId}", orderId))
                 .andExpect(status().isOk());
-
         //Then
         verify(orderService).remove(orderId);
         OrderDTO findOrder = orderService.getOrderById(orderId);
         assertNull(findOrder);
-
-
     }
-
-
 }

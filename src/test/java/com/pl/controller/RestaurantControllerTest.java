@@ -2,7 +2,10 @@ package com.pl.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pl.auth.Role;
-import com.pl.model.*;
+import com.pl.model.Address;
+import com.pl.model.Dish;
+import com.pl.model.Restaurant;
+import com.pl.model.User;
 import com.pl.model.dto.OrderByRestaurantDTO;
 import com.pl.model.dto.RestaurantCreateDTO;
 import com.pl.model.dto.RestaurantDTO;
@@ -35,26 +38,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class RestaurantControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     @MockBean
     private RestaurantService restaurantService;
-
     @Autowired
     private RestaurantController restaurantController;
-
     @Autowired
     private RestaurantRepository restaurantRepository;
-
     @Autowired
     private UserRepository userRepository;
-
-
     private Restaurant restaurant;
     private RestaurantCreateDTO restaurantDTO;
     private RestaurantDTO restaurantDTO1;
@@ -67,8 +62,8 @@ public class RestaurantControllerTest {
         address = new Address("15", "street", "city", "postalCode");
         restaurant = new Restaurant("restaurant", address);
         restaurantDTO = new RestaurantCreateDTO("restaurant_test_name1", address.getId());
-        restaurantDTO1 = new RestaurantDTO(2L,"restaurant_test_name2", address.getId());
-        restaurantDTO2 = new RestaurantDTO(3L,"restaurant_test_name3", address.getId());
+        restaurantDTO1 = new RestaurantDTO(2L, "restaurant_test_name2", address.getId());
+        restaurantDTO2 = new RestaurantDTO(3L, "restaurant_test_name3", address.getId());
         address = new Address("15", "street", "city", "postalCode");
         restaurant = new Restaurant("restaurant", address);
         User user = new User("firstname1", "lastname", "Password1", "email@email.com", Role.USER);
@@ -80,7 +75,7 @@ public class RestaurantControllerTest {
     }
 
     @BeforeTestExecution
-    void cleanBeforeTests(){
+    void cleanBeforeTests() {
         userRepository.deleteAll();
         restaurantRepository.deleteAll();
     }
@@ -102,7 +97,6 @@ public class RestaurantControllerTest {
     void shouldSaveRestaurant() throws Exception {
         //Given
         when(restaurantService.create(restaurantDTO)).thenReturn(restaurantDTO);
-
         //When
         mockMvc.perform(post("/api/restaurants")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -117,7 +111,6 @@ public class RestaurantControllerTest {
         //Given
         long restaurantId = 1231231L;
         when(restaurantService.findById(restaurantId)).thenReturn(restaurantDTO1);
-
         //When
         mockMvc.perform(get("/api/restaurants/{restaurantId}", restaurantId)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -137,20 +130,16 @@ public class RestaurantControllerTest {
                 .andExpect(jsonPath("$.size()").value(listOfRestaurants.size()))
                 .andExpect(jsonPath("$.[0].name").value("restaurant_test_name2"))
                 .andExpect(jsonPath("$.[1].name").value("restaurant_test_name3"));
-
     }
 
     @Test
-    void shouldFindOrdersForGivenRestaurant() throws Exception{
+    void shouldFindOrdersForGivenRestaurant() throws Exception {
         //Given
-
         long restaurantId = 123L;
         when(restaurantService.findOrders(restaurantId)).thenReturn(List.of(orderDTO));
-
         //When
         mockMvc.perform(get("/api/restaurants/orders/{restaurantId}", restaurantId)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()").value(1));
     }
-
 }

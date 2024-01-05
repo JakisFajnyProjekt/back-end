@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class DishService extends AbstractService<DishRepository, Dish> {
@@ -49,7 +52,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
     }
 
     @Transactional
-   @CacheEvict(value = "dishesList", allEntries = true)
+    @CacheEvict(value = "dishesList", allEntries = true)
     public void removeDish(long dishId) {
         Dish userById = findEntity(dishRepository, dishId);
         dishRepository.delete(userById);
@@ -75,7 +78,7 @@ public class DishService extends AbstractService<DishRepository, Dish> {
     }
 
     @Transactional
-   // @CacheEvict(value = "dishesList", allEntries = true)
+    // @CacheEvict(value = "dishesList", allEntries = true)
     public DishDTO createDish(DishCreateDTO dishDTO) {
         if (dishDTO == null) {
             throw new InvalidValuesException("The dish DTO cannot be null.");

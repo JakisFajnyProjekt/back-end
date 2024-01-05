@@ -41,16 +41,6 @@ public class Dish {
         this.description = description;
     }
 
-    public enum Category {
-        APPETIZER,
-        MAIN_COURSE,
-        SOUPS,
-        SALADS,
-        BREAKFAST,
-        DESSERT,
-
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -110,5 +100,15 @@ public class Dish {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description);
+    }
+
+    public enum Category {
+        APPETIZER,
+        MAIN_COURSE,
+        SOUPS,
+        SALADS,
+        BREAKFAST,
+        DESSERT,
+
     }
 }

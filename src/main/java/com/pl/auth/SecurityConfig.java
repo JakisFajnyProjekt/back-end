@@ -3,7 +3,6 @@ package com.pl.auth;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,6 +16,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -59,12 +59,12 @@ public class SecurityConfig {
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/auth/**")
                 .permitAll()
                 .requestMatchers(corsConfiguration)
-                .hasAnyAuthority(Role.USER.name(),Role.ADMIN.name())
+                .hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
 //                    .requestMatchers("/api/**")
 //                    .permitAll() <--- for tests
                 .requestMatchers("/api/users/**", "/api/orders/**", "/api/addresses/**",
                         "api/dishes/**", "/api/restaurants/**")
-                .hasAnyAuthority(Role.USER.name(),Role.ADMIN.name())
+                .hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
 
                 .anyRequest()
                 .authenticated()
@@ -86,17 +86,16 @@ public class SecurityConfig {
 
 
     @Bean
-     CorsConfigurationSource corsConfigurationSource(){
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(allowedOrigin));
-        configuration.setAllowedMethods(Arrays.asList(allowedMethods));
-        configuration.setAllowedHeaders(Arrays.asList(allowedHeaders));
+        configuration.setAllowedOrigins(Collections.singletonList(allowedOrigin));
+        configuration.setAllowedMethods(Collections.singletonList(allowedMethods));
+        configuration.setAllowedHeaders(Collections.singletonList(allowedHeaders));
         configuration.setAllowCredentials(allowedCredentials);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration(corsConfiguration, configuration);
         return source;
     }
-
 
 
 }

@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class RestaurantMapperTest {
-
     @Autowired
     private RestaurantMapper restaurantMapper;
     private Restaurant restaurant;
@@ -29,8 +28,7 @@ public class RestaurantMapperTest {
     void testData() {
         restaurant = new Restaurant("Luigi", new Address());
         restaurantDto = new RestaurantCreateDTO("Luigi", 1L);
-        expectedDto = new RestaurantDTO(2L,"Luigi", 1L);
-
+        expectedDto = new RestaurantDTO(2L, "Luigi", 1L);
     }
 
     @Test
@@ -70,7 +68,7 @@ public class RestaurantMapperTest {
     }
 
     @Test
-    void shouldMapToDtoForOrderList(){
+    void shouldMapToDtoForOrderList() {
         //Given
         restaurant = new Restaurant("name");
         Dish dish1 = new Dish("name1", "description1");
@@ -81,7 +79,7 @@ public class RestaurantMapperTest {
         Order order1 = new Order(LocalDateTime.now(),
                 BigDecimal.valueOf(100), "CREATED", user, List.of(dish1, dish2), address, restaurant
         );
-       Order order2 = new Order(LocalDateTime.now(),
+        Order order2 = new Order(LocalDateTime.now(),
                 BigDecimal.valueOf(100), "CREATED", user, List.of(dish1, dish2), address, restaurant
         );
         Order order3 = new Order(LocalDateTime.now(),
@@ -95,8 +93,8 @@ public class RestaurantMapperTest {
         List<OrderByRestaurantDTO> orderByRestaurantDTOS = restaurantMapper.mapToDtoForOrderList(orders);
 
         //Then
-        assertEquals(OrderByRestaurantDTO.class,orderByRestaurantDTOS.get(0).getClass());
-        assertEquals(OrderByRestaurantDTO.class,orderByRestaurantDTOS.get(1).getClass());
-        assertEquals(OrderByRestaurantDTO.class,orderByRestaurantDTOS.get(2).getClass());
+        assertEquals(OrderByRestaurantDTO.class, orderByRestaurantDTOS.get(0).getClass());
+        assertEquals(OrderByRestaurantDTO.class, orderByRestaurantDTOS.get(1).getClass());
+        assertEquals(OrderByRestaurantDTO.class, orderByRestaurantDTOS.get(2).getClass());
     }
 }
