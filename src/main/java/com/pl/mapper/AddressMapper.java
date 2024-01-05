@@ -18,7 +18,6 @@ public class AddressMapper {
                 address.getPostalCode());
     }
 
-
     public Address mapFromDTO(AddressCreateDTO addressCreateDTO) {
         return new Address(addressCreateDTO.houseNumber(),
                 addressCreateDTO.street(),
@@ -26,12 +25,9 @@ public class AddressMapper {
                 addressCreateDTO.postalCode());
     }
 
-
     public List<AddressDTO> mapToList(List<Address> address) {
         return address.stream()
                 .map(this::mapToDTO)
                 .toList();
     }
-
-
 }

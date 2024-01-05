@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class OrderMapperTest {
+
     @Autowired
     private OrderMapper orderMapper;
     @Mock

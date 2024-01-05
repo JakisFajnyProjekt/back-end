@@ -1,6 +1,7 @@
 package com.pl.exception;
 
 public class AuthenticationErrorException extends RuntimeException {
+
     private final AuthenticationError type;
     private final String message;
 

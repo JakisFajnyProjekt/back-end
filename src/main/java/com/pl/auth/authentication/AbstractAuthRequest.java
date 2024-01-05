@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public abstract class AbstractAuthRequest extends RequestBody {
+
     @Pattern(
             regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
             message = "{validation.email.pattern.message}"

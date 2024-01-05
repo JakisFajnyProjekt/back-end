@@ -24,6 +24,7 @@ import java.util.Optional;
 
 @Service
 public class RestaurantService extends AbstractService<RestaurantRepository, Restaurant> {
+
     private final RestaurantRepository restaurantRepository;
     private final RestaurantMapper restaurantMapper;
     private final AddressRepository addressRepository;
@@ -33,7 +34,6 @@ public class RestaurantService extends AbstractService<RestaurantRepository, Res
         this.restaurantMapper = restaurantMapper;
         this.addressRepository = addressRepository;
     }
-
 
     @Cacheable(cacheNames = "restaurantsList")
     public List<RestaurantDTO> list() {
@@ -94,6 +94,4 @@ public class RestaurantService extends AbstractService<RestaurantRepository, Res
             throw new NotFoundException("Fail to find restaurant");
         }
     }
-
-
 }

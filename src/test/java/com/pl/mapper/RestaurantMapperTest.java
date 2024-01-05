@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class RestaurantMapperTest {
+
     @Autowired
     private RestaurantMapper restaurantMapper;
     private Restaurant restaurant;

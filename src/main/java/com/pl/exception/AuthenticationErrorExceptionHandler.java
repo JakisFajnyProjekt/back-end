@@ -13,7 +13,6 @@ import java.util.Objects;
 @RestControllerAdvice
 public class AuthenticationErrorExceptionHandler {
 
-
     private final MessagePropertiesConfig message;
 
     public AuthenticationErrorExceptionHandler(MessagePropertiesConfig messagePropertiesConfig) {

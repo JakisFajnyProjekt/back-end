@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @WithMockUser(roles = "ADMIN")
 
 public class UserServiceTest {
+
     User user2;
     User user3;
     User user4;

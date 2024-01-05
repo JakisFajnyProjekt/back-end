@@ -13,7 +13,6 @@ import java.util.Optional;
 @Component
 public class DishMapper {
 
-
     private final RestaurantRepository restaurantRepository;
 
     public DishMapper(RestaurantRepository restaurantRepository) {

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
+
     private final UserRepository userRepository;
     private final DishRepository dishRepository;
     private final AddressRepository addressRepository;
@@ -28,7 +29,6 @@ public class OrderMapper {
         this.addressRepository = addressRepository;
         this.restaurantRepository = restaurantRepository;
     }
-
 
     public Order mapToOrder(OrderCreateDTO rderCreateDTO) {
         Order order = new Order();
@@ -52,7 +52,6 @@ public class OrderMapper {
                         .collect(Collectors.toList()),
                 order.getDeliveryAddress().getId(),
                 order.getRestaurant().getId()
-
         );
     }
 

@@ -23,7 +23,6 @@ public class ApplicationConfig {
 
     public ApplicationConfig(UserRepository userRepository) {
         this.userRepository = userRepository;
-
     }
 
     @Bean
@@ -60,6 +59,4 @@ public class ApplicationConfig {
                                 .type(SecurityScheme.Type.APIKEY)
                                 .in(SecurityScheme.In.HEADER));
     }
-
-
 }

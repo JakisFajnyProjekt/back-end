@@ -28,6 +28,7 @@ import java.util.Optional;
 @Service
 @PropertySource("classpath:messages.properties")
 public class AuthenticationService {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -106,5 +107,4 @@ public class AuthenticationService {
             throw new UserEmailTakenException(message.getEmailTaken());
         }
     }
-
 }

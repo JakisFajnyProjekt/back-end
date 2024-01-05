@@ -39,6 +39,5 @@ public class OrderController {
     public ResponseEntity<Void> remove(@PathVariable long orderId) {
         orderService.remove(orderId);
         return ResponseEntity.ok().build();
-
     }
 }

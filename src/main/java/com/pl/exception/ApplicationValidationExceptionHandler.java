@@ -16,7 +16,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class ApplicationValidationExceptionHandler {
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
         ValidationErrorResponse response = new ValidationErrorResponse();

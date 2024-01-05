@@ -99,7 +99,6 @@ public class OrderService extends AbstractService<OrderRepository, Order> {
         return orderMapper.mapToOrderDto(order);
     }
 
-
     @Transactional
     @CacheEvict(value = "orderList", allEntries = true)
     public void remove(long orderId) {

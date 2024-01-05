@@ -7,15 +7,13 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:messages.properties")
 public class MessagePropertiesConfig {
+
     @Value("${authentication.invalidCredentials.password}")
     private String invalidPassword;
-
     @Value("${authentication.invalidCredentials.email}")
     private String invalidEmail;
-
     @Value("${authentication.emailTaken}")
     private String emailTaken;
-
     @Value("${authentication.invalidCredentials}")
     private String invalidCredentials;
 

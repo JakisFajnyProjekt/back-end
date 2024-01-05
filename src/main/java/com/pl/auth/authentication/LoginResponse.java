@@ -6,8 +6,8 @@ import java.util.Objects;
 
 @ResponseBody
 public class LoginResponse {
-    private String token;
 
+    private String token;
 
     public LoginResponse() {
     }

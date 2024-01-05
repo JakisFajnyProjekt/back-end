@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class AuthenticationServiceTest {
+
     @InjectMocks
     private AuthenticationService authenticationService;
     @Mock
@@ -153,7 +154,6 @@ public class AuthenticationServiceTest {
 
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(request.getPassword(), user.getPassword())).thenReturn(false);
-
         //When && Then
         String exceptedMessage = message.getInvalidPassword();
         AuthenticationErrorException notFoundException = assertThrows(AuthenticationErrorException.class,

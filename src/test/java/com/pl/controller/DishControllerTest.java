@@ -34,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser(roles = "USER")
 public class DishControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired

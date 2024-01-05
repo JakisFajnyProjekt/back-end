@@ -23,10 +23,10 @@ import java.util.Optional;
 
 @Service
 public class DishService extends AbstractService<DishRepository, Dish> {
+
     private final DishRepository dishRepository;
     private final DishMapper dishMapper;
     private final RestaurantRepository restaurantRepository;
-
 
     public DishService(DishRepository dishRepository, DishMapper dishMapper, RestaurantRepository restaurantRepository) {
         this.dishRepository = dishRepository;

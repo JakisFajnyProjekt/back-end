@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class DishMapperTest {
+
     private Dish dish;
     private DishCreateDTO dishDto;
     private DishDTO expectedDto;

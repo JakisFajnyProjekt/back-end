@@ -22,31 +22,25 @@ import java.util.Collections;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${cors.allowedOrigin}")
+    private String allowedOrigin;
+    @Value("${cors.allowedMethods}")
+    private String allowedMethods;
+    @Value("${cors.allowedHeaders}")
+    private String allowedHeaders;
+    @Value("${cors.allowedCredentials}")
+    private boolean allowedCredentials;
+    @Value("${cors.corsConfiguration}")
+    private String corsConfiguration;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler LogoutHandler;
-
-    @Value("${cors.allowedOrigin}")
-    private String allowedOrigin;
-
-    @Value("${cors.allowedMethods}")
-    private String allowedMethods;
-
-    @Value("${cors.allowedHeaders}")
-    private String allowedHeaders;
-
-    @Value("${cors.allowedCredentials}")
-    private boolean allowedCredentials;
-
-    @Value("${cors.corsConfiguration}")
-    private String corsConfiguration;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider, LogoutHandler logoutHandler) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationProvider = authenticationProvider;
         this.LogoutHandler = logoutHandler;
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -84,7 +78,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -96,8 +89,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration(corsConfiguration, configuration);
         return source;
     }
-
-
 }
 
 

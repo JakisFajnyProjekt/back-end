@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 
 @Service
 public class AddressService extends AbstractService<AddressRepository, Address> {
+
     private final AddressRepository addressRepository;
     private final AddressServiceValidation addressServiceValidation;
     private final AddressMapper addressMapper;
@@ -33,7 +34,6 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
         LOGGER.info("address found with id " + findAddress.getId());
         return addressMapper.mapToDTO(findAddress);
     }
-
 
     @Cacheable(cacheNames = "addressesList")
     public List<AddressDTO> addressesList() {
@@ -53,9 +53,7 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
         Address savedAddress = addressRepository.save(validatedAddressObj);
         LOGGER.info("address saved");
         return addressMapper.mapToDTO(savedAddress);
-
     }
-
 
     private Address addressCheck(AddressCreateDTO addressDTO) {
         Stream.of(addressDTO.houseNumber(), addressDTO.city(), addressDTO.postalCode(), addressDTO.street())
@@ -63,7 +61,6 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
         addressServiceValidation.validateAddress(addressDTO.houseNumber(), addressDTO.street());
         LOGGER.info("address checked");
         return addressMapper.mapFromDTO(addressDTO);
-
     }
 
     @Transactional
@@ -73,6 +70,4 @@ public class AddressService extends AbstractService<AddressRepository, Address> 
         addressRepository.delete(address);
         LOGGER.info("address with id" + addressId + "deleted");
     }
-
-
 }

@@ -22,10 +22,10 @@ import java.util.Optional;
 
 @Service
 public class UserService extends AbstractService<UserRepository, User> {
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-
 
     public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -46,7 +46,6 @@ public class UserService extends AbstractService<UserRepository, User> {
         }
         return userMapper.mapToListDto(users);
     }
-
 
     @Transactional
     public void remove(long userId) {
@@ -84,5 +83,4 @@ public class UserService extends AbstractService<UserRepository, User> {
                     return new NotFoundException("User Not found");
                 });
     }
-
 }

@@ -20,7 +20,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @GetMapping("/{userId}")
     public UserDTO findById(@PathVariable long userId) {
         return userService.getUserById(userId);

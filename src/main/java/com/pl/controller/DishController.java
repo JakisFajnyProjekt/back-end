@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/api/dishes")
 public class DishController {
 
-
     private final DishService dishService;
 
     public DishController(DishService dishService) {
@@ -47,6 +46,5 @@ public class DishController {
         dishService.editDish(dishId, dish);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
-
 }
 

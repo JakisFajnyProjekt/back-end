@@ -15,11 +15,8 @@ public class Restaurant {
     private String name;
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Dish> dish;
-
     @Column(name = "owner_email")
     private String ownerEmail;
-
-
     @OneToOne
     @JoinTable(name = "restaurant_address",
             joinColumns = @JoinColumn(name = "restaurant_id"),

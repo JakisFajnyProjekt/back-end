@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class AddressServiceValidation {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AddressServiceValidation.class);
     private final AddressRepository addressRepository;
 
@@ -25,8 +26,5 @@ public class AddressServiceValidation {
             LOGGER.error("address exist in DB");
             throw new AddressAlreadyExist("address already exist");
         }
-
     }
-
-
 }

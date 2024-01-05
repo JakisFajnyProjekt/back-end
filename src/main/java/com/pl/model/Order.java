@@ -14,11 +14,9 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private LocalDateTime orderTime;
     private BigDecimal totalPrice;
     private String status;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -35,10 +33,8 @@ public class Order {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-
     public Order() {
     }
-
 
     public Order(LocalDateTime orderTime, BigDecimal totalPrice,
                  String status, User user, List<Dish> dishes,

@@ -40,7 +40,6 @@ public class RestaurantMapper {
                 restaurant.getAddress().getId());
     }
 
-
     public List<OrderByRestaurantDTO> mapToDtoForOrderList(final List<Order> orders) {
         return orders.stream()
                 .map(order -> new OrderByRestaurantDTO(
@@ -60,5 +59,4 @@ public class RestaurantMapper {
                 .map(this::mapToRestaurantDto)
                 .toList();
     }
-
 }

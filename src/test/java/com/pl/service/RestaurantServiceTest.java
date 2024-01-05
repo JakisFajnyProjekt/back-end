@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class RestaurantServiceTest {
+
     @Autowired
     private RestaurantService restaurantService;
     @Autowired

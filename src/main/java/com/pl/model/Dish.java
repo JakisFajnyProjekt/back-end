@@ -9,10 +9,10 @@ import java.util.Objects;
 @Table(name = "dishes")
 @Entity
 public class Dish {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String name;
     private String description;
     @Column(name = "price")
@@ -20,7 +20,6 @@ public class Dish {
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
-
     @Enumerated(EnumType.STRING)
     private Category category;
 
@@ -108,7 +107,6 @@ public class Dish {
         SOUPS,
         SALADS,
         BREAKFAST,
-        DESSERT,
-
+        DESSERT
     }
 }

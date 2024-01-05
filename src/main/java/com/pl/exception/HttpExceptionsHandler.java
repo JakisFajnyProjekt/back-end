@@ -63,6 +63,4 @@ class HttpExceptionsHandler extends ResponseEntityExceptionHandler {
                 LocalDate.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
-
-
 }

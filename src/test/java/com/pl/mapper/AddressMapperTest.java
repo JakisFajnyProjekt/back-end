@@ -5,7 +5,6 @@ import com.pl.model.dto.AddressCreateDTO;
 import com.pl.model.dto.AddressDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,11 +12,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class AddressMapperTest {
-@Autowired
+
+    @Autowired
     private AddressMapper addressMapper;
     private Address address;
     private Address address1;
@@ -63,8 +62,8 @@ public class AddressMapperTest {
         List<AddressDTO> addressesListDTO = addressMapper.mapToList(addressesList);
         //Then
         assertEquals(3, addressesListDTO.size());
-        assertEquals(AddressDTO.class,addressesListDTO.get(0).getClass());
-        assertEquals(AddressDTO.class,addressesListDTO.get(1).getClass());
-        assertEquals(AddressDTO.class,addressesListDTO.get(2).getClass());
+        assertEquals(AddressDTO.class, addressesListDTO.get(0).getClass());
+        assertEquals(AddressDTO.class, addressesListDTO.get(1).getClass());
+        assertEquals(AddressDTO.class, addressesListDTO.get(2).getClass());
     }
 }

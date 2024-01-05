@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class UserMapperTest {
+
     @Autowired
     private UserMapper userMapper;
     private User user;

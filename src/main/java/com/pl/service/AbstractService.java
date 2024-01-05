@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 abstract class AbstractService<R extends JpaRepository<EntityType, Long>, EntityType> {
     protected final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
-
     protected EntityType findEntity(R repository, long id) {
         return repository.findById(id)
                 .orElseThrow(() -> {
@@ -17,5 +16,4 @@ abstract class AbstractService<R extends JpaRepository<EntityType, Long>, Entity
                     return new NotFoundException("Not found with given id " + id);
                 });
     }
-
 }
